@@ -27,7 +27,7 @@ export default {
     localStorage.removeItem("ism_ref");
     localStorage.removeItem("ism_date");
     const _response = await axios
-      .get("http://192.168.42.49:3001/getism_ref")
+      .get("https://jfillapiapp.herokuapp.com/getism_ref")
       .then((res) => {
         console.log("ISM: " + res.data[0].ism_ref + " " + res.data[0].ism_date);
         localStorage.setItem("ism_ref", res.data[0].ism_ref);
@@ -44,7 +44,8 @@ export default {
   },
   async login(context, payload) {
     const _response = await axios
-      .post("http://192.168.42.49:3001/auth", {
+      // .post("http://192.168.42.49:3001/auth", {
+      .post("https://jfillapiapp.herokuapp.com/auth", {
         id: payload.id,
         pass: payload.pass,
       })

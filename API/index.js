@@ -1,10 +1,15 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const port =process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 const conn = require("./connection");
 const con = require("./conn");
+
+app.get("/",(req,res)=>{
+  res.send('Hello Welcome to JFILL Lottery');
+});
 
 app.get("/employees", (req, res) => {
   conn.db.query("SELECT * FROM employee", (err, result) => {
@@ -467,6 +472,6 @@ app.get("/winreport", (req, res) => {
   });
 });
 
-app.listen(3001, () => {
-  console.log("Yey, your server is running on port 3001");
+app.listen(port, () => {
+  console.log("Yey, your server is running on port: "+port);
 });
