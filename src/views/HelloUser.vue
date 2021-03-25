@@ -5,13 +5,13 @@
 </template>
 <script>
 export default {
-  mounted() {
-    setTimeout(this.directPage(), 5000);
-  },
-  methods: {
-    directPage(){
-        this.$router.push("/lotterymgr")
-    }
-  },
+//   mounted() {
+//     setTimeout(this.directPage(), 5000);
+//   },
+//   methods: {
+//     directPage(){
+//         this.$router.push("/lotterymgr")
+//     }
+//   },
 };
 </script>

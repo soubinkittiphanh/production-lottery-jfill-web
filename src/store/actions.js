@@ -45,18 +45,16 @@ export default {
   },
   async login(context, payload) {
     console.log(apiDomain.url)
-    const _response = await axios
-      // .post("http://192.168.42.49:3001/auth", {
-      .post(apiDomain.url+"auth", {
+    const _response = await axios.post(apiDomain.url+"auth", {
         id: payload.id,
         pass: payload.pass,
       })
       .then((response) => {
-        if (response.data.length === 0) {
+        if (response.data[0].mem_id === null || response.data[0].mem_name===null) {
           alert("ຂໍ້ມູນບໍ່ຖືກຕ້ອງ");
           return;
         }
-        // alert("ຍິນດີຕ້ອນຮັບ");
+        alert("ຍິນດີຕ້ອນຮັບ"+response.data);
         console.log(response.data);
         localStorage.setItem("id", response.data[0].mem_id);
         localStorage.setItem("name", response.data[0].mem_name);
