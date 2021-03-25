@@ -57,6 +57,7 @@
 </template>
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 export default {
   created() {
     this.setCurDate();
@@ -93,7 +94,7 @@ export default {
       this.isloading = true;
 
       axios
-        .get("http://192.168.42.49:3001/salereport/?r_date=" + this.r_date,{
+        .get(apiDomain.url+"salereport/?r_date=" + this.r_date,{
             params:{
                 p_date:this.r_date,
                 p_admin:this.isAdmin,

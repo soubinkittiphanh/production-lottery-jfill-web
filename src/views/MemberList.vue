@@ -23,6 +23,7 @@
 </template>
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 import UserListCard from "../components/ui/UserListCard";
 import SwitchToggle from '../components/ui/SwitchToggle'
 export default {
@@ -38,7 +39,7 @@ export default {
   methods: {
     fetchuser() {
       axios
-        .get("http://192.168.42.49:3001/fetchuser")
+        .get(apiDomain.url+"fetchuser")
         .then((res) => {
           var results = [];
           for (const id in res.data) {

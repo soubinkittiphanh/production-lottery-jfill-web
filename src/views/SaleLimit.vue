@@ -40,6 +40,7 @@
 </template>
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 export default {
   data() {
     return {
@@ -77,7 +78,7 @@ export default {
   methods: {
     fetchsalelim() {
       axios
-        .get("http://192.168.42.49:3001/getsalelimit")
+        .get(apiDomain.url+"getsalelimit")
         .then((res) => {
           this.two = res.data[0].two_digits;
           this.three = res.data[0].three_digits;
@@ -93,7 +94,7 @@ export default {
       var r = confirm("ຕ້ອງການແກ້ໄຂຂໍ້ມູນ?");
       if (r === true) {
         axios
-          .put("http://192.168.42.49:3001/updatesalelim/?id=" + 1, {
+          .put(apiDomain.url+"updatesalelim/?id=" + 1, {
             two: this.two,
             three: this.three,
             four: this.four,

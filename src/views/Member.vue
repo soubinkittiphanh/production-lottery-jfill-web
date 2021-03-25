@@ -80,6 +80,7 @@
 
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 export default {
   data() {
     return {
@@ -137,7 +138,7 @@ export default {
       } else {
         alert("valid");
         axios
-          .post("http://192.168.42.49:3001/createuser", {
+          .post(apiDomain.url+"createuser", {
             name: this.name,
             lname: this.lname,
             logid: this.logid,
@@ -159,7 +160,7 @@ export default {
     updateuser(id) {
       console.log("f id: "+id)
       axios
-        .put("http://192.168.42.49:3001/updateuser", {
+        .put(apiDomain.url+"updateuser", {
           id:id,
           name: this.name,
           lname: this.lname,
@@ -180,7 +181,7 @@ export default {
     },
     fetchuser(id) {
       axios
-        .get("http://192.168.42.49:3001/fetchuserid/?id=" + id)
+        .get(apiDomain.url+"fetchuserid/?id=" + id)
         .then((res) => {
           this.id = res.data[0].id;
           console.log(res.data);

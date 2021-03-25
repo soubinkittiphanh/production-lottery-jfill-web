@@ -237,6 +237,7 @@
 </template>
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 import SaleCard from "./SaleCard.vue";
 // import SimModal from "./ui/SimpleModal";
 import BaseDialog from "./ui/BaseDialog";
@@ -415,7 +416,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .post("http://192.168.42.49:3001/sale", {
+        .post(apiDomain.url+"sale", {
           item: this.saleLek,
           ism: this.get_ism_ref,
           user: this.get_user,
@@ -436,7 +437,7 @@ export default {
     },
     submitLekTest() {
       console.log("get in....");
-      axios.post("http://192.168.42.49:3001/create", {
+      axios.post(apiDomain.url+"create", {
         name: "Soubin Kittiphanh",
         age: 28,
         country: "Laos",
@@ -447,7 +448,7 @@ export default {
     fetchdata() {
       this.isloading = true;
       this.error = null;
-      fetch("http://192.168.42.49:3001/employees")
+      fetch(apiDomain.url+"employees")
         .then((response) => {
           if (response.ok) {
             return response.json();

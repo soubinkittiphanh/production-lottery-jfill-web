@@ -98,6 +98,7 @@
 </template>
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 import BaseCard from "../components/ui/BaseCard";
 import SwitchToggle from "../components/ui/SwitchToggle";
 var moment = require("moment");
@@ -147,7 +148,7 @@ export default {
   methods: {
     gen_ism_ref(){
       console.log("Sending")
-      axios.get("http://192.168.42.49:3001/ismref").then((res)=>{
+      axios.get(apiDomain.url+"ismref").then((res)=>{
         console.log("Receiving")
         console.log(res.data);
         this.ism_ref=res.data;
@@ -226,7 +227,7 @@ export default {
     },
     createIsm() {
       axios
-        .post("http://192.168.42.49:3001/createism", {
+        .post(apiDomain.url+"createism", {
           ism_ref: this.ism_ref,
           ism_date: this.date,
           ism_res: this.ism_res,
@@ -251,7 +252,7 @@ export default {
     updateIsm() {
       // console.log(this.ismId);
       axios
-        .put("http://192.168.42.49:3001/updateism", {
+        .put(apiDomain.url+"updateism", {
           ism_ref: this.ism_ref,
           ism_date: this.date,
           ism_result: this.ism_res,
@@ -270,7 +271,7 @@ export default {
     },
     getdataSurvey(action) {
       console.log(this.date);
-      const url = "http://192.168.42.49:3001/fetchism/?date=" + this.date;
+      const url = apiDomain.url+"fetchism/?date=" + this.date;
       axios
         .get(url)
         .then((res) => {
@@ -307,7 +308,7 @@ export default {
     fetchdata() {
       this.ismdata = "";
       console.log(this.date);
-      const url = "http://192.168.42.49:3001/fetchism/?date=" + this.date;
+      const url = apiDomain.url+"fetchism/?date=" + this.date;
       axios
         .get(url)
         .then((res) => {

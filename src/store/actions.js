@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiDomain from "../config";
 export default {
   authUser(context) {
     context.commit("authUser");
@@ -27,7 +28,7 @@ export default {
     localStorage.removeItem("ism_ref");
     localStorage.removeItem("ism_date");
     const _response = await axios
-      .get("https://jfillapiapp.herokuapp.com/getism_ref")
+      .get(apiDomain.url+"getism_ref")
       .then((res) => {
         console.log("ISM: " + res.data[0].ism_ref + " " + res.data[0].ism_date);
         localStorage.setItem("ism_ref", res.data[0].ism_ref);
@@ -43,9 +44,10 @@ export default {
     console.log(_response);
   },
   async login(context, payload) {
+    console.log(apiDomain.url)
     const _response = await axios
       // .post("http://192.168.42.49:3001/auth", {
-      .post("https://jfillapiapp.herokuapp.com/auth", {
+      .post(apiDomain.url+"auth", {
         id: payload.id,
         pass: payload.pass,
       })
@@ -54,7 +56,7 @@ export default {
           alert("ຂໍ້ມູນບໍ່ຖືກຕ້ອງ");
           return;
         }
-        alert("ຍິນດີຕ້ອນຮັບ");
+        // alert("ຍິນດີຕ້ອນຮັບ");
         console.log(response.data);
         localStorage.setItem("id", response.data[0].mem_id);
         localStorage.setItem("name", response.data[0].mem_name);

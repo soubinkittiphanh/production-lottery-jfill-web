@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <base-card>
       <form @submit.prevent="logIn">
         <div class="form-group row">
@@ -16,20 +15,22 @@
               v-model.trim="user.pass"
             />
           </div>
-          <p v-if="invalidForm">
-            ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບ
-          </p>
+          <p v-if="invalidForm">ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບ</p>
         </div>
         <button class="btn btn-success">ເຂົ້າສູ່ລະບົບ</button>
+        <div class="col-md-12">
+          <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isLoading"></i>
+          <p v-else-if="!isLoading && error" style="color: red">{{ error }}</p>
+        </div>
       </form>
     </base-card>
+    <div class="center"></div>
   </div>
 </template>
 <script>
 import BaseCard from "../components/ui/BaseCard";
 export default {
   components: {
-   
     BaseCard,
   },
   data() {
@@ -43,10 +44,10 @@ export default {
       error: null,
     };
   },
-  computed:{
-    isAuthenticated(){
+  computed: {
+    isAuthenticated() {
       return this.$store.getters.isAuth;
-    }
+    },
   },
   methods: {
     addNumber() {
@@ -55,6 +56,7 @@ export default {
     async logIn() {
       this.invalidForm = false;
       this.isLoading = true;
+      this.error = null;
       try {
         if (!this.user.id || !this.user.pass) {
           this.invalidForm = true;
@@ -64,8 +66,8 @@ export default {
             id: this.user.id,
             pass: this.user.pass,
           });
-          if(this.isAuthenticated){
-            this.$router.replace('/home');
+          if (this.isAuthenticated) {
+            this.$router.replace("/home");
             location.reload();
           }
         }

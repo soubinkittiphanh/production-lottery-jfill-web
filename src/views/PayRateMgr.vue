@@ -34,6 +34,7 @@
 </template>
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 export default {
   data() {
     return {
@@ -71,7 +72,7 @@ export default {
   methods: {
     fetchpayrate() {
       axios
-        .get("http://192.168.42.49:3001/getpayrate")
+        .get(apiDomain.url+"getpayrate")
         .then((res) => {
           this.two = res.data[0].pay_two;
           this.three = res.data[0].pay_three;
@@ -87,7 +88,7 @@ export default {
       var r = confirm("ຕ້ອງການແກ້ໄຂຂໍ້ມູນ?");
       if (r === true) {
         axios
-          .put("http://192.168.42.49:3001/updatepayrate/?id=" + 1, {
+          .put(apiDomain.url+"updatepayrate/?id=" + 1, {
             two: this.two,
             three: this.three,
             four: this.four,

@@ -62,6 +62,7 @@
 </template>
 <script>
 import axios from "axios";
+import apiDomain from "../config";
 export default {
   created() {
     this.setCurDate();
@@ -116,7 +117,7 @@ export default {
       this.error = null;
       this.isloading = true;
       axios
-        .get("http://192.168.42.49:3001/getpayrate")
+        .get(apiDomain.url+"getpayrate")
         .then((res) => {
           this.payR = res.data;
           console.log(this.payR);
@@ -133,7 +134,7 @@ export default {
       this.isloading = true;
 
       axios
-        .get("http://192.168.42.49:3001/winreport/?r_date=" + this.r_date, {
+        .get(apiDomain.url+"winreport/?r_date=" + this.r_date, {
           params: {
             p_date: this.r_date,
             p_admin: this.isAdmin,
