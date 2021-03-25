@@ -38,7 +38,12 @@
           >ຜົນອອກລາງວັນ:</label
         >
         <div class="col-md-12">
-          <input type="number" class="form-control" placeholder="ເລກຜົນອອກຕ້ອງໃສ່ 6 ຕົວ" v-model="ism_res" />
+          <input
+            type="number"
+            class="form-control"
+            placeholder="ເລກຜົນອອກຕ້ອງໃສ່ 6 ຕົວ"
+            v-model="ism_res"
+          />
         </div>
         <div class="col-md-12 custom-control custom-switch">
           <input
@@ -68,6 +73,8 @@
     </form>
     <hr />
     <button @click="fetchdata" class="btn btn-warning">ດຶງຂໍ້ມູນ</button>
+    <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isLoading"></i>
+    <p v-else-if="!isLoading && error" style="color: red">{{ error }}</p>
     <base-card v-for="(itm, idx) in ismdata" :key="idx">
       <span style="color: green"> [ ຜົນອອກ:{{ itm.ism_res }} ]</span>
       [ ເລກທີ: {{ itm.ism_ref }} ] [ ອອກວັນທີ: {{ formatdate(itm.ism_date) }} ]
@@ -119,6 +126,8 @@ export default {
       issave: false,
       ismdata: [],
       ismId: "",
+      isLoading: false,
+      error: null,
       formvalidate: {
         ref: false,
         date: false,
@@ -128,8 +137,8 @@ export default {
   watch: {
     ism_ref(val) {
       console.log("changing....");
-      console.log("Val: "+val);
-      console.log("Leng: "+val.toString().length)
+      console.log("Val: " + val);
+      console.log("Leng: " + val.toString().length);
       if (val.toString().length > 0) {
         this.formvalidate.ref = true;
       } else {
@@ -146,15 +155,22 @@ export default {
     },
   },
   methods: {
-    gen_ism_ref(){
-      console.log("Sending")
-      axios.get(apiDomain.url+"ismref").then((res)=>{
-        console.log("Receiving")
-        console.log(res.data);
-        this.ism_ref=res.data;
-      }).catch((er)=>{
-        alert(er);
-      })
+    gen_ism_ref() {
+      console.log("Sending");
+      this.isLoading = true;
+      this.error = null;
+      axios
+        .get(apiDomain.url + "ismref")
+        .then((res) => {
+          // console.log("Receiving")
+          // console.log(res.data);
+          this.ism_ref = res.data;
+          this.isLoading = false;
+        })
+        .catch((er) => {
+          // alert(er);
+          this.error = er;
+        });
     },
     formatdate(date) {
       var dateVisible = new Date(date);
@@ -226,8 +242,10 @@ export default {
       }
     },
     createIsm() {
+      this.isLoading = true;
+      this.error = null;
       axios
-        .post(apiDomain.url+"createism", {
+        .post(apiDomain.url + "createism", {
           ism_ref: this.ism_ref,
           ism_date: this.date,
           ism_res: this.ism_res,
@@ -237,9 +255,11 @@ export default {
           console.log(res);
           alert(res.data);
           this.fetchdata();
+          this.isLoading = false;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          this.error = err;
         });
     },
     resetInput() {
@@ -251,8 +271,10 @@ export default {
     },
     updateIsm() {
       // console.log(this.ismId);
+      this.isLoading = true;
+      this.error = null;
       axios
-        .put(apiDomain.url+"updateism", {
+        .put(apiDomain.url + "updateism", {
           ism_ref: this.ism_ref,
           ism_date: this.date,
           ism_result: this.ism_res,
@@ -264,14 +286,18 @@ export default {
           alert(response.data);
           this.resetInput();
           this.fetchdata();
+          this.isLoading = false;
         })
         .catch((err) => {
+          this.error = err;
           console.log(err.data);
         });
     },
     getdataSurvey(action) {
       console.log(this.date);
-      const url = apiDomain.url+"fetchism/?date=" + this.date;
+      this.isLoading = true;
+      this.error = null;
+      const url = apiDomain.url + "fetchism/?date=" + this.date;
       axios
         .get(url)
         .then((res) => {
@@ -292,11 +318,12 @@ export default {
               this.updateIsm();
             }
           }
-
+          this.isLoading = false;
           console.log(res.data);
         })
         .catch((err) => {
-          alert(err);
+          // alert(err);
+          this.error = err;
         });
     },
     toggleSave() {
@@ -306,9 +333,11 @@ export default {
       this.isopen = false;
     },
     fetchdata() {
+      this.isLoading = true;
+      this.error = null;
       this.ismdata = "";
       console.log(this.date);
-      const url = apiDomain.url+"fetchism/?date=" + this.date;
+      const url = apiDomain.url + "fetchism/?date=" + this.date;
       axios
         .get(url)
         .then((res) => {
@@ -324,10 +353,13 @@ export default {
           }
           this.ismdata = result;
           console.log(res.data);
+          this.isLoading = false;
         })
         .catch((err) => {
           alert(err);
+          this.error = err;
         });
+      this.isLoading = false;
     },
     // moment: function (date) {
     //   return moment(date);
