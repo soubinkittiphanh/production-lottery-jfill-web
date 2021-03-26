@@ -13,6 +13,15 @@
           <button class="btn btn-success">ດຶງຂໍ້ມູນ</button> |
           {{ formatdate(r_date) }}
         </div>
+        <div class="col-md-12">
+          <p class="error">{{ qr_error }}</p>
+
+          <p class="decode-result">
+            Last result: <b>{{ qr_result }}</b>
+          </p>
+
+          <!-- <qrcode-stream @decode="onDecode" @init="onInit"> </qrcode-stream> -->
+        </div>
       </div>
     </form>
 
@@ -63,13 +72,22 @@
 <script>
 import axios from "axios";
 import apiDomain from "../config";
+// import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
+// import { QrcodeStream } from "vue-qrcode-reader";
 export default {
+  components: {
+    // QrcodeStream,
+    // QrcodeDropZone,
+    // QrcodeCapture,
+  },
   created() {
     this.setCurDate();
     this.getPayRate();
   },
   data() {
     return {
+      qr_result: "",
+      qr_error: "",
       report_data: [],
       r_date: "",
       isloading: false,
@@ -94,6 +112,28 @@ export default {
     },
   },
   methods: {
+    onDecode(result) {
+      this.result = result;
+    },
+    async onInit(promise) {
+      try {
+        await promise;
+      } catch (error) {
+        if (error.name === "NotAllowedError") {
+          this.error = "ERROR: you need to grant camera access permisson";
+        } else if (error.name === "NotFoundError") {
+          this.error = "ERROR: no camera on this device";
+        } else if (error.name === "NotSupportedError") {
+          this.error = "ERROR: secure context required (HTTPS, localhost)";
+        } else if (error.name === "NotReadableError") {
+          this.error = "ERROR: is the camera already in use?";
+        } else if (error.name === "OverconstrainedError") {
+          this.error = "ERROR: installed cameras are not suitable";
+        } else if (error.name === "StreamApiNotSupportedError") {
+          this.error = "ERROR: Stream API is not supported in this browser";
+        }
+      }
+    },
     getPaid(val) {
       console.log("result val: " + val);
       let result = 0;
@@ -117,7 +157,7 @@ export default {
       this.error = null;
       this.isloading = true;
       axios
-        .get(apiDomain.url+"getpayrate")
+        .get(apiDomain.url + "getpayrate")
         .then((res) => {
           this.payR = res.data;
           console.log(this.payR);
@@ -134,7 +174,7 @@ export default {
       this.isloading = true;
 
       axios
-        .get(apiDomain.url+"winreport/?r_date=" + this.r_date, {
+        .get(apiDomain.url + "winreport/?r_date=" + this.r_date, {
           params: {
             p_date: this.r_date,
             p_admin: this.isAdmin,
@@ -189,7 +229,6 @@ export default {
 <style scoped>
 .error {
   color: red;
-  
 }
 </style>
 

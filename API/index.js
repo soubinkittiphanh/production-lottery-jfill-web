@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port =process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 const conn = require("./connection");
 const con = require("./conn");
 
-app.get("/",(req,res)=>{
-  res.send('Hello Welcome to JFILL Lottery');
+app.get("/", (req, res) => {
+  res.send("Hello Welcome to JFILL Lottery");
 });
 
 app.get("/employees", (req, res) => {
@@ -54,19 +54,19 @@ app.post("/createism", (req, res) => {
         res.send("ຂໍ້ມູນບັນທຶກສຳເລັດ");
       }
     }
-    );
-  });
-  
-  app.put("/updateism", (req, res) => {
-    const ref = req.body.ism_ref;
-    const id = req.body.ism_id;
-    const date = req.body.ism_date;
-    const result = req.body.ism_result;
-    const active = req.body.ism_active;
-    console.log(id);
-    console.log(result);
-    conn.db.query(
-      "UPDATE installment SET ism_ref= ?,ism_date=?,ism_result=?,ism_active=? WHERE id= ? ",
+  );
+});
+
+app.put("/updateism", (req, res) => {
+  const ref = req.body.ism_ref;
+  const id = req.body.ism_id;
+  const date = req.body.ism_date;
+  const result = req.body.ism_result;
+  const active = req.body.ism_active;
+  console.log(id);
+  console.log(result);
+  conn.db.query(
+    "UPDATE installment SET ism_ref= ?,ism_date=?,ism_result=?,ism_active=? WHERE id= ? ",
     [ref, date, result, active, id],
     (err, result) => {
       if (err) {
@@ -277,6 +277,7 @@ app.post("/sale", async (req, res) => {
   const sale = req.body.item;
   const user = req.body.user;
   const ism = req.body.ism;
+  const qr_code = req.body.qr_code;
   var full_lucknum = [];
   console.log(sale);
   for (var i = 0; i < sale.length; i++) {
@@ -310,6 +311,8 @@ app.post("/sale", async (req, res) => {
         sale[i].sale +
         "," +
         user +
+        "," +
+        qr_code +
         ")" +
         colon +
         "";
@@ -317,7 +320,7 @@ app.post("/sale", async (req, res) => {
 
     console.log("SQL: " + sql);
     conn.db.query(
-      "INSERT INTO `sale`(`sale_bill_id`, `ism_id`, `sale_num`, `sale_price`, `mem_id`) VALUES " +
+      "INSERT INTO `sale`(`sale_bill_id`, `ism_id`, `sale_num`, `sale_price`, `mem_id`,`qr_code`) VALUES " +
         sql +
         "",
       (er, result) => {
@@ -345,7 +348,7 @@ async function get_billnum() {
   const numRows = res[0].length;
   console.log("numrow: " + numRows);
   if (numRows < 1) {
-    return 1000;
+    return 21024303061761012;
   } else {
     const next_ref = res[0][0].pre_bill + 1;
     return next_ref;
@@ -355,16 +358,16 @@ async function full_lot_survey(luck_num, price, ism_ref) {
   let luck_num_type = "";
   let isover = [];
   const luckNLen = luck_num.length;
-  console.log("Length: " +luckNLen);
-  if ((luckNLen === 2)) {
+  console.log("Length: " + luckNLen);
+  if (luckNLen === 2) {
     luck_num_type = "two_digits";
-  } else if ((luckNLen === 3)) {
+  } else if (luckNLen === 3) {
     luck_num_type = "three_digits";
-  } else if ((luckNLen === 4)) {
+  } else if (luckNLen === 4) {
     luck_num_type = "four_digits";
-  } else if ((luckNLen === 5)) {
+  } else if (luckNLen === 5) {
     luck_num_type = "five_digits";
-  } else if ((luck_num === 6)) {
+  } else if (luck_num === 6) {
     luck_num_type = "six_digits";
   }
 
@@ -460,9 +463,9 @@ app.get("/winreport", (req, res) => {
     console.log("Admin: " + r_admin);
   }
 
-  console.log("ID"+r_mem_id);
-  console.log("Admin"+r_admin);
-  console.log("Date"+r_date);
+  console.log("ID" + r_mem_id);
+  console.log("Admin" + r_admin);
+  console.log("Date" + r_date);
   conn.db.query(sql, (er, result) => {
     if (er) {
       res.send(er);
@@ -473,5 +476,5 @@ app.get("/winreport", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("Yey, your server is running on port: "+port);
+  console.log("Yey, your server is running on port: " + port);
 });

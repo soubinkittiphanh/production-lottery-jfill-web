@@ -213,11 +213,15 @@
       <hr />
       <p>ຜູ້ຂາຍ: {{ get_user }}</p>
       <p>ເວລາພິມ: {{ formatdate(new Date()) }} | {{ curtime }}</p>
-      <p>ເບີໂທຕິດຕໍ່: {{ get_user }}</p>
+      <p>ເບີໂທຕິດຕໍ່: 020 9558 8945</p>
       <p>ໝົດກຳນົດຮັບລາງວັນ: {{ expireDate }}</p>
+      <qrcode-vue :value="ar_code">
+      </qrcode-vue>
+      <p>{{ar_code}}</p>
       <p>ຂໍໃຫ້ທ່ານໂຊກດີ</p>
     </div>
     <div>
+      
       <!-- Employee fetch from server -->
       <!-- <p v-if="isloading">Loading...</p> -->
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
@@ -234,6 +238,7 @@
       {{ itm }}
     </li>
   </base-dialog>
+  <!-- <button class="btn btn-primary" @click="null">Cam</button> -->
 </template>
 <script>
 import axios from "axios";
@@ -241,12 +246,13 @@ import apiDomain from "../config";
 import SaleCard from "./SaleCard.vue";
 // import SimModal from "./ui/SimpleModal";
 import BaseDialog from "./ui/BaseDialog";
-
+import QrcodeVue from 'qrcode.vue'
 export default {
   components: {
     SaleCard,
     // SimModal,
     BaseDialog,
+    QrcodeVue,
   },
   mounted() {
     this.fetchdata();
@@ -258,6 +264,7 @@ export default {
   },
   data() {
     return {
+      ar_code:'',
       showModal: true,
       mycssstype: "border:1px solid red",
       enteredLek: "",
@@ -275,6 +282,9 @@ export default {
   },
 
   computed: {
+    // qr_generator(){
+    //   return this.qr_provider();//Math.floor((Math.random() * 100000000000000000) + 1).toString();
+    // },
     selectedinput() {
       return {
         "border:1px solid red": this.isLek,
@@ -309,14 +319,19 @@ export default {
       var date = new Date();
 
       // add a day
-      date.setDate(date.getDate() + 10);
+      date.setDate(date.getDate() + 7);
       return this.formatdate(date);
     },
   },
   created() {
     this.checkISM();
+    this.qr_provider();
   },
   methods: {
+    qr_provider(){
+      this.ar_code= Math.floor((Math.random() * 10000000000000) + 1).toString();
+      
+    },
     displayTime() {
       let dt = new Date();
       this.curtime = dt.toLocaleTimeString();
@@ -350,6 +365,7 @@ export default {
       if (con) {
         this.saleLek = [];
         this.bill_num = "1####";
+        this.qr_provider();
       }
     },
     showarray() {
@@ -416,10 +432,11 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .post(apiDomain.url+"sale", {
+        .post(apiDomain.url + "sale", {
           item: this.saleLek,
           ism: this.get_ism_ref,
           user: this.get_user,
+          qr_code:this.qr_code,
         })
         .then((res) => {
           this.isloading = false;
@@ -437,7 +454,7 @@ export default {
     },
     submitLekTest() {
       console.log("get in....");
-      axios.post(apiDomain.url+"create", {
+      axios.post(apiDomain.url + "create", {
         name: "Soubin Kittiphanh",
         age: 28,
         country: "Laos",
@@ -448,7 +465,7 @@ export default {
     fetchdata() {
       this.isloading = true;
       this.error = null;
-      fetch(apiDomain.url+"employees")
+      fetch(apiDomain.url + "employees")
         .then((response) => {
           if (response.ok) {
             return response.json();
