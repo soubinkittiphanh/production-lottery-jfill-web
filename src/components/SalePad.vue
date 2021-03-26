@@ -500,10 +500,13 @@ export default {
   box-sizing: border-box;
 }
 .fixedbutton-l {
-  width: 70px;
+  min-width: 65px;
+  /* max-width: 80px; */
 }
 .fixedbutton-r {
-  width: 90px;
+  width: 85px;
+  max-width: 90px;
+  
 }
 html {
   font-family: BoonHome;
