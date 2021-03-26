@@ -215,9 +215,9 @@
       <p>ເວລາພິມ: {{ formatdate(new Date()) }} | {{ curtime }}</p>
       <p>ເບີໂທຕິດຕໍ່: 020 9558 8945</p>
       <p>ໝົດກຳນົດຮັບລາງວັນ: {{ expireDate }}</p>
-      <qrcode-vue :value="ar_code">
+      <qrcode-vue :value="qr_code">
       </qrcode-vue>
-      <p>{{ar_code}}</p>
+      <p>{{qr_code}}</p>
       <p>ຂໍໃຫ້ທ່ານໂຊກດີ</p>
     </div>
     <div>
@@ -264,7 +264,7 @@ export default {
   },
   data() {
     return {
-      ar_code:'',
+      qr_code:'',
       showModal: true,
       mycssstype: "border:1px solid red",
       enteredLek: "",
@@ -329,7 +329,7 @@ export default {
   },
   methods: {
     qr_provider(){
-      this.ar_code= Math.floor((Math.random() * 10000000000000) + 1).toString();
+      this.qr_code= Math.floor((Math.random() * 10000000000000) + 1).toString();
       
     },
     displayTime() {
