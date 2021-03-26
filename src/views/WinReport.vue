@@ -20,7 +20,7 @@
             Last result: <b>{{ qr_result }}</b>
           </p>
 
-          <!-- <qrcode-stream @decode="onDecode" @init="onInit"> </qrcode-stream> -->
+          <qrcode-stream @decode="onDecode" @init="onInit"> </qrcode-stream>
         </div>
       </div>
     </form>
@@ -72,11 +72,12 @@
 <script>
 import axios from "axios";
 import apiDomain from "../config";
+
 // import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
-// import { QrcodeStream } from "vue-qrcode-reader";
+import { QrcodeStream } from "vue-qrcode-reader";
 export default {
   components: {
-    // QrcodeStream,
+    QrcodeStream,
     // QrcodeDropZone,
     // QrcodeCapture,
   },
@@ -110,6 +111,9 @@ export default {
     mem_id() {
       return this.$store.getters.user_id;
     },
+  },
+  mounted(){
+    
   },
   methods: {
     onDecode(result) {
