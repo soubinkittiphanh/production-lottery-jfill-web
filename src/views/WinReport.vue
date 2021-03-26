@@ -21,6 +21,8 @@
           </p>
 
           <qrcode-stream @decode="onDecode" @init="onInit"> </qrcode-stream>
+          <qrcode-drop-zone></qrcode-drop-zone>
+          <qrcode-capture></qrcode-capture>
         </div>
       </div>
     </form>
@@ -73,13 +75,12 @@
 import axios from "axios";
 import apiDomain from "../config";
 
-// import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
-import { QrcodeStream } from "vue-qrcode-reader";
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 export default {
   components: {
     QrcodeStream,
-    // QrcodeDropZone,
-    // QrcodeCapture,
+    QrcodeDropZone,
+    QrcodeCapture,
   },
   created() {
     this.setCurDate();
@@ -112,29 +113,26 @@ export default {
       return this.$store.getters.user_id;
     },
   },
-  mounted(){
-    
-  },
   methods: {
     onDecode(result) {
-      this.result = result;
+      this.qr_result = result;
     },
     async onInit(promise) {
       try {
         await promise;
       } catch (error) {
         if (error.name === "NotAllowedError") {
-          this.error = "ERROR: you need to grant camera access permisson";
+          this.qr_error = "ERROR: you need to grant camera access permisson";
         } else if (error.name === "NotFoundError") {
-          this.error = "ERROR: no camera on this device";
+          this.qr_error = "ERROR: no camera on this device";
         } else if (error.name === "NotSupportedError") {
-          this.error = "ERROR: secure context required (HTTPS, localhost)";
+          this.qr_error = "ERROR: secure context required (HTTPS, localhost)";
         } else if (error.name === "NotReadableError") {
-          this.error = "ERROR: is the camera already in use?";
+          this.qr_error = "ERROR: is the camera already in use?";
         } else if (error.name === "OverconstrainedError") {
-          this.error = "ERROR: installed cameras are not suitable";
+          this.qr_error = "ERROR: installed cameras are not suitable";
         } else if (error.name === "StreamApiNotSupportedError") {
-          this.error = "ERROR: Stream API is not supported in this browser";
+          this.qr_error = "ERROR: Stream API is not supported in this browser";
         }
       }
     },
