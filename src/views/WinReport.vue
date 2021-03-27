@@ -13,17 +13,7 @@
           <button class="btn btn-success">ດຶງຂໍ້ມູນ</button> |
           {{ formatdate(r_date) }}
         </div>
-        <div class="col-md-12">
-          <p class="error">{{ qr_error }}</p>
-
-          <p class="decode-result">
-            Last result: <b>{{ qr_result }}</b>
-          </p>
-
-          <qrcode-stream @decode="onDecode" @init="onInit"> </qrcode-stream>
-          <qrcode-drop-zone></qrcode-drop-zone>
-          <qrcode-capture></qrcode-capture>
-        </div>
+        
       </div>
     </form>
 
@@ -75,21 +65,21 @@
 import axios from "axios";
 import apiDomain from "../config";
 
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
+// import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 export default {
-  components: {
-    QrcodeStream,
-    QrcodeDropZone,
-    QrcodeCapture,
-  },
+  // components: {
+  //   QrcodeStream,
+  //   QrcodeDropZone,
+  //   QrcodeCapture,
+  // },
   created() {
     this.setCurDate();
     this.getPayRate();
   },
   data() {
     return {
-      qr_result: "",
-      qr_error: "",
+      // qr_result: "",
+      // qr_error: "",
       report_data: [],
       r_date: "",
       isloading: false,
@@ -106,7 +96,6 @@ export default {
       return this.formatNum(totalsale);
     },
     isAdmin() {
-      console.log(this.$store.getters.isAdmin);
       return this.$store.getters.isAdmin;
     },
     mem_id() {
@@ -114,30 +103,29 @@ export default {
     },
   },
   methods: {
-    onDecode(result) {
-      this.qr_result = result;
-    },
-    async onInit(promise) {
-      try {
-        await promise;
-      } catch (error) {
-        if (error.name === "NotAllowedError") {
-          this.qr_error = "ERROR: you need to grant camera access permisson";
-        } else if (error.name === "NotFoundError") {
-          this.qr_error = "ERROR: no camera on this device";
-        } else if (error.name === "NotSupportedError") {
-          this.qr_error = "ERROR: secure context required (HTTPS, localhost)";
-        } else if (error.name === "NotReadableError") {
-          this.qr_error = "ERROR: is the camera already in use?";
-        } else if (error.name === "OverconstrainedError") {
-          this.qr_error = "ERROR: installed cameras are not suitable";
-        } else if (error.name === "StreamApiNotSupportedError") {
-          this.qr_error = "ERROR: Stream API is not supported in this browser";
-        }
-      }
-    },
+    // onDecode(result) {
+    //   this.qr_result = result;
+    // },
+    // async onInit(promise) {
+    //   try {
+    //     await promise;
+    //   } catch (error) {
+    //     if (error.name === "NotAllowedError") {
+    //       this.qr_error = "ERROR: you need to grant camera access permisson";
+    //     } else if (error.name === "NotFoundError") {
+    //       this.qr_error = "ERROR: no camera on this device";
+    //     } else if (error.name === "NotSupportedError") {
+    //       this.qr_error = "ERROR: secure context required (HTTPS, localhost)";
+    //     } else if (error.name === "NotReadableError") {
+    //       this.qr_error = "ERROR: is the camera already in use?";
+    //     } else if (error.name === "OverconstrainedError") {
+    //       this.qr_error = "ERROR: installed cameras are not suitable";
+    //     } else if (error.name === "StreamApiNotSupportedError") {
+    //       this.qr_error = "ERROR: Stream API is not supported in this browser";
+    //     }
+    //   }
+    // },
     getPaid(val) {
-      console.log("result val: " + val);
       let result = 0;
       if (val.length === 2) {
         result = this.payR[0].pay_two;
@@ -150,9 +138,7 @@ export default {
       } else if (val.length === 6) {
         result = this.payR[0].pay_six;
       }
-      console.log("result PayR: " + this.payR[0].pay_three);
-      console.log("result PayR: " + this.payR[0].pay_two);
-      console.log("result getpaid: " + result);
+    
       return result;
     },
     getPayRate() {
@@ -162,7 +148,6 @@ export default {
         .get(apiDomain.url + "getpayrate")
         .then((res) => {
           this.payR = res.data;
-          console.log(this.payR);
           this.isloading = false;
         })
         .catch((er) => {
@@ -184,9 +169,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
           this.report_data = res.data;
-          console.log(this.report_data);
           this.isloading = false;
         })
         .catch((er) => {
@@ -209,7 +192,6 @@ export default {
         d = "0" + d;
       }
       dateVisible = d + "-" + m + "-" + dateVisible.getFullYear();
-      console.log(dateVisible);
       return dateVisible; //"this.dateVisible";
     },
     setCurDate() {
