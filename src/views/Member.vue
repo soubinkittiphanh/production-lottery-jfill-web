@@ -13,12 +13,17 @@
           <span class="error" v-if="!formvailid.lname">ກະລຸນາໃສ່ນາມສະກຸນ</span>
         </div>
         <label for="roll_id" class="col-md-2 col-form-label">ໄອດີ:</label>
-        <div class="col-md-12">
-          <input type="text" class="form-control" v-model="logid" />
-          <span class="error" v-if="!formvailid.logid"
-            >ກະລຸນາໃສ່ໄອດີເຂົ້າລະບົບ</span
-          >
-        </div>
+        <!-- <div class="row"> -->
+          <div class="col-md-12">
+            <input type="text" class="form-control" v-model="logid" disabled placeholder="ລະບົບຈະໃສ່ໄອດີໃຫ້ອັດຕະໂນມັດ"/>
+            <span class="error" v-if="!formvailid.logid"
+              >ກະລຸນາໃສ່ໄອດີເຂົ້າລະບົບ</span
+            >
+          </div>
+          <!-- <div class="col-md-4"> -->
+          <!-- <button class="btn btn-success">Get ID</button> -->
+          <!-- </div> -->
+        <!-- </div> -->
         <label for="roll_id" class="col-md-2 col-form-label">ລະຫັດ:</label>
         <div class="col-md-12">
           <input type="text" class="form-control" v-model="logpass" />
@@ -41,7 +46,10 @@
         </div>
         <label for="roll_id" class="col-md-2 col-form-label"></label>
         <div class="col-md-12">
-          <button class="btn btn-success" @click.prevent="!id ?crateuser():updateuser(id)">
+          <button
+            class="btn btn-success"
+            @click.prevent="!id ? crateuser() : updateuser(id)"
+          >
             {{ !id ? "ເພີ່ມ" : "ບັນທຶກ" }}
           </button>
         </div>
@@ -70,7 +78,7 @@
             class="custom-control-label"
             for="customSwitch3"
             style="float: right"
-          >[ Admin]</label
+            >[ Admin]</label
           >
         </div>
       </div>
@@ -126,6 +134,16 @@ export default {
     },
   },
   methods: {
+    get_auto_id(){
+      if(!this.id){
+        axios.get(apiDomain.url + "gen_uid").then((res)=>{
+          this.logid=res.data[0].mem_id+1;
+          // console.log("Gen id: "+res.data[0].mem_id);
+        }).catch((err)=>{
+          alert(err)
+        })
+      }
+    },
     crateuser() {
       if (
         !this.formvailid.name ||
@@ -138,7 +156,7 @@ export default {
       } else {
         alert("valid");
         axios
-          .post(apiDomain.url+"createuser", {
+          .post(apiDomain.url + "createuser", {
             name: this.name,
             lname: this.lname,
             logid: this.logid,
@@ -158,10 +176,10 @@ export default {
       }
     },
     updateuser(id) {
-      console.log("f id: "+id)
+      console.log("f id: " + id);
       axios
-        .put(apiDomain.url+"updateuser", {
-          id:id,
+        .put(apiDomain.url + "updateuser", {
+          id: id,
           name: this.name,
           lname: this.lname,
           logid: this.logid,
@@ -181,7 +199,7 @@ export default {
     },
     fetchuser(id) {
       axios
-        .get(apiDomain.url+"fetchuserid/?id=" + id)
+        .get(apiDomain.url + "fetchuserid/?id=" + id)
         .then((res) => {
           this.id = res.data[0].id;
           console.log(res.data);
@@ -192,8 +210,8 @@ export default {
           this.vill = res.data[0].mem_village;
           this.dist = res.data[0].mem_dist;
           this.pro = res.data[0].mem_pro;
-          this.active = res.data[0].active===1?true:false;
-          this.admin = res.data[0].admin===1?true:false;
+          this.active = res.data[0].active === 1 ? true : false;
+          this.admin = res.data[0].admin === 1 ? true : false;
           console.log(res.data[0].mem_name);
         })
         .catch((er) => {
@@ -202,9 +220,12 @@ export default {
     },
   },
   mounted() {
-    },
+    console.log("Mounted");
+    this.get_auto_id();
+  },
   created() {
     this.id = this.$route.params.userid;
+    console.log("Created");
     // this.id=this.$route.params.userid;
     // const userselected=this.users.find(user => user.id===userid);
     // this.name=userselected.name;

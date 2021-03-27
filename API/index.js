@@ -110,7 +110,22 @@ app.get("/fetchuser", (req, res) => {
     }
   });
 });
-
+app.get("/gen_uid", (req, res) => {
+  conn.db.query(
+    "SELECT MAX(mem_id) AS mem_id FROM `member` HAVING MAX(mem_id) IS NOT null ",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        if (result.length < 1) {
+          res.send(result=[{ mem_id: 1000 }]);
+        } else {
+          res.send(result);
+        }
+      }
+    }
+  );
+});
 app.get("/fetchuserid", (req, res) => {
   const param_id = req.query.id;
   console.log("USER ID: " + param_id);
