@@ -1,6 +1,8 @@
 <template>
-  <div class="container">
+  <div class="containerv card">
     <form>
+      <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
+      <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
       <div class="form-group row">
         <label for="roll_id" class="col-md-2 col-form-label">ຊື່ຜູ້ໃຊ້:</label>
         <div class="col-md-12">
@@ -13,17 +15,18 @@
           <span class="error" v-if="!formvailid.lname">ກະລຸນາໃສ່ນາມສະກຸນ</span>
         </div>
         <label for="roll_id" class="col-md-2 col-form-label">ໄອດີ:</label>
-        <!-- <div class="row"> -->
-          <div class="col-md-12">
-            <input type="text" class="form-control" v-model="logid" disabled placeholder="ລະບົບຈະໃສ່ໄອດີໃຫ້ອັດຕະໂນມັດ"/>
-            <span class="error" v-if="!formvailid.logid"
-              >ກະລຸນາໃສ່ໄອດີເຂົ້າລະບົບ</span
-            >
-          </div>
-          <!-- <div class="col-md-4"> -->
-          <!-- <button class="btn btn-success">Get ID</button> -->
-          <!-- </div> -->
-        <!-- </div> -->
+        <div class="col-md-12">
+          <input
+            type="text"
+            class="form-control"
+            v-model="logid"
+            disabled
+            placeholder="ລະບົບຈະໃສ່ໄອດີໃຫ້ອັດຕະໂນມັດ"
+          />
+          <span class="error" v-if="!formvailid.logid"
+            >ກະລຸນາໃສ່ໄອດີເຂົ້າລະບົບ</span
+          >
+        </div>
         <label for="roll_id" class="col-md-2 col-form-label">ລະຫັດ:</label>
         <div class="col-md-12">
           <input type="text" class="form-control" v-model="logpass" />
@@ -92,6 +95,8 @@ import apiDomain from "../config";
 export default {
   data() {
     return {
+      isloading: false,
+      error: null,
       id: -1,
       name: "",
       lname: "",
@@ -134,14 +139,21 @@ export default {
     },
   },
   methods: {
-    get_auto_id(){
-      if(!this.id){
-        axios.get(apiDomain.url + "gen_uid").then((res)=>{
-          this.logid=res.data[0].mem_id+1;
-          // console.log("Gen id: "+res.data[0].mem_id);
-        }).catch((err)=>{
-          alert(err)
-        })
+    get_auto_id() {
+
+      if (!this.id) {
+        this.isloading = true;
+        this.error = null;
+        axios
+          .get(apiDomain.url + "gen_uid")
+          .then((res) => {
+            this.logid = res.data[0].mem_id + 1;
+            this.isloading = false;
+          })
+          .catch((err) => {
+            this.isloading = false;
+            this.error = err;
+          });
       }
     },
     crateuser() {
@@ -154,7 +166,9 @@ export default {
       ) {
         alert("ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບຖ້ວນ");
       } else {
-        alert("valid");
+        // alert("valid");
+        this.isloading = true;
+        this.error = null;
         axios
           .post(apiDomain.url + "createuser", {
             name: this.name,
@@ -169,14 +183,18 @@ export default {
           })
           .then((res) => {
             alert(res.data);
+            this.isloading = false;
           })
           .catch((err) => {
-            alert("ເກີດຂໍ້ຜິດພາດ: " + err);
+            this.isloading = false;
+            this.error = err;
+            // alert("ເກີດຂໍ້ຜິດພາດ: " + err);
           });
       }
     },
     updateuser(id) {
-      console.log("f id: " + id);
+      this.isloading = true;
+      this.error = null;
       axios
         .put(apiDomain.url + "updateuser", {
           id: id,
@@ -191,13 +209,17 @@ export default {
           admin: this.admin,
         })
         .then((res) => {
+          this.isloading = false;
           alert(res.data);
         })
         .catch((er) => {
-          alert("ເກີດຂໍ້ຜິດພາດ: " + er);
+          this.isloading = false;
+          this.error = er;
         });
     },
     fetchuser(id) {
+      this.isloading = true;
+      this.error = null;
       axios
         .get(apiDomain.url + "fetchuserid/?id=" + id)
         .then((res) => {
@@ -212,10 +234,12 @@ export default {
           this.pro = res.data[0].mem_pro;
           this.active = res.data[0].active === 1 ? true : false;
           this.admin = res.data[0].admin === 1 ? true : false;
-          console.log(res.data[0].mem_name);
+          this.isloading = false;
+          
         })
         .catch((er) => {
-          alert("ເກີດຂໍ້ຜິດພາດການເຊື່ອມຕໍ່ເຊີເວີ: " + er);
+          this.isloading = false;
+          this.error = er;
         });
     },
   },
@@ -236,5 +260,12 @@ export default {
 <style scoped>
 .error {
   color: red;
+}
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  margin: 0.5rem auto;
+  max-width: 40rem;
 }
 </style>

@@ -1,15 +1,19 @@
 <template>
-  <div>
+  <div class="container">
+    <div class="center">
+      <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
+    <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
+    </div>
     <user-list-card v-for="item in users" :key="item.id">
       <template v-slot:username>
         {{ item.name }} {{ item.lname }} [ ສະຖານະ:
         {{ item.active === 1 ? "ໃຊ້ງານຢູ່" : "Block" }} ]
         <span>
-        <switch-toggle
-          :is-open="item.active === 1 ? true :false "
-          :name="'customSwitch' + item.id"
-        >
-        </switch-toggle>
+          <switch-toggle
+            :is-open="item.active === 1 ? true : false"
+            :name="'customSwitch' + item.id"
+          >
+          </switch-toggle>
         </span>
       </template>
       <template #details>
@@ -19,13 +23,14 @@
         </button>
       </template>
     </user-list-card>
+    
   </div>
 </template>
 <script>
 import axios from "axios";
 import apiDomain from "../config";
 import UserListCard from "../components/ui/UserListCard";
-import SwitchToggle from '../components/ui/SwitchToggle'
+import SwitchToggle from "../components/ui/SwitchToggle";
 export default {
   components: {
     UserListCard,
@@ -33,13 +38,17 @@ export default {
   },
   data() {
     return {
+      isloading: true,
+      error: null,
       users: [],
     };
   },
   methods: {
     fetchuser() {
+      this.isloading = true;
+      this.error = null;
       axios
-        .get(apiDomain.url+"fetchuser")
+        .get(apiDomain.url + "fetchuser")
         .then((res) => {
           var results = [];
           for (const id in res.data) {
@@ -57,9 +66,12 @@ export default {
             });
           }
           this.users = results;
+          this.isloading = false;
         })
         .catch((er) => {
-          alert("ເກີດຂໍ້ຜິດພາດການເຊື່ອມຕໍ່ເຊີເວີ: " + er);
+          this.isloading = false;
+          this.error = er;
+          // alert("ເກີດຂໍ້ຜິດພາດການເຊື່ອມຕໍ່ເຊີເວີ: " + er);
         });
     },
     edituser(id) {
@@ -71,3 +83,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.center {
+  margin: auto;
+  width: 60%;
+  /* border: 3px solid #73AD21; */
+  padding: 10px;
+}
+</style>

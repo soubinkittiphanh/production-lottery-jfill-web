@@ -27,7 +27,8 @@
         <div class="col-md-12">
             <button class="btn btn-success" @click.prevent="updatedata()">ບັນທຶກ</button>
         </div>
-        
+        <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
+    <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
       </div>
     </form>
   </div>
@@ -38,6 +39,8 @@ import apiDomain from "../config";
 export default {
   data() {
     return {
+      isloading: false,
+      error: null,
       two: 0,
       three: 0,
       four: 0,
@@ -71,6 +74,8 @@ export default {
   },
   methods: {
     fetchpayrate() {
+      this.isloading=true;
+      this.error=null;
       axios
         .get(apiDomain.url+"getpayrate")
         .then((res) => {
@@ -79,14 +84,18 @@ export default {
           this.four = res.data[0].pay_four;
           this.five = res.data[0].pay_five;
           this.six = res.data[0].pay_six;
+          this.isloading=false;
         })
         .catch((err) => {
-          alert(err);
+          this.error=err;
+          this.isloading=false;
         });
     },
     updatedata() {
       var r = confirm("ຕ້ອງການແກ້ໄຂຂໍ້ມູນ?");
       if (r === true) {
+        this.isloading=true;
+      this.error=null;
         axios
           .put(apiDomain.url+"updatepayrate/?id=" + 1, {
             two: this.two,
@@ -97,8 +106,11 @@ export default {
           })
           .then((res) => {
             alert(res.data);
+            this.isloading=false;
           })
           .catch((er) => {
+            this.isloading=false;
+            this.error=er;
             alert("ເກີດຂໍ້ຜິດພາດ: " + er);
           });
       }

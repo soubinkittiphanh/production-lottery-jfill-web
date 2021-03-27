@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <button class="btn btn-primary" @click="gen_ism_ref">ໃສ່ເລກງວດ</button>
+  <div class="container card">
+    <!-- <button class="btn btn-primary" @click="gen_ism_ref">ໃສ່ເລກງວດ</button> -->
     <form>
       <div class="form-group row">
         <label for="roll_id" class="col-md-4 col-form-label">ງວດທີ:</label>
@@ -59,7 +59,6 @@
             style="float: right"
             >ປິດ-ເປິດ</label
           >
-          <span>{{ isopen ? "ເປີດ" : "ປິດ" }}</span>
         </div>
         <div class="col-md-12">
           <button class="btn btn-success mr-2" @click.prevent="saveism(issave)">
@@ -73,8 +72,10 @@
     </form>
     <hr />
     <button @click="fetchdata" class="btn btn-warning">ດຶງຂໍ້ມູນ</button>
+    <hr>
     <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isLoading"></i>
     <p v-else-if="!isLoading && error" style="color: red">{{ error }}</p>
+    <p v-else-if="ismdata.length<1" >ຍັງບໍ່ມີງວດ</p>
     <base-card v-for="(itm, idx) in ismdata" :key="idx">
       <span style="color: green"> [ ຜົນອອກ:{{ itm.ism_res }} ]</span>
       [ ເລກທີ: {{ itm.ism_ref }} ] [ ອອກວັນທີ: {{ formatdate(itm.ism_date) }} ]
@@ -358,8 +359,8 @@ export default {
         .catch((err) => {
           alert(err);
           this.error = err;
-        });
       this.isLoading = false;
+        });
     },
     // moment: function (date) {
     //   return moment(date);
@@ -376,10 +377,18 @@ export default {
   mounted() {
     this.callFunction();
     this.fetchdata();
+    this.gen_ism_ref();
   },
 };
 </script>
 <style scoped>
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  margin: 0.5rem auto;
+  max-width: 40rem;
+}
 .error {
   /* border: 1px solid red; */
   color: red;
