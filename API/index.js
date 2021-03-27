@@ -309,7 +309,6 @@ app.post("/sale", async (req, res) => {
   console.log("Full count: " + full_lucknum.length);
   console.log("Full detail: " + full_lucknum);
   if (full_lucknum.length < 1) {
-    // res.send("ຂາຍໄດ້");
     let sql = "";
     console.log("Length:" + sale.length);
     const bill_num = await get_billnum();
@@ -342,7 +341,7 @@ app.post("/sale", async (req, res) => {
         if (er) {
           res.send("ເກີດຂໍ້ຜິດພາດທາງເຊີເວີ SQL query");
         } else {
-          full_lucknum.push({ item: "ສຳເລັດການຂາຍ", bill_num: bill_num });
+          full_lucknum.push({ item: "ສຳເລັດການຂາຍ", bill_num: String(bill_num) });
           res.send(full_lucknum);
           // res.send((item = ["ສຳເລັດການຂາຍ"]));
           // res.send((bill_num = [bill_num]));
@@ -363,9 +362,14 @@ async function get_billnum() {
   const numRows = res[0].length;
   console.log("numrow: " + numRows);
   if (numRows < 1) {
-    return 21024303061761012;
+    console.log("LESS THEN 1: " + numRows);
+    return 214303061761012;
   } else {
-    const next_ref = res[0][0].pre_bill + 1;
+    console.log("OVER THEN 1: " + numRows);
+    console.log("NEXT_REF: " + res[0][0].pre_bill);
+    const next_ref = BigInt(res[0][0].pre_bill)+1n;
+    // const next_ref = BigInt(res[0][0].pre_bill) +1n;
+    console.log("NEXT_REF + 1: " + next_ref);
     return next_ref;
   }
 }
@@ -442,12 +446,12 @@ app.get("/salereport", (req, res) => {
   const r_date = req.query.r_date;
   const r_admin = req.query.p_admin;
   const r_mem_id = req.query.p_mem_id;
-  let sql = `SELECT s.*,i.ism_result FROM installment i 
+  let sql = `SELECT SUBSTRING(s.sale_bill_id, -6, 6) AS sale_bill_id,s.ism_id AS ism_id,s.mem_id AS mem_id,s.date AS date,s.sale_num AS sale_num,s.sale_price AS sale_price,i.ism_result FROM installment i 
   RIGHT JOIN sale s ON s.ism_id=i.ism_ref
   WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" ORDER BY s.id DESC `;
 
   if (r_admin === "true") {
-    sql = `SELECT s.*,i.ism_result FROM installment i 
+    sql = `SELECT SUBSTRING(s.sale_bill_id, -6, 6) AS sale_bill_id,s.ism_id AS ism_id,s.mem_id AS mem_id,s.date AS date,s.sale_num AS sale_num,s.sale_price AS sale_price,i.ism_result FROM installment i 
     RIGHT JOIN sale s ON s.ism_id=i.ism_ref
     WHERE i.ism_date ="${r_date}" ORDER BY s.id DESC `;
     console.log("Admin: " + r_admin);

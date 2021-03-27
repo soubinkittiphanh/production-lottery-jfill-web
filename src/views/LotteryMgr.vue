@@ -269,6 +269,7 @@ export default {
       this.ism_ref = "";
       this.ism_res = "";
       this.ismId = "";
+      this.gen_ism_ref();
     },
     updateIsm() {
       // console.log(this.ismId);
