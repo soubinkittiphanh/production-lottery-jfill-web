@@ -332,6 +332,7 @@ export default {
       this.ism_ref = "";
       this.ism_res = "";
       this.isopen = false;
+      this.gen_ism_ref();
     },
     fetchdata() {
       this.isLoading = true;
