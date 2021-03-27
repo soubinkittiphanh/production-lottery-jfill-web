@@ -6,6 +6,7 @@ app.use(cors());
 app.use(express.json());
 const conn = require("./connection");
 const con = require("./conn");
+const bcrypt = require('./custom-bcrypt');
 
 app.get("/", (req, res) => {
   res.send("Hello Welcome to JFILL Lottery");
@@ -144,7 +145,7 @@ app.post("/createuser", (req, res) => {
   const name = req.body.name;
   const lname = req.body.lname;
   const logid = req.body.logid;
-  const logpass = req.body.logpass;
+  const logpass = bcrypt.hash(req.body.logpass);
   const vill = req.body.vill;
   const dist = req.body.dist;
   const pro = req.body.pro;
@@ -169,7 +170,7 @@ app.put("/updateuser", (req, res) => {
   const name = req.body.name;
   const lname = req.body.lname;
   const logid = req.body.logid;
-  const logpass = req.body.logpass;
+  const logpass = bcrypt.hash(req.body.logpass);//req.body.logpass;
   const vill = req.body.vill;
   const dist = req.body.dist;
   const pro = req.body.pro;
@@ -258,18 +259,24 @@ app.put("/updatepayrate", (req, res) => {
 app.post("/auth", (req, res) => {
   const uid = req.body.id;
   const upas = req.body.pass;
-  console.log(uid);
-  console.log(upas);
   conn.db.query(
-    "SELECT m.mem_id as mem_id,m.mem_name as mem_name,m.active as active,m.admin as admin, MAX(i.ism_ref) as ism_ref, i.ism_date as ism_date FROM member m \
-    LEFT JOIN installment i ON i.ism_active = 1  WHERE mem_id =? and mem_pass=? and active=1",
-    [uid, upas],
+    "SELECT m.mem_id as mem_id,m.mem_pass as mem_pass,m.mem_name as mem_name,m.active as active,m.admin as admin, MAX(i.ism_ref) as ism_ref, i.ism_date as ism_date FROM member m \
+    LEFT JOIN installment i ON i.ism_active = 1  WHERE mem_id =? and active=1",
+    [uid],
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        console.log("res");
-        res.send(result);
+        if(result[0].mem_id===null){
+          res.send(result=[{isAuth:false}]);
+          return;
+        }
+        const isAuth=bcrypt.compare(upas,result[0].mem_pass);
+        if (isAuth){
+           res.send(result)
+        }else{
+          res.send(result=[{isAuth:false}]);
+        }
       }
     }
   );

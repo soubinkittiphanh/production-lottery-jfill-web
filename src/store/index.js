@@ -49,6 +49,9 @@ const store = createStore({
     user_id(){
       return localStorage.getItem('id');
     },
+    user_name(){
+      return localStorage.getItem('name');
+    },
     ism_info(state){
       console.log("ISM: ism_ifo: "+state.ism.ref)
       return state.ism;

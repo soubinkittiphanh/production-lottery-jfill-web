@@ -50,11 +50,10 @@ export default {
         pass: payload.pass,
       })
       .then((response) => {
-        if (response.data[0].mem_id === null || response.data[0].mem_name===null) {
+        if (response.data[0].isAuth===false || response.data[0].mem_id === null || response.data[0].mem_name===null) {
           alert("ຂໍ້ມູນບໍ່ຖືກຕ້ອງ");
           return;
         }
-        alert("ຍິນດີຕ້ອນຮັບ"+response.data);
         console.log(response.data);
         localStorage.setItem("id", response.data[0].mem_id);
         localStorage.setItem("name", response.data[0].mem_name);
