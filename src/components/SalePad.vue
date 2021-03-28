@@ -597,7 +597,7 @@ header {
 #printOnly {
   display: none;
   color: #000;
-  width: 60mm;
+  
 }
 /* #main button {
   font: inherit;
@@ -649,6 +649,8 @@ header {
   }
   #printOnly {
     display: block;
+    width: 100%;
+    margin-top: 0px;
   }
 }
 </style>
