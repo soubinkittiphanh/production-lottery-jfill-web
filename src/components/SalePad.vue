@@ -1,6 +1,5 @@
 <template>
   <section id="main">
-    <!-- :class="{total:get_ism.ref=='null' || !get_ism.ref}"  -->
     <div class="salelist">
       <form class="form-group row">
         <label
@@ -10,7 +9,6 @@
           >ເລກບິນ: {{ bill_num }} | ງວດທີ: {{ get_ism_ref }} | ອອກວັນທີ:
           {{ get_ism_date }}</label
         >
-        <!-- <label for="" class="col-md-2 col-form-label"><span>ງວດທີ:111111 ອອກວັນທີ: 20-20-21  ຜູ້ຂາຍ: 11111</span></label> -->
         <div class="col-sm-6">
           <input
             placeholder="ເລກສ່ຽງ"
@@ -22,7 +20,6 @@
             onfocus="blur()"
           />
         </div>
-        <!-- <label for="" class="col-sm-2 col-form-label">ຈຳນວນເງິນ</label> -->
         <div class="col-sm-6">
           <input
             placeholder="ຈຳນວນເງິນ"
@@ -189,8 +186,6 @@
             <span class="col-sm-12 total"
               >ຍອດລວມ: {{ caltotal }} ກີບ | ເວລາປະຈຸບັນ: {{ curtime }}</span
             >
-            <!-- <span class=" material-icons col-sm-2">account_circle</span>  -->
-            <!-- <label class="col-sm-2"> <span class="material-icons">account_circle</span>{{get_user}}</label> -->
           </div>
         </div>
       </div>
@@ -211,7 +206,7 @@
       <hr />
       <p>ລວມເງິນທັງໝົດ: {{ caltotal }} ກີບ</p>
       <hr />
-      <p>ຜູ້ຂາຍ: {{ get_user }}</p>
+      <h1>ຜູ້ຂາຍ: {{ get_user }}</h1>
       <p>ເວລາພິມ: {{ formatdate(new Date()) }} | {{ curtime }}</p>
       <p>ເບີໂທຕິດຕໍ່: 020 9558 8945</p>
       <p>ໝົດກຳນົດຮັບລາງວັນ: {{ expireDate }}</p>
@@ -222,15 +217,10 @@
     </div>
     <div>
       
-      <!-- Employee fetch from server -->
-      <!-- <p v-if="isloading">Loading...</p> -->
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
-      <!-- <span class="sr-only" v-if="isloading">Loading...</span> -->
       <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
       <p v-else-if="!isloading && (!emp || emp.length === 0)">No data...!</p>
-      <ul v-else>
-        <!-- <li v-for="itm in emp" :key="itm.id">{{ itm.name }}</li> -->
-      </ul>
+      
     </div>
   </section>
   <base-dialog :show="exp.length > 0" title="ຂໍ້ມູນ" @close="exp = []">
@@ -238,7 +228,6 @@
       {{ itm }}
     </li>
   </base-dialog>
-  <!-- <button class="btn btn-primary" @click="null">Cam</button> -->
 </template>
 <script>
 import axios from "axios";
@@ -500,14 +489,26 @@ export default {
   box-sizing: border-box;
 }
 .fixedbutton-l {
-  min-width: 65px;
-  /* max-width: 80px; */
+  /* position: fixed; */
+  width: 90px;
+  max-width: 60px;
 }
 .fixedbutton-r {
+  /* position: fixed; */
   width: 85px;
-  max-width: 90px;
+  max-width: 85px;
   
 }
+/* .keypad{
+  margin: none;
+  padding: none;
+  border: 1px solid red;
+} */
+/* .keypad .row .col-sm-12 .btn{
+  margin: none;
+  padding: none;
+  border: 1px solid red;
+} */
 html {
   font-family: BoonHome;
 }
@@ -531,7 +532,7 @@ header {
   /* margin: 3rem; */
   margin: 0;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0.2rem;
   text-align: center;
 }
 
@@ -583,7 +584,7 @@ header {
   border-radius: 50%;
 }
 .btn {
-  margin: 3px 3px;
+  margin: 2px 2px;
 }
 .error {
   border: 1px solid red;
@@ -599,40 +600,6 @@ header {
   color: #000;
   
 }
-/* #main button {
-  font: inherit;
-  cursor: pointer;
-  border: 1px solid #ff0077;
-  background-color: #ff0077;
-  color: white;
-  padding: 0.05rem 1rem;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.26);
-}
-
-#main button:hover,
-#main button:active {
-  background-color: #ec3169;
-  border-color: #ec3169;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
-} */
-
-/* // fetch("http://localhost:3001/employees",{
-      //   // http://localhost:3001/employees              ( /surveys.json ) this need for firebase to create table with named survey
-      //   method:'POST',
-      //   headers:{
-      //     'Content-Type':'application/json'
-      //   },
-      //   body:JSON.stringify({
-      //     lucknum:this.enteredLek,
-      //     amount:this.enteredAmount,
-      //   })
-      // })
-      // axios.get("http://localhost:3001/employees",{
-      //   action:"fetch"
-      // }).then(function(response){
-      //   console.log(response.data);
-      //   this.emp=response.data;
-      // }); */
 
 @media print {
   .keypad {
@@ -649,8 +616,8 @@ header {
   }
   #printOnly {
     display: block;
-    width: 100%;
-    margin-top: 0px;
+    width: 90mm;
+    margin-top: auto;
   }
 }
 </style>
