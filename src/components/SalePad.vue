@@ -597,6 +597,7 @@ header {
 #printOnly {
   display: none;
   color: #000;
+  width: 60mm;
 }
 /* #main button {
   font: inherit;
