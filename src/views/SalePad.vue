@@ -1,4 +1,63 @@
 <template>
+  <div id="printOnly">
+    <p>ກະຊວງການເງິນ</p>
+    <p>ບໍລິສັດ ລັດວິສາຫະກິດ ຫວຍພັດທະນາ</p>
+    <p>ຕົວແທນນະຄອນຫລວງເລກ 4</p>
+    <p>ນະຄອນປາເຊ</p>
+    <p>
+      ງວດທີ: {{ get_ism_ref }} | ອອກວັນທີ:
+      {{ get_ism_date }}
+    </p>
+    <p>ເລກບິນ: {{ bill_num }}</p>
+    <div class="row">
+      <div class="col-sm-6">
+        <table class="table sm">
+          <thead>
+            <tr>
+              <th scope="col">ເລກ</th>
+              <th scope="col">ຈນ ເງິນ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(itm, idx) in saleLek" :key="idx">
+              <td v-if="idx % 2 == 0">{{ itm.lek }}</td>
+              <td v-if="idx % 2 == 0">
+                {{ formatNum(itm.sale) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm-6">
+        <table class="table sm">
+          <thead>
+            <tr>
+              <th scope="col">ເລກ</th>
+              <th scope="col">ຈນ ເງິນ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(itm, idx) in saleLek" :key="idx">
+              <td v-if="idx % 2 != 0">{{ itm.lek }}</td>
+              <td v-if="idx % 2 != 0">
+                {{ formatNum(itm.sale) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p>ລວມເງິນທັງໝົດ: {{ caltotal }} ກີບ</p>
+    <!-- <hr /> -->
+    <hr />
+    <p>ຜູ້ຂາຍ: {{ get_user }}</p>
+    <p>ເວລາພິມ: {{ formatdate(new Date()) }} | {{ curtime }}</p>
+    <p>ເບີໂທຕິດຕໍ່: 020 9558 8945</p>
+    <p>ໝົດກຳນົດຮັບລາງວັນ: {{ expireDate }}</p>
+    <qrcode-vue :value="qr_code"> </qrcode-vue>
+    <p>{{ qr_code }}</p>
+    <p>ຂໍໃຫ້ທ່ານໂຊກດີ</p>
+  </div>
   <section id="main">
     <div class="salelist">
       <form class="form-group row">
@@ -33,54 +92,7 @@
         </div>
       </form>
     </div>
-    <div id="printOnly" class="row">
-      <h6>ກະຊວງການເງິນ</h6>
-      <h6>ບໍລິສັດ ລັດວິສາຫະກິດ ຫວຍພັດທະນາ</h6>
-      <h6>ຕົວແທນນະຄອນຫລວງເລກ 4</h6>
-      <h6>ນະຄອນປາເຊ</h6>
-      <p>
-        ງວດທີ: {{ get_ism_ref }} | ເລກບິນ: {{ bill_num }} | ອອກວັນທີ:
-        {{ get_ism_date }}
-      </p>
-      <div class="row">
-        <div class="col-sm-6">
-          <table class="table sm">
-            <thead>
-              <tr>
-                <th scope="col">ເລກສ່ຽງ</th>
-                <th scope="col">ຈຳນວນເງິນ</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(itm, idx) in saleLek" :key="idx">
-                <td v-if="idx % 2 == 0">{{ itm.lek }}</td>
-                <td v-if="idx % 2 == 0">
-                  {{ formatNum(itm.sale) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-sm-6">
-          <table class="table sm">
-            <thead>
-              <tr>
-                <th scope="col">ເລກສ່ຽງ</th>
-                <th scope="col">ຈຳນວນເງິນ</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(itm, idx) in saleLek" :key="idx">
-                <td v-if="idx % 2 != 0">{{ itm.lek }}</td>
-                <td v-if="idx % 2 != 0">
-                  {{ formatNum(itm.sale) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+
     <div class="keypad">
       <div class="row">
         <div class="col-sm-12">
@@ -202,25 +214,11 @@
         ></sale-card>
       </ul>
     </div>
-    <div id="printOnly">
-      <hr />
-      <p>ລວມເງິນທັງໝົດ: {{ caltotal }} ກີບ</p>
-      <hr />
-      <h1>ຜູ້ຂາຍ: {{ get_user }}</h1>
-      <p>ເວລາພິມ: {{ formatdate(new Date()) }} | {{ curtime }}</p>
-      <p>ເບີໂທຕິດຕໍ່: 020 9558 8945</p>
-      <p>ໝົດກຳນົດຮັບລາງວັນ: {{ expireDate }}</p>
-      <qrcode-vue :value="qr_code">
-      </qrcode-vue>
-      <p>{{qr_code}}</p>
-      <p>ຂໍໃຫ້ທ່ານໂຊກດີ</p>
-    </div>
+
     <div>
-      
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
       <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
       <p v-else-if="!isloading && (!emp || emp.length === 0)">No data...!</p>
-      
     </div>
   </section>
   <base-dialog :show="exp.length > 0" title="ຂໍ້ມູນ" @close="exp = []">
@@ -235,7 +233,7 @@ import apiDomain from "../config";
 import SaleCard from "../components/SaleCard.vue";
 // import SimModal from "./ui/SimpleModal";
 import BaseDialog from "../components/ui/BaseDialog";
-import QrcodeVue from 'qrcode.vue'
+import QrcodeVue from "qrcode.vue";
 export default {
   components: {
     SaleCard,
@@ -253,7 +251,7 @@ export default {
   },
   data() {
     return {
-      qr_code:'',
+      qr_code: "",
       showModal: true,
       mycssstype: "border:1px solid red",
       enteredLek: "",
@@ -317,9 +315,8 @@ export default {
     this.qr_provider();
   },
   methods: {
-    qr_provider(){
-      this.qr_code= Math.floor((Math.random() * 10000000000000) + 1).toString();
-      
+    qr_provider() {
+      this.qr_code = Math.floor(Math.random() * 10000000000000 + 1).toString();
     },
     displayTime() {
       let dt = new Date();
@@ -425,7 +422,7 @@ export default {
           item: this.saleLek,
           ism: this.get_ism_ref,
           user: this.get_user,
-          qr_code:this.qr_code,
+          qr_code: this.qr_code,
         })
         .then((res) => {
           this.isloading = false;
@@ -497,18 +494,9 @@ export default {
   /* position: fixed; */
   width: 85px;
   max-width: 85px;
-  
+  /* text-align:right ; */
 }
-/* .keypad{
-  margin: none;
-  padding: none;
-  border: 1px solid red;
-} */
-/* .keypad .row .col-sm-12 .btn{
-  margin: none;
-  padding: none;
-  border: 1px solid red;
-} */
+
 html {
   font-family: BoonHome;
 }
@@ -598,10 +586,24 @@ header {
 #printOnly {
   display: none;
   color: #000;
+  width: 74mm;
+  text-align: center;
+  font-weight: 100;
+  /* font-size: small; */
+  /* font-size: 10px; */
+}
+#printOnly thead tr th {
   
+  font-weight: 50;
+  font-size: small;
+  /* font-size: 10px; */
 }
 
-@media print {
+@page {
+  size: A7;
+}
+
+@media print and (min-resolution: 300dpi) {
   .keypad {
     display: none;
   }
@@ -616,8 +618,6 @@ header {
   }
   #printOnly {
     display: block;
-    width: 90mm;
-    margin-top: auto;
   }
 }
 </style>
