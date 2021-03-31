@@ -3,7 +3,7 @@
     <p>ກະຊວງການເງິນ</p>
     <p>ບໍລິສັດ ລັດວິສາຫະກິດ ຫວຍພັດທະນາ</p>
     <p>ຕົວແທນນະຄອນຫລວງເລກ 4</p>
-    <p>ນະຄອນປາເຊ</p>
+    <p>ນະຄອນປາກເຊ</p>
     <p>
       ງວດທີ: {{ get_ism_ref }} | ອອກວັນທີ:
       {{ get_ism_date }}
@@ -11,17 +11,17 @@
     <p>ເລກບິນ: {{ bill_num }}</p>
     <div class="row">
       <div class="col-sm-6">
-        <table class="table sm">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">ເລກ</th>
-              <th scope="col">ຈນ ເງິນ</th>
+              <th scope="col">ຈຳນວນ</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="(itm, idx) in saleLek" :key="idx">
-              <td v-if="idx % 2 == 0">{{ itm.lek }}</td>
-              <td v-if="idx % 2 == 0">
+          <tbody class="table-borderless">
+            <tr v-for="(itm, idx) in saleLek" :key="idx" >
+              <td  v-if="idx % 2 == 0">{{ itm.lek }}</td>
+              <td  v-if="idx % 2 == 0">
                 {{ formatNum(itm.sale) }}
               </td>
             </tr>
@@ -29,17 +29,17 @@
         </table>
       </div>
       <div class="col-sm-6">
-        <table class="table sm">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">ເລກ</th>
-              <th scope="col">ຈນ ເງິນ</th>
+              <th scope="col">ຈຳນວນ</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="(itm, idx) in saleLek" :key="idx">
-              <td v-if="idx % 2 != 0">{{ itm.lek }}</td>
-              <td v-if="idx % 2 != 0">
+          <tbody class="table-borderless">
+            <tr v-for="(itm, idx) in saleLek" :key="idx" >
+              <td  v-if="idx % 2 != 0">{{ itm.lek }}</td>
+              <td  v-if="idx % 2 != 0">
                 {{ formatNum(itm.sale) }}
               </td>
             </tr>
@@ -47,7 +47,7 @@
         </table>
       </div>
     </div>
-    <p>ລວມເງິນທັງໝົດ: {{ caltotal }} ກີບ</p>
+    <p class="printOnlyP">ລວມເງິນທັງໝົດ: {{ caltotal }} ກີບ</p>
     <!-- <hr /> -->
     <hr />
     <p>ຜູ້ຂາຍ: {{ get_user }}</p>
@@ -585,25 +585,30 @@ header {
 }
 #printOnly {
   display: none;
-  color: #000;
-  width: 74mm;
+  width: 70mm;
   text-align: center;
-  font-weight: 100;
-  /* font-size: small; */
-  /* font-size: 10px; */
+  font-weight: 10;
 }
 #printOnly thead tr th {
   
-  font-weight: 50;
-  font-size: small;
+  font-weight: 10;
+  /* font-size: small; */
   /* font-size: 10px; */
 }
+#printOnlyP{
+  font-weight: 50;
+}
+#printOnly p{
+  font-weight: 50;
+  font-family: "Alice0 MX Regular";
+}
+
 
 @page {
   size: A7;
 }
 
-@media print and (min-resolution: 300dpi) {
+@media print and (min-resolution: 100dpi) {
   .keypad {
     display: none;
   }

@@ -68,6 +68,6 @@ export default {
   
 <style>
 * {
-  font-family: BoonHome;
+  font-family: Saysettha OT;
 }
 </style>
