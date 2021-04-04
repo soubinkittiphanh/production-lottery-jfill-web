@@ -21,7 +21,7 @@
           <tbody class="table-borderless">
             <tr v-for="(itm, idx) in saleLek" :key="idx" >
               <td class="lek" v-if="idx % 2 == 0">{{ itm.lek }}</td>
-              <td  v-if="idx % 2 == 0">
+              <td class="lek" v-if="idx % 2 == 0">
                 {{ formatNum(itm.sale) }}
               </td>
             </tr>
@@ -39,7 +39,7 @@
           <tbody class="table-borderless">
             <tr v-for="(itm, idx) in saleLek" :key="idx" >
               <td class="lek"  v-if="idx % 2 != 0">{{ itm.lek }}</td>
-              <td  v-if="idx % 2 != 0">
+              <td class="lek"  v-if="idx % 2 != 0">
                 {{ formatNum(itm.sale) }}
               </td>
             </tr>
@@ -47,7 +47,7 @@
         </table>
       </div>
     </div>
-    <p class="printOnlyP">ລວມເງິນທັງໝົດ: {{ caltotal }} ກີບ</p>
+    <p class="lek">ລວມເງິນທັງໝົດ: {{ caltotal }} ກີບ</p>
     <!-- <hr /> -->
     <hr />
     <p>ຜູ້ຂາຍ: {{ get_user }}</p>
@@ -590,7 +590,7 @@ header {
 }
 #printOnly {
   display: none;
-  font-family: Saysettha OT;
+  /* font-family: Saysettha OT; */
   width: 70mm;
   text-align: center;
   font-weight: 10;
@@ -613,7 +613,7 @@ header {
   size: A7;
 }
 
-@media print and (min-resolution: 100dpi) {
+@media print {
   .keypad {
     display: none;
   }
