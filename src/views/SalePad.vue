@@ -20,7 +20,7 @@
           </thead>
           <tbody class="table-borderless">
             <tr v-for="(itm, idx) in saleLek" :key="idx" >
-              <td  v-if="idx % 2 == 0">{{ itm.lek }}</td>
+              <td class="lek" v-if="idx % 2 == 0">{{ itm.lek }}</td>
               <td  v-if="idx % 2 == 0">
                 {{ formatNum(itm.sale) }}
               </td>
@@ -38,7 +38,7 @@
           </thead>
           <tbody class="table-borderless">
             <tr v-for="(itm, idx) in saleLek" :key="idx" >
-              <td  v-if="idx % 2 != 0">{{ itm.lek }}</td>
+              <td class="lek"  v-if="idx % 2 != 0">{{ itm.lek }}</td>
               <td  v-if="idx % 2 != 0">
                 {{ formatNum(itm.sale) }}
               </td>
@@ -234,6 +234,8 @@ import SaleCard from "../components/SaleCard.vue";
 // import SimModal from "./ui/SimpleModal";
 import BaseDialog from "../components/ui/BaseDialog";
 import QrcodeVue from "qrcode.vue";
+
+
 export default {
   components: {
     SaleCard,
@@ -583,8 +585,12 @@ header {
   font-weight: bold;
   color: red;
 }
+.lek{
+  font-size: larger;
+}
 #printOnly {
   display: none;
+  font-family: Saysettha OT;
   width: 70mm;
   text-align: center;
   font-weight: 10;
@@ -600,7 +606,6 @@ header {
 }
 #printOnly p{
   font-weight: 50;
-  font-family: "Alice0 MX Regular";
 }
 
 

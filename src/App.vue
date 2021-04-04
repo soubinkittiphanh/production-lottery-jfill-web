@@ -1,7 +1,7 @@
 <template>
   <div class="alert alert-danger" v-if="warninZone && get_auth">
     <span
-      >ທ່ານຍັງໃຊ້ລະບົບຢູ່ບໍ່ ? ລະບົບກຳລັງ Logout ອັດຕະໂນມັດ ພາຍໃນ 5 ນາທີ</span
+      >ທ່ານຍັງໃຊ້ລະບົບຢູ່ບໍ່ ? ລະບົບກຳລັງຈະ Logout ອັດຕະໂນມັດ ພາຍໃນ 5 ນາທີ</span
     >
   </div>
   <nav-slide></nav-slide>
@@ -68,6 +68,6 @@ export default {
   
 <style>
 * {
-  font-family: Saysettha OT;
+  font-family: BoonHome;
 }
 </style>

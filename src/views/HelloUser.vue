@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="alert alert-success">ຍິນດີຕ້ອນຮັບ ທ່ານ {{get_uname}} ເຂົ້າສູ່່ລະບົບ</div>
+    <div class="alert alert-success">ຍິນດີຕ້ອນຮັບ ທ່ານ {{get_uname}} ເຂົ້າສູ່ລະບົບ</div>
     
   </div>
 </template>
