@@ -153,9 +153,10 @@ app.post("/createuser", (req, res) => {
   const admin = req.body.admin;
   const rec = req.body.mem_rec;
   const tel = req.body.mem_tel;
-
+  console.log(rec);
+  console.log(tel);
   conn.db.query(
-    "INSERT INTO `member`( `mem_id`, `mem_pass`, `mem_name`, `mem_lname`, `mem_village`, `mem_dist`, `mem_pro`, `active`, `admin`,`mem_rec`,`mem_tel`) VALUES (?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO `member`( `mem_id`, `mem_pass`, `mem_name`, `mem_lname`, `mem_village`, `mem_dist`, `mem_pro`, `active`, `admin`,`mem_rec`,`mem_tel`) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
     [logid, logpass, name, lname, vill, dist, pro, active, admin,rec,tel],
     (err, result) => {
       if (err) {
@@ -209,7 +210,7 @@ app.get("/getsalelimit", (req, res) => {
 });
 
 app.put("/updatesalelim", (req, res) => {
-  const id = rconn.eq.query.id;
+  const id = req.query.id;
   const two = req.body.two;
   const three = req.body.three;
   const four = req.body.four;
@@ -240,7 +241,7 @@ app.get("/getpayrate", (req, res) => {
 });
 
 app.put("/updatepayrate", (req, res) => {
-  const id = rconn.eq.query.id;
+  const id = req.query.id;
   const two = req.body.two;
   const three = req.body.three;
   const four = req.body.four;
@@ -287,7 +288,7 @@ app.post("/auth", (req, res) => {
 });
 app.get("/getism_ref", (req, res) => {
   conn.db.query(
-    "SELECT  MAX(ism_ref) as ism_ref, ism_date FROM installment  WHERE ism_active = 1",
+    "SELECT  MAX(ism_ref) as ism_ref, ism_date FROM installment  WHERE ism_active = 1 LIMIT 1",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -484,12 +485,14 @@ app.get("/winreport", (req, res) => {
   const r_mem_id = req.query.p_mem_id;
   let sql = `SELECT s.*,i.ism_result FROM installment i 
   RIGHT JOIN sale s ON s.ism_id=i.ism_ref 
-  WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" AND (s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -6, 6)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -5, 5)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -4, 4)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -3, 3)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -2, 2))) ORDER BY s.id DESC `;
+  WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" AND (s.sale_num = SUBSTRING(i.ism_result, -6, 6) OR s.sale_num = SUBSTRING(i.ism_result, -5, 5) OR s.sale_num = SUBSTRING(i.ism_result, -4, 4) OR s.sale_num = SUBSTRING(i.ism_result, -3, 3) OR = SUBSTRING(i.ism_result, -2, 2)) ORDER BY s.id DESC `;
+  // WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" AND (s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -6, 6)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -5, 5)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -4, 4)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -3, 3)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -2, 2))) ORDER BY s.id DESC `;
 
   if (r_admin === "true") {
     sql = `SELECT s.*,i.ism_result FROM installment i 
     RIGHT JOIN sale s ON s.ism_id=i.ism_ref
-    WHERE i.ism_date ="${r_date}" AND (s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -6, 6)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -5, 5)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -4, 4)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -3, 3)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -2, 2))) ORDER BY s.id DESC `;
+    WHERE i.ism_date ="${r_date}" AND (s.sale_num = SUBSTRING(i.ism_result, -6, 6) OR s.sale_num = SUBSTRING(i.ism_result, -5, 5) OR s.sale_num = SUBSTRING(i.ism_result, -4, 4) OR s.sale_num = SUBSTRING(i.ism_result, -3, 3) OR s.sale_num = SUBSTRING(i.ism_result, -2, 2)) ORDER BY s.id DESC `;
+    // WHERE i.ism_date ="${r_date}" AND (s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -6, 6)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -5, 5)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -4, 4)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -3, 3)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -2, 2))) ORDER BY s.id DESC `;
     console.log("Admin: " + r_admin);
   }
 

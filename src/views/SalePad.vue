@@ -19,7 +19,7 @@
             </tr>
           </thead>
           <tbody class="table-borderless">
-            <tr v-for="(itm, idx) in saleLek" :key="idx" >
+            <tr v-for="(itm, idx) in saleLek" :key="idx">
               <td class="lek" v-if="idx % 2 == 0">{{ itm.lek }}</td>
               <td class="lek" v-if="idx % 2 == 0">
                 {{ formatNum(itm.sale) }}
@@ -37,9 +37,9 @@
             </tr>
           </thead>
           <tbody class="table-borderless">
-            <tr v-for="(itm, idx) in saleLek" :key="idx" >
-              <td class="lek"  v-if="idx % 2 != 0">{{ itm.lek }}</td>
-              <td class="lek"  v-if="idx % 2 != 0">
+            <tr v-for="(itm, idx) in saleLek" :key="idx">
+              <td class="lek" v-if="idx % 2 != 0">{{ itm.lek }}</td>
+              <td class="lek" v-if="idx % 2 != 0">
                 {{ formatNum(itm.sale) }}
               </td>
             </tr>
@@ -164,10 +164,7 @@
           >
             9
           </button>
-          <button
-            class="btn btn-warning fixedbutton-r"
-            onclick="window.print()"
-          >
+          <button class="btn btn-warning fixedbutton-r" @click="submitLek">
             <i class="fas fa-print"></i>ພິມບິນ
           </button>
         </div>
@@ -189,8 +186,11 @@
           <button class="btn btn-primary fixedbutton-l" @click="clearInp()">
             ລົບ
           </button>
-          <button class="btn btn-danger fixedbutton-r" @click="submitLek">
-            ປິດບິນ
+          <button
+            class="btn btn-danger fixedbutton-r"
+            @click="gen_full_lek(enteredLek)"
+          >
+            ເຕັມນາມ
           </button>
         </div>
         <div class="row">
@@ -201,6 +201,11 @@
           </div>
         </div>
       </div>
+    </div>
+    <div>
+      <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
+      <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
+      <p v-else-if="!isloading && (!emp || emp.length === 0)">No data...!</p>
     </div>
     <div id="salelist">
       <ul>
@@ -213,12 +218,6 @@
           @delete-lucknum="removeLek"
         ></sale-card>
       </ul>
-    </div>
-
-    <div>
-      <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
-      <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
-      <p v-else-if="!isloading && (!emp || emp.length === 0)">No data...!</p>
     </div>
   </section>
   <base-dialog :show="exp.length > 0" title="ຂໍ້ມູນ" @close="exp = []">
@@ -234,7 +233,6 @@ import SaleCard from "../components/SaleCard.vue";
 // import SimModal from "./ui/SimpleModal";
 import BaseDialog from "../components/ui/BaseDialog";
 import QrcodeVue from "qrcode.vue";
-
 
 export default {
   components: {
@@ -317,6 +315,47 @@ export default {
     this.qr_provider();
   },
   methods: {
+    gen_full_lek(val) {
+      if (!this.enteredLek || !this.enteredAmount) {
+        alert("ເລກສ່ຽງ ແລະ ຈຳນວນເງິນຕ້ອງ ລະບຸໃຫ້ຄົບຖ້ວນ");
+      } else {
+        const over = parseInt(val.substring(val.length,val.length-2)) > 19; //check if number is less than 20
+        console.log("Val:" + val + " " + over);
+        const ipair = over ? 2 : 3;
+        console.log("len:" + val.length);
+        if (val.length > 2) {
+          // THREE DIGITS
+          console.log("True");
+          console.log(val.substring(val.length, val.length - 2));
+          if (parseInt(val.substring(val.length, val.length - 2)) > 39)
+            return alert("ເລກສ່ຽງຄວນເລີ່ມຈາກ X00 -> X39");
+          else {
+            for (let i = 0; i < ipair; i++) {
+              console.log("Valoop:" + val);
+              i === 0 ? val : (val = val.substring(0,val.length-2)+String(parseInt(val.substring(val.length, val.length - 2)) + 40));
+              const enteredSale = {
+                lek: val,
+                // lek: parseInt(this.enteredLek),
+                sale: parseInt(this.enteredAmount),
+              };
+              this.saleLek.push(enteredSale);
+            }
+          }
+          return;
+        }
+        if (parseInt(val) > 39) return alert("ເລກສ່ຽງຄວນເລີ່ມຈາກ 00 -> 39");
+        for (let i = 0; i < ipair; i++) {
+          console.log("Valoop:" + val);
+          i === 0 ? val : (val = String(parseInt(val) + 40));
+          const enteredSale = {
+            lek: val,
+            // lek: parseInt(this.enteredLek),
+            sale: parseInt(this.enteredAmount),
+          };
+          this.saleLek.push(enteredSale);
+        }
+      }
+    },
     qr_provider() {
       this.qr_code = Math.floor(Math.random() * 10000000000000 + 1).toString();
     },
@@ -385,6 +424,8 @@ export default {
     addLek() {
       if (!this.enterNumber || !this.enteredAmount) {
         console.log("emty");
+      }else if(this.bill_num !== "1####"){
+        alert("ກະລຸນາເລີ່ມບິນໃຫມ່ (ບິນນີ້ຂາຍໄປແລ້ວ)")
       } else {
         console.log("Sale");
         const enteredSale = {
@@ -414,7 +455,8 @@ export default {
         alert("ບໍ່ມີເລກທີ່ຕ້ອງການຂາຍ");
         return;
       } else if (this.bill_num !== "1####") {
-        alert("ບິນນີ້ຂາຍໄປແລ້ວ!");
+        // alert("ບິນນີ້ຂາຍໄປແລ້ວ!");
+        window.print();
         return;
       }
       this.isloading = true;
@@ -433,6 +475,7 @@ export default {
             this.bill_num = res.data[0].bill_num;
           }
           this.exp = res.data;
+          window.print();
         })
         .catch((er) => {
           alert(er);
@@ -585,7 +628,7 @@ header {
   font-weight: bold;
   color: red;
 }
-.lek{
+.lek {
   font-size: larger;
 }
 #printOnly {
@@ -596,18 +639,16 @@ header {
   font-weight: 10;
 }
 #printOnly thead tr th {
-  
   font-weight: 10;
   /* font-size: small; */
   /* font-size: 10px; */
 }
-#printOnlyP{
+#printOnlyP {
   font-weight: 50;
 }
-#printOnly p{
+#printOnly p {
   font-weight: 50;
 }
-
 
 @page {
   size: A7;
