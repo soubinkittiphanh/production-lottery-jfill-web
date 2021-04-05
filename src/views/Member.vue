@@ -47,6 +47,14 @@
         <div class="col-md-12">
           <input type="text" class="form-control" v-model="pro" />
         </div>
+        <label for="roll_id" class="col-md-2 col-form-label">ຜູ້ແນະນຳ:</label>
+        <div class="col-md-12">
+          <input type="text" class="form-control" v-model="recommendator" />
+        </div>
+        <label for="roll_id" class="col-md-2 col-form-label">ເບີໂທ:</label>
+        <div class="col-md-12">
+          <input type="text" class="form-control" v-model="tel" />
+        </div>
         <label for="roll_id" class="col-md-2 col-form-label"></label>
         <div class="col-md-12">
           <button
@@ -105,6 +113,8 @@ export default {
       vill: "",
       dist: "",
       pro: "",
+      recommendator: "",
+      tel: "",
       active: true,
       admin: false,
       formvailid: {
@@ -140,7 +150,6 @@ export default {
   },
   methods: {
     get_auto_id() {
-
       if (!this.id) {
         this.isloading = true;
         this.error = null;
@@ -180,6 +189,8 @@ export default {
             pro: this.pro,
             active: this.active,
             admin: this.admin,
+            mem_rec: this.recommendator,
+            mem_tel: this.tel,
           })
           .then((res) => {
             alert(res.data);
@@ -207,6 +218,8 @@ export default {
           pro: this.pro,
           active: this.active,
           admin: this.admin,
+          mem_rec: this.recommendator,
+          mem_tel: this.tel,
         })
         .then((res) => {
           this.isloading = false;
@@ -234,8 +247,9 @@ export default {
           this.pro = res.data[0].mem_pro;
           this.active = res.data[0].active === 1 ? true : false;
           this.admin = res.data[0].admin === 1 ? true : false;
+          this.recommendator=res.data[0].mem_rec;
+          this.tel=res.data[0].mem_tel;
           this.isloading = false;
-          
         })
         .catch((er) => {
           this.isloading = false;

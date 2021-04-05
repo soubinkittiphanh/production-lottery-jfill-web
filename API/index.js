@@ -151,10 +151,12 @@ app.post("/createuser", (req, res) => {
   const pro = req.body.pro;
   const active = req.body.active;
   const admin = req.body.admin;
+  const rec = req.body.mem_rec;
+  const tel = req.body.mem_tel;
 
   conn.db.query(
-    "INSERT INTO `member`( `mem_id`, `mem_pass`, `mem_name`, `mem_lname`, `mem_village`, `mem_dist`, `mem_pro`, `active`, `admin`) VALUES (?,?,?,?,?,?,?,?,?)",
-    [logid, logpass, name, lname, vill, dist, pro, active, admin],
+    "INSERT INTO `member`( `mem_id`, `mem_pass`, `mem_name`, `mem_lname`, `mem_village`, `mem_dist`, `mem_pro`, `active`, `admin`,`mem_rec`,`mem_tel`) VALUES (?,?,?,?,?,?,?,?,?)",
+    [logid, logpass, name, lname, vill, dist, pro, active, admin,rec,tel],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -176,11 +178,13 @@ app.put("/updateuser", (req, res) => {
   const pro = req.body.pro;
   const active = req.body.active;
   const admin = req.body.admin;
+  const rec = req.body.mem_rec;
+  const tel = req.body.mem_tel;
   console.log("up id" + id);
   console.log("up id" + name);
   conn.db.query(
-    "UPDATE `member` SET `mem_id`=?,`mem_pass`=?,`mem_name`=?,`mem_lname`=?,`mem_village`=?,`mem_dist`=?,`mem_pro`=?,`active`=?,`admin`=? WHERE `id`=?",
-    [logid, logpass, name, lname, vill, dist, pro, active, admin, id],
+    "UPDATE `member` SET `mem_id`=?,`mem_pass`=?,`mem_name`=?,`mem_lname`=?,`mem_village`=?,`mem_dist`=?,`mem_pro`=?,`active`=?,`admin`=?,`mem_rec`=?,`mem_tel`=? WHERE `id`=?",
+    [logid, logpass, name, lname, vill, dist, pro, active, admin,rec,tel, id],
     (err, result) => {
       if (err) {
         console.log(err);
