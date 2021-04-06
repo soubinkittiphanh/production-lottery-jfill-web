@@ -475,8 +475,8 @@ export default {
             console.log(res.data[0].bill_num);
             this.bill_num = res.data[0].bill_num;
           }
-          this.exp = res.data;
           window.print();
+          this.exp = res.data;
         })
         .catch((er) => {
           alert(er);
