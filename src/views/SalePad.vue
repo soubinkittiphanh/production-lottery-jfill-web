@@ -316,6 +316,7 @@ export default {
   },
   methods: {
     gen_full_lek(val) {
+      if(this.bill_num !== "1####") return alert("ກະລຸນາເລີ່ມບິນໃຫມ່ (ບິນນີ້ຂາຍໄປແລ້ວ)");
       if (!this.enteredLek || !this.enteredAmount) {
         alert("ເລກສ່ຽງ ແລະ ຈຳນວນເງິນຕ້ອງ ລະບຸໃຫ້ຄົບຖ້ວນ");
       } else {
@@ -441,8 +442,8 @@ export default {
       }
     },
     removeLek(val) {
-      alert(val);
-      this.saleLek.splice(val, 1);
+      const conf = confirm("ຕ້ອງການລົບ ?");
+      if(conf) this.saleLek.splice(val, 1);
     },
     async submitLek() {
       console.log("get in....");
