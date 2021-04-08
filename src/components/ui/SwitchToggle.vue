@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-12 custom-control custom-switch">
-    <label for="name" class="alert-success">[ ຍອດຂາຍ: {{total}} ]</label>
+    <label for="name" class="alert-success">[ ຍອດຂາຍລ່າສຸດ: {{total}} ]</label>
     <input
       type="checkbox"
       class="custom-control-input"

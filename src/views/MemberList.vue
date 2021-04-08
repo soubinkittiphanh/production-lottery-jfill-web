@@ -11,7 +11,7 @@
         <span>
           <switch-toggle
             :is-open="item.active === 1 ? true : false"
-            :name="'customSwitch' + item.id" :total="String(formatNum(users.total))"
+            :name="'customSwitch' + item.id" :total="String(formatNum(item.total))"
           >
           </switch-toggle>
         </span>
@@ -66,7 +66,7 @@ export default {
               pro: res.data[id].mem_pro,
               active: res.data[id].active,
               admin: res.data[id].admin,
-              total: res.data[id].total==="null"?0:res.data[id].total,
+              total: res.data[id].total,
             });
           }
           this.users = results;
