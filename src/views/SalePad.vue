@@ -165,7 +165,7 @@
             9
           </button>
           <button class="btn btn-warning fixedbutton-r" @click="submitLek">
-            <i class="fas fa-print"></i>ພິມບິນ
+            <i class="fas fa-print"></i>{{getBillLabel}}
           </button>
         </div>
       </div>
@@ -272,6 +272,9 @@ export default {
     // qr_generator(){
     //   return this.qr_provider();//Math.floor((Math.random() * 100000000000000000) + 1).toString();
     // },
+    getBillLabel(){
+      return this.bill_num==="1####"?"ສົ່ງບິນ":"ພິມບິນ"
+    },
     selectedinput() {
       return {
         "border:1px solid red": this.isLek,
