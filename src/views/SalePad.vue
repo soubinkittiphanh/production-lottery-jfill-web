@@ -316,11 +316,12 @@ export default {
   },
   methods: {
     gen_full_lek(val) {
-      if(this.bill_num !== "1####") return alert("ກະລຸນາເລີ່ມບິນໃຫມ່ (ບິນນີ້ຂາຍໄປແລ້ວ)");
+      if (this.bill_num !== "1####")
+        return alert("ກະລຸນາເລີ່ມບິນໃຫມ່ (ບິນນີ້ຂາຍໄປແລ້ວ)");
       if (!this.enteredLek || !this.enteredAmount) {
         alert("ເລກສ່ຽງ ແລະ ຈຳນວນເງິນຕ້ອງ ລະບຸໃຫ້ຄົບຖ້ວນ");
       } else {
-        const over = parseInt(val.substring(val.length,val.length-2)) > 19; //check if number is less than 20
+        const over = parseInt(val.substring(val.length, val.length - 2)) > 19; //check if number is less than 20
         console.log("Val:" + val + " " + over);
         const ipair = over ? 2 : 3;
         console.log("len:" + val.length);
@@ -333,7 +334,13 @@ export default {
           else {
             for (let i = 0; i < ipair; i++) {
               console.log("Valoop:" + val);
-              i === 0 ? val : (val = val.substring(0,val.length-2)+String(parseInt(val.substring(val.length, val.length - 2)) + 40));
+              i === 0
+                ? val
+                : (val =
+                    val.substring(0, val.length - 2) +
+                    String(
+                      parseInt(val.substring(val.length, val.length - 2)) + 40
+                    ));
               const enteredSale = {
                 lek: val,
                 // lek: parseInt(this.enteredLek),
@@ -425,8 +432,8 @@ export default {
     addLek() {
       if (!this.enterNumber || !this.enteredAmount) {
         console.log("emty");
-      }else if(this.bill_num !== "1####"){
-        alert("ກະລຸນາເລີ່ມບິນໃຫມ່ (ບິນນີ້ຂາຍໄປແລ້ວ)")
+      } else if (this.bill_num !== "1####") {
+        alert("ກະລຸນາເລີ່ມບິນໃຫມ່ (ບິນນີ້ຂາຍໄປແລ້ວ)");
       } else {
         console.log("Sale");
         const enteredSale = {
@@ -443,7 +450,7 @@ export default {
     },
     removeLek(val) {
       const conf = confirm("ຕ້ອງການລົບ ?");
-      if(conf) this.saleLek.splice(val, 1);
+      if (conf) this.saleLek.splice(val, 1);
     },
     async submitLek() {
       console.log("get in....");
@@ -474,14 +481,15 @@ export default {
           if (res.data[0].bill_num) {
             console.log(res.data[0].bill_num);
             this.bill_num = res.data[0].bill_num;
+          // window.print();
           }
-          window.print();
-          this.exp = res.data;
+          this.exp =  res.data;
         })
         .catch((er) => {
           alert(er);
           this.isloading = false;
           this.error = "ເກີດຂໍ້ຜິດພາດໃນການເຊື່ອມຕໍ່";
+          return;
         });
     },
     submitLekTest() {
