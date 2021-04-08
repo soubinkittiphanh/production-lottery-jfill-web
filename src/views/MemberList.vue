@@ -11,10 +11,11 @@
         <span>
           <switch-toggle
             :is-open="item.active === 1 ? true : false"
-            :name="'customSwitch' + item.id" :total="String(formatNum(item.total))"
+            :name="'customSwitch' + item.id"
           >
           </switch-toggle>
         </span>
+        <label for="name" class="alert-success">[ຍອດຂາຍງວດລ່າສຸດ: {{String(formatNum(item.total))}}]</label>
       </template>
       <template #details>
         <p>ບ້ານ: {{ item.vill }} {{ item.dist }} {{ item.pro }}</p>
