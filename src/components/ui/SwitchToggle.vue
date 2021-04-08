@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-12 custom-control custom-switch">
+  <div class="custom-control custom-switch">
     <!-- <label for="name" class="alert-success">[ ຍອດຂາຍງວດລ່າສຸດ: {{total}} ]</label> -->
     <input
       type="checkbox"

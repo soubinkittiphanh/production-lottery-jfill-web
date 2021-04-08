@@ -2,20 +2,24 @@
   <div class="container">
     <div class="center">
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
-    <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
+      <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
     </div>
     <user-list-card v-for="item in users" :key="item.id">
+      <template #total>
+        <label for="name" class="alert-success"
+          >[ $ງວດລ່າສຸດ: {{ String(formatNum(item.total)) }} ]</label
+        >
+      </template>
+      <template #status>
+        <switch-toggle
+          :is-open="item.active === 1 ? true : false"
+          :name="'customSwitch' + item.id"
+        >
+        </switch-toggle>
+      </template>
       <template v-slot:username>
         {{ item.name }} {{ item.lname }} [ ສະຖານະ:
         {{ item.active === 1 ? "ໃຊ້ງານຢູ່" : "Block" }} ]
-        <span>
-          <switch-toggle
-            :is-open="item.active === 1 ? true : false"
-            :name="'customSwitch' + item.id"
-          >
-          </switch-toggle>
-        </span>
-        <label for="name" class="alert-success">[ຍອດຂາຍງວດລ່າສຸດ: {{String(formatNum(item.total))}}]</label>
       </template>
       <template #details>
         <p>ບ້ານ: {{ item.vill }} {{ item.dist }} {{ item.pro }}</p>
@@ -24,7 +28,6 @@
         </button>
       </template>
     </user-list-card>
-    
   </div>
 </template>
 <script>

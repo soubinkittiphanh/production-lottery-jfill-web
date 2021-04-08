@@ -1,8 +1,16 @@
 <template>
   <div class="card">
-      <header>
+      <!-- <header> -->
         <slot name="username"></slot>
-      </header>
+        <div class="row">
+          <div class="col-md-6">
+            <slot name="total"></slot>
+          </div>
+          <div class="col-md-6">
+            <slot name="status"></slot>
+          </div>
+        </div>
+      <!-- </header> -->
       <hr>
         <slot name="details"></slot>
   </div>
