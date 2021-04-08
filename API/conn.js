@@ -3,7 +3,7 @@ const db = mysql.createPool({
   host: "mariadb-23817-0.cloudclusters.net",
    user: "root",
     password: "admin2020",
-    database: "lottery_demo",
+    database: "lottery_pakse",
     port:23817,
   // host: "localhost",
   // user: "root",

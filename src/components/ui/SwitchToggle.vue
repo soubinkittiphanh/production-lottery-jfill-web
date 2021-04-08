@@ -1,5 +1,6 @@
 <template>
   <div class="col-md-12 custom-control custom-switch">
+    <label for="name" class="alert-success">[ ຍອດຂາຍ: {{total}} ]</label>
     <input
       type="checkbox"
       class="custom-control-input"
@@ -30,6 +31,10 @@ export default {
         name:{
           type:String,
           required:true,
+        },total:{
+          type:String,
+          required:false,
+          default:'0',
         }
     },
     data(){
