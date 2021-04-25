@@ -161,7 +161,7 @@ export default {
       this.isloading = true;
 
       axios
-        .get(apiDomain.url + "winreport/?r_date=" + this.r_date, {
+        .get(apiDomain.url + "winreport", {
           params: {
             p_date: this.r_date,
             p_admin: this.isAdmin,

@@ -348,6 +348,7 @@ export default {
                 lek: val,
                 // lek: parseInt(this.enteredLek),
                 sale: parseInt(this.enteredAmount),
+                date: this.formatdateToSql(Date.now()),
               };
               this.saleLek.push(enteredSale);
             }
@@ -362,6 +363,7 @@ export default {
             lek: val,
             // lek: parseInt(this.enteredLek),
             sale: parseInt(this.enteredAmount),
+            date: this.formatdateToSql(Date.now()),
           };
           this.saleLek.push(enteredSale);
         }
@@ -396,6 +398,21 @@ export default {
       }
       dateVisible = d + "-" + m + "-" + dateVisible.getFullYear();
       console.log(dateVisible);
+      return dateVisible; //"this.dateVisible";
+    },
+    formatdateToSql(date) {
+      var dt = new Date(date);
+      var m = "" + (dt.getMonth() + 1);
+      var d = "" + dt.getDate();
+      if (m.length < 2) {
+        m = "0" + m;
+      }
+      if (d.length < 2) {
+        d = "0" + d;
+      }
+      // dateVisible = d + "-" + m + "-" + dateVisible.getFullYear();
+      var dateVisible =  dt.getFullYear() +"-" + m + "-"+d +' '+dt.getHours()+':'+dt.getMinutes()+':'+dt.getSeconds() ;
+      console.log('This date: '+dateVisible);
       return dateVisible; //"this.dateVisible";
     },
     clearBill() {
@@ -443,6 +460,7 @@ export default {
           lek: this.enteredLek,
           // lek: parseInt(this.enteredLek),
           sale: parseInt(this.enteredAmount),
+          date: this.formatdateToSql(Date.now()),
         };
 
         this.saleLek.push(enteredSale);
@@ -650,6 +668,8 @@ header {
   text-align: center;
   font-weight: 10;
 }
+  /* font-family: Saysettha OT; */
+  /* width: 70mm; */
 #printOnly thead tr th {
   font-weight: 10;
   /* font-size: small; */
@@ -665,6 +685,9 @@ header {
 @page {
   size: A7;
 }
+/* @page {
+  size: A7;
+} */
 
 @media print {
   .keypad {

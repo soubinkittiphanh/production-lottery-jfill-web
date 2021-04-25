@@ -94,7 +94,7 @@ export default {
       this.isloading = true;
 
       axios
-        .get(apiDomain.url+"salereport/?r_date=" + this.r_date,{
+        .get(apiDomain.url+"salereport",{
             params:{
                 p_date:this.r_date,
                 p_admin:this.isAdmin,

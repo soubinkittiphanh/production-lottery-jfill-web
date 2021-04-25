@@ -7,6 +7,7 @@ app.use(express.json());
 const conn = require("./connection");
 const con = require("./conn");
 const bcrypt = require('./custom-bcrypt');
+const { json } = require("express");
 
 app.get("/", (req, res) => {
   res.send("Hello Welcome to JFILL Lottery");
@@ -264,6 +265,9 @@ app.put("/updatepayrate", (req, res) => {
 app.post("/auth", (req, res) => {
   const uid = req.body.id;
   const upas = req.body.pass;
+
+  console.log(uid);
+  console.log(upas);
   conn.db.query(
     "SELECT m.mem_id as mem_id,m.mem_pass as mem_pass,m.mem_name as mem_name,m.active as active,m.admin as admin, MAX(i.ism_ref) as ism_ref, i.ism_date as ism_date FROM member m \
     LEFT JOIN installment i ON i.ism_active = 1  WHERE mem_id =? and active=1",
@@ -301,11 +305,14 @@ app.get("/getism_ref", (req, res) => {
 });
 // ############ ຂາຍ #######################
 app.post("/sale", async (req, res) => {
+  console.log('Sale');
   const sale = req.body.item;
   const user = req.body.user;
   const ism = req.body.ism;
+  // const c_date = req.body.date;
   const qr_code = req.body.qr_code;
   var full_lucknum = [];
+  console.log('ID: '+user);
   console.log(sale);
   for (var i = 0; i < sale.length; i++) {
     console.log("For: " + sale[i].lek + " Laka:" + sale[i].sale);
@@ -337,7 +344,9 @@ app.post("/sale", async (req, res) => {
         sale[i].sale +
         "," +
         user +
-        "," +
+        ",'" +
+        sale[i].date +
+        "'," +
         qr_code +
         ")" +
         colon +
@@ -346,15 +355,19 @@ app.post("/sale", async (req, res) => {
 
     console.log("SQL: " + sql);
     conn.db.query(
-      "INSERT INTO `sale`(`sale_bill_id`, `ism_id`, `sale_num`, `sale_price`, `mem_id`,`qr_code`) VALUES " +
+      "INSERT INTO `sale`(`sale_bill_id`, `ism_id`, `sale_num`, `sale_price`, `mem_id`, `client_date`,`qr_code`) VALUES " +
         sql +
         "",
       (er, result) => {
         if (er) {
           res.send("ເກີດຂໍ້ຜິດພາດທາງເຊີເວີ SQL query");
+          console.log('Failed');
+          console.log(er);
         } else {
           full_lucknum.push({ item: "ສຳເລັດການຂາຍ", bill_num: String(bill_num) });
           res.send(full_lucknum);
+          console.log('Success');
+          console.log(full_lucknum);
           // res.send((item = ["ສຳເລັດການຂາຍ"]));
           // res.send((bill_num = [bill_num]));
         }
@@ -455,9 +468,10 @@ async function full_lot_survey(luck_num, price, ism_ref) {
 
 // ############ Sale Report #######################
 app.get("/salereport", (req, res) => {
-  const r_date = req.query.r_date;
+  const r_date = req.query.p_date;
   const r_admin = req.query.p_admin;
   const r_mem_id = req.query.p_mem_id;
+  console.log("ADMIN: "+req.query.admin1);
   let sql = `SELECT SUBSTRING(s.sale_bill_id, -6, 6) AS sale_bill_id,s.ism_id AS ism_id,s.mem_id AS mem_id,s.date AS date,s.sale_num AS sale_num,s.sale_price AS sale_price,i.ism_result FROM installment i 
   RIGHT JOIN sale s ON s.ism_id=i.ism_ref
   WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" ORDER BY s.id DESC `;

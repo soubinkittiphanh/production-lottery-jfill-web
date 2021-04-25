@@ -6,10 +6,10 @@ const db = mysql.createConnection({
     // database: "lottery_pakse",
     // port: 8080,
     user: "root",
-    host: "mariadb-23817-0.cloudclusters.net",
+    host: "mariadb-28633-0.cloudclusters.net",
     password: "admin2020",
     database: "lottery_pakse",
-    port:23817
+    port:28672
   });
   
 
