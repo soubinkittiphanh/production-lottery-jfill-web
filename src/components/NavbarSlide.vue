@@ -45,10 +45,6 @@
     <router-link to="/member" class="navbar__link"  v-if="isAdmin">
       <span class="material-icons">person_add</span>ເພີ່ມຜູ້ໃຊ້</router-link
     >
-    <router-link to="/pagination" class="navbar__link"  v-if="isAdmin">
-      <span class="material-icons">person_add</span>Pagination</router-link
-    >
-
     <router-link to="/logout" class="navbar__link">
       <span class="material-icons">exit_to_app</span>ອອກຈາກລະບົບ</router-link
     >
