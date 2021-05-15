@@ -1,6 +1,6 @@
 const mysql = require("mysql2/promise");
 const db = mysql.createPool({
-  host: "mariadb-28633-0.cloudclusters.net",
+  host: "163.123.183.93",
    user: "root",
     password: "admin2020",
     database: "lottery_pakse",

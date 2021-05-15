@@ -11,6 +11,7 @@ import Member from "./views/Member.vue";
 // import PayRate from "./views/PayRateMgr.vue";
 // import Esc from "./views/EscPos.vue";
 import Logout from "./views/Logout.vue";
+import PaginationControll from "./components/PaginationControl.vue";
 import store from "./store/index";
 const router = createRouter({
   history: createWebHistory(),
@@ -23,23 +24,25 @@ const router = createRouter({
         requireAuth: true,
       },
     },
-    // {
-    //   path: "/esc",
-    //   component: Esc,
-    //   meta: {
-    //     requireAuth: true,
-    //   },
-    // },
+    {
+      path: "/pagination",
+      component: PaginationControll,
+      meta: {
+        requireAuth: true,
+      },
+    },
     {
       path: "/sale",
-      component: ()=>import (/* webpackChuckName:"Sale" */"./views/SalePad.vue"),
+      component: () =>
+        import(/* webpackChuckName:"Sale" */ "./views/SalePad.vue"),
       meta: {
         requireAuth: true,
       },
     },
     {
       path: "/salelimit",
-      component: ()=>import (/* webpackChuckName:"SaleLimit" */"./views/SaleLimit.vue"),
+      component: () =>
+        import(/* webpackChuckName:"SaleLimit" */ "./views/SaleLimit.vue"),
       meta: {
         requireAuth: true,
         requireAdmin: true,
@@ -47,7 +50,8 @@ const router = createRouter({
     },
     {
       path: "/prizemgr",
-      component: ()=>import (/* webpackChuckName:"PayRate" */"./views/PayRateMgr.vue"),
+      component: () =>
+        import(/* webpackChuckName:"PayRate" */ "./views/PayRateMgr.vue"),
       meta: {
         requireAuth: true,
         requireAdmin: true,
@@ -55,21 +59,24 @@ const router = createRouter({
     },
     {
       path: "/salereport",
-      component: ()=>import (/* webpackChuckName:"SaleReport" */"./views/SaleReport.vue"),
+      component: () =>
+        import(/* webpackChuckName:"SaleReport" */ "./views/SaleReport.vue"),
       meta: {
         requireAuth: true,
       },
     },
     {
       path: "/winreport",
-      component:()=>import (/* webpackChuckName:"WinReport" */"./views/WinReport.vue") ,
+      component: () =>
+        import(/* webpackChuckName:"WinReport" */ "./views/WinReport.vue"),
       meta: {
         requireAuth: true,
       },
     },
     {
       path: "/lotterymgr",
-      component: ()=>import (/* webpackChuckName:"LotteryMgr" */"./views/LotteryMgr.vue"),
+      component: () =>
+        import(/* webpackChuckName:"LotteryMgr" */ "./views/LotteryMgr.vue"),
       meta: {
         requireAuth: true,
         requireAdmin: true,
@@ -77,12 +84,14 @@ const router = createRouter({
     },
     {
       path: "/member",
-      component: ()=>import (/* webpackChuckName:"Member" */"./views/Member.vue"),
+      component: () =>
+        import(/* webpackChuckName:"Member" */ "./views/Member.vue"),
       meta: {
         requireAuth: true,
         requireAdmin: true,
       },
     },
+    
     {
       path: "/member/:userid",
       component: Member,
@@ -93,7 +102,8 @@ const router = createRouter({
     },
     {
       path: "/memberlist",
-      component: ()=>import (/* webpackChuckName:"MemberList" */"./views/MemberList.vue"),
+      component: () =>
+        import(/* webpackChuckName:"MemberList" */ "./views/MemberList.vue"),
       meta: {
         requireAuth: true,
         requireAdmin: true,

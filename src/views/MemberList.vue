@@ -1,10 +1,8 @@
 <template>
   <div class="container">
-    <div class="center">
-      <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
-      <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
-    </div>
-    <user-list-card v-for="item in users" :key="item.id">
+
+    
+    <!-- <user-list-card v-for="item in users" :key="item.id">
       <template #total>
         <label for="name" class="alert-success"
           >[ $ງວດລ່າສຸດ: {{ String(formatNum(item.total)) }} ]</label
@@ -27,18 +25,23 @@
           ແກ້ໄຂ
         </button>
       </template>
-    </user-list-card>
+    </user-list-card> -->
+    <!-- <member-table> </member-table> -->
+    <member-pagination :datas="users" @update-user="edituser">
+    </member-pagination>
   </div>
 </template>
 <script>
-import axios from "axios";
-import apiDomain from "../config";
-import UserListCard from "../components/ui/UserListCard";
-import SwitchToggle from "../components/ui/SwitchToggle";
+// import axios from "axios";
+// import apiDomain from "../config";
+// import UserListCard from "../components/ui/UserListCard";
+// import SwitchToggle from "../components/ui/SwitchToggle";
+import MemberPagination from "../components/PaginationControl";
 export default {
   components: {
-    UserListCard,
-    SwitchToggle,
+    // UserListCard,
+    // SwitchToggle,
+    MemberPagination,
   },
   data() {
     return {
@@ -51,36 +54,54 @@ export default {
     formatNum(val) {
       return new Intl.NumberFormat().format(val);
     },
-    fetchuser() {
-      this.isloading = true;
-      this.error = null;
-      axios
-        .get(apiDomain.url + "fetchuser")
-        .then((res) => {
-          var results = [];
-          for (const id in res.data) {
-            results.push({
-              id: res.data[id].id,
-              name: res.data[id].mem_name,
-              lname: res.data[id].mem_lname,
-              logid: res.data[id].mem_id,
-              logpass: res.data[id].mem_pass,
-              vill: res.data[id].mem_village,
-              dist: res.data[id].mem_dist,
-              pro: res.data[id].mem_pro,
-              active: res.data[id].active,
-              admin: res.data[id].admin,
-              total: res.data[id].total,
-            });
-          }
-          this.users = results;
-          this.isloading = false;
-        })
-        .catch((er) => {
-          this.isloading = false;
-          this.error = er;
-          // alert("ເກີດຂໍ້ຜິດພາດການເຊື່ອມຕໍ່ເຊີເວີ: " + er);
-        });
+    async fetchuser() {
+      // this.isloading = true;
+      // this.error = null;
+      // var res = await axios.get(apiDomain.url + "fetchuser");
+      // var results = [];
+      // for (const id in res.data) {
+      //   results.push({
+      //     id: res.data[id].id,
+      //     name: res.data[id].mem_name,
+      //     lname: res.data[id].mem_lname,
+      //     logid: res.data[id].mem_id,
+      //     logpass: res.data[id].mem_pass,
+      //     vill: res.data[id].mem_village,
+      //     dist: res.data[id].mem_dist,
+      //     pro: res.data[id].mem_pro,
+      //     active: res.data[id].active,
+      //     admin: res.data[id].admin,
+      //     total: res.data[id].total,
+      //   });
+      // }
+      // this.users = results;
+      // this.isloading = false;
+
+      // .then((res) => {
+      //   var results = [];
+      //   for (const id in res.data) {
+      //     results.push({
+      //       id: res.data[id].id,
+      //       name: res.data[id].mem_name,
+      //       lname: res.data[id].mem_lname,
+      //       logid: res.data[id].mem_id,
+      //       logpass: res.data[id].mem_pass,
+      //       vill: res.data[id].mem_village,
+      //       dist: res.data[id].mem_dist,
+      //       pro: res.data[id].mem_pro,
+      //       active: res.data[id].active,
+      //       admin: res.data[id].admin,
+      //       total: res.data[id].total,
+      //     });
+      //   }
+      //   this.users = results;
+      //   this.isloading = false;
+      // })
+      // .catch((er) => {
+      //   this.isloading = false;
+      //   this.error = er;
+      //   // alert("ເກີດຂໍ້ຜິດພາດການເຊື່ອມຕໍ່ເຊີເວີ: " + er);
+      // });
     },
     edituser(id) {
       this.$router.push("/member/" + id);

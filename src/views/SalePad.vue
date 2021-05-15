@@ -165,7 +165,7 @@
             9
           </button>
           <button class="btn btn-warning fixedbutton-r" @click="submitLek">
-            <i class="fas fa-print"></i>{{getBillLabel}}
+            <i class="fas fa-print"></i>{{ getBillLabel }}
           </button>
         </div>
       </div>
@@ -272,8 +272,8 @@ export default {
     // qr_generator(){
     //   return this.qr_provider();//Math.floor((Math.random() * 100000000000000000) + 1).toString();
     // },
-    getBillLabel(){
-      return this.bill_num==="1####"?"ສົ່ງບິນ":"ພິມບິນ"
+    getBillLabel() {
+      return this.bill_num === "1####" ? "ສົ່ງບິນ" : "ພິມບິນ";
     },
     selectedinput() {
       return {
@@ -411,8 +411,19 @@ export default {
         d = "0" + d;
       }
       // dateVisible = d + "-" + m + "-" + dateVisible.getFullYear();
-      var dateVisible =  dt.getFullYear() +"-" + m + "-"+d +' '+dt.getHours()+':'+dt.getMinutes()+':'+dt.getSeconds() ;
-      console.log('This date: '+dateVisible);
+      var dateVisible =
+        dt.getFullYear() +
+        "-" +
+        m +
+        "-" +
+        d +
+        " " +
+        dt.getHours() +
+        ":" +
+        dt.getMinutes() +
+        ":" +
+        dt.getSeconds();
+      console.log("This date: " + dateVisible);
       return dateVisible; //"this.dateVisible";
     },
     clearBill() {
@@ -502,9 +513,9 @@ export default {
           if (res.data[0].bill_num) {
             console.log(res.data[0].bill_num);
             this.bill_num = res.data[0].bill_num;
-          // window.print();
+            // window.print();
           }
-          this.exp =  res.data;
+          this.exp = res.data;
         })
         .catch((er) => {
           alert(er);
@@ -668,8 +679,8 @@ header {
   text-align: center;
   font-weight: 10;
 }
-  /* font-family: Saysettha OT; */
-  /* width: 70mm; */
+/* font-family: Saysettha OT; */
+/* width: 70mm; */
 #printOnly thead tr th {
   font-weight: 10;
   /* font-size: small; */
