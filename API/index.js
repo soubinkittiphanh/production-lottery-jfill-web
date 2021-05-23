@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 const conn = require("./connection");
 const con = require("./conn");
-const bcrypt = require('./custom-bcrypt');
+const bcrypt = require("./custom-bcrypt");
 const { json } = require("express");
 
 app.get("/", (req, res) => {
@@ -103,14 +103,17 @@ app.get("/ismref", (req, res) => {
 });
 // ############ ເພີ່ມສະມາຊິກ #######################
 app.get("/fetchuser", (req, res) => {
-  conn.db.query("SELECT member.*, SUM(s.sale_price) AS total FROM member LEFT  JOIN sale s ON member.mem_id=s.mem_id AND s.ism_id=(SELECT MAX(i.ism_ref) FROM installment i) GROUP BY member.mem_id", (err, result) => {
-    if (err) {
-      console.log(err);
-      res.send("ເກີດຂໍ້ຜິດພາດທາງດ້ານເຊີເວີ: " + err);
-    } else {
-      res.send(result);
+  conn.db.query(
+    "SELECT member.*, SUM(s.sale_price) AS total FROM member LEFT  JOIN sale s ON member.mem_id=s.mem_id AND s.ism_id=(SELECT MAX(i.ism_ref) FROM installment i) GROUP BY member.mem_id",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send("ເກີດຂໍ້ຜິດພາດທາງດ້ານເຊີເວີ: " + err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 app.get("/gen_uid", (req, res) => {
   conn.db.query(
@@ -120,7 +123,7 @@ app.get("/gen_uid", (req, res) => {
         res.send(err);
       } else {
         if (result.length < 1) {
-          res.send(result=[{ mem_id: 1000 }]);
+          res.send((result = [{ mem_id: 1000 }]));
         } else {
           res.send(result);
         }
@@ -158,7 +161,7 @@ app.post("/createuser", (req, res) => {
   console.log(tel);
   conn.db.query(
     "INSERT INTO `member`( `mem_id`, `mem_pass`, `mem_name`, `mem_lname`, `mem_village`, `mem_dist`, `mem_pro`, `active`, `admin`,`mem_rec`,`mem_tel`) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-    [logid, logpass, name, lname, vill, dist, pro, active, admin,rec,tel],
+    [logid, logpass, name, lname, vill, dist, pro, active, admin, rec, tel],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -174,7 +177,7 @@ app.put("/updateuser", (req, res) => {
   const name = req.body.name;
   const lname = req.body.lname;
   const logid = req.body.logid;
-  const logpass = bcrypt.hash(req.body.logpass);//req.body.logpass;
+  const logpass = bcrypt.hash(req.body.logpass); //req.body.logpass;
   const vill = req.body.vill;
   const dist = req.body.dist;
   const pro = req.body.pro;
@@ -186,7 +189,7 @@ app.put("/updateuser", (req, res) => {
   console.log("up id" + name);
   conn.db.query(
     "UPDATE `member` SET `mem_id`=?,`mem_pass`=?,`mem_name`=?,`mem_lname`=?,`mem_village`=?,`mem_dist`=?,`mem_pro`=?,`active`=?,`admin`=?,`mem_rec`=?,`mem_tel`=? WHERE `id`=?",
-    [logid, logpass, name, lname, vill, dist, pro, active, admin,rec,tel, id],
+    [logid, logpass, name, lname, vill, dist, pro, active, admin, rec, tel, id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -276,15 +279,15 @@ app.post("/auth", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        if(result[0].mem_id===null){
-          res.send(result=[{isAuth:false}]);
+        if (result[0].mem_id === null) {
+          res.send((result = [{ isAuth: false }]));
           return;
         }
-        const isAuth=bcrypt.compare(upas,result[0].mem_pass);
-        if (isAuth){
-           res.send(result)
-        }else{
-          res.send(result=[{isAuth:false}]);
+        const isAuth = bcrypt.compare(upas, result[0].mem_pass);
+        if (isAuth) {
+          res.send(result);
+        } else {
+          res.send((result = [{ isAuth: false }]));
         }
       }
     }
@@ -305,14 +308,14 @@ app.get("/getism_ref", (req, res) => {
 });
 // ############ ຂາຍ #######################
 app.post("/sale", async (req, res) => {
-  console.log('Sale');
+  console.log("Sale");
   const sale = req.body.item;
   const user = req.body.user;
   const ism = req.body.ism;
   // const c_date = req.body.date;
   const qr_code = req.body.qr_code;
   var full_lucknum = [];
-  console.log('ID: '+user);
+  console.log("ID: " + user);
   console.log(sale);
   for (var i = 0; i < sale.length; i++) {
     console.log("For: " + sale[i].lek + " Laka:" + sale[i].sale);
@@ -361,12 +364,15 @@ app.post("/sale", async (req, res) => {
       (er, result) => {
         if (er) {
           res.send("ເກີດຂໍ້ຜິດພາດທາງເຊີເວີ SQL query");
-          console.log('Failed');
+          console.log("Failed");
           console.log(er);
         } else {
-          full_lucknum.push({ item: "ສຳເລັດການຂາຍ", bill_num: String(bill_num) });
+          full_lucknum.push({
+            item: "ສຳເລັດການຂາຍ",
+            bill_num: String(bill_num),
+          });
           res.send(full_lucknum);
-          console.log('Success');
+          console.log("Success");
           console.log(full_lucknum);
           // res.send((item = ["ສຳເລັດການຂາຍ"]));
           // res.send((bill_num = [bill_num]));
@@ -392,7 +398,7 @@ async function get_billnum() {
   } else {
     console.log("OVER THEN 1: " + numRows);
     console.log("NEXT_REF: " + res[0][0].pre_bill);
-    const next_ref = BigInt(res[0][0].pre_bill)+1n;
+    const next_ref = BigInt(res[0][0].pre_bill) + 1n;
     // const next_ref = BigInt(res[0][0].pre_bill) +1n;
     console.log("NEXT_REF + 1: " + next_ref);
     return next_ref;
@@ -471,13 +477,14 @@ app.get("/salereport", (req, res) => {
   const r_date = req.query.p_date;
   const r_admin = req.query.p_admin;
   const r_mem_id = req.query.p_mem_id;
-  console.log("ADMIN: "+req.query.admin1);
-  let sql = `SELECT SUBSTRING(s.sale_bill_id, -6, 6) AS sale_bill_id,s.ism_id AS ism_id,s.mem_id AS mem_id,s.date AS date,s.sale_num AS sale_num,s.sale_price AS sale_price,i.ism_result FROM installment i 
+  console.log("ADMIN: " + req.query.admin1);
+  //SUBSTRING(s.sale_bill_id, -6, 6)
+  let sql = `SELECT s.is_cancel As is_cancel, s.sale_bill_id AS sale_bill_id,s.ism_id AS ism_id,s.mem_id AS mem_id,s.date AS date,s.sale_num AS sale_num,s.sale_price AS sale_price,i.ism_result FROM installment i 
   RIGHT JOIN sale s ON s.ism_id=i.ism_ref
   WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" ORDER BY s.id DESC `;
 
   if (r_admin === "true") {
-    sql = `SELECT SUBSTRING(s.sale_bill_id, -6, 6) AS sale_bill_id,s.ism_id AS ism_id,s.mem_id AS mem_id,s.date AS date,s.sale_num AS sale_num,s.sale_price AS sale_price,i.ism_result FROM installment i 
+    sql = `SELECT s.is_cancel As is_cancel, s.sale_bill_id AS sale_bill_id,s.ism_id AS ism_id,s.mem_id AS mem_id,s.date AS date,s.sale_num AS sale_num,s.sale_price AS sale_price,i.ism_result FROM installment i 
     RIGHT JOIN sale s ON s.ism_id=i.ism_ref
     WHERE i.ism_date ="${r_date}" ORDER BY s.id DESC `;
     console.log("Admin: " + r_admin);
@@ -498,13 +505,13 @@ app.get("/winreport", (req, res) => {
   const r_admin = req.query.p_admin;
   const r_mem_id = req.query.p_mem_id;
   let sql = `SELECT s.*,i.ism_result FROM installment i 
-  RIGHT JOIN sale s ON s.ism_id=i.ism_ref 
+  RIGHT JOIN sale s ON s.ism_id=i.ism_ref AND s.is_cancel=0
   WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" AND (s.sale_num = SUBSTRING(i.ism_result, -6, 6) OR s.sale_num = SUBSTRING(i.ism_result, -5, 5) OR s.sale_num = SUBSTRING(i.ism_result, -4, 4) OR s.sale_num = SUBSTRING(i.ism_result, -3, 3) OR = SUBSTRING(i.ism_result, -2, 2)) ORDER BY s.id DESC `;
   // WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" AND (s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -6, 6)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -5, 5)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -4, 4)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -3, 3)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -2, 2))) ORDER BY s.id DESC `;
 
   if (r_admin === "true") {
     sql = `SELECT s.*,i.ism_result FROM installment i 
-    RIGHT JOIN sale s ON s.ism_id=i.ism_ref
+    RIGHT JOIN sale s ON s.ism_id=i.ism_ref AND s.is_cancel=0
     WHERE i.ism_date ="${r_date}" AND (s.sale_num = SUBSTRING(i.ism_result, -6, 6) OR s.sale_num = SUBSTRING(i.ism_result, -5, 5) OR s.sale_num = SUBSTRING(i.ism_result, -4, 4) OR s.sale_num = SUBSTRING(i.ism_result, -3, 3) OR s.sale_num = SUBSTRING(i.ism_result, -2, 2)) ORDER BY s.id DESC `;
     // WHERE i.ism_date ="${r_date}" AND (s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -6, 6)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -5, 5)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -4, 4)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -3, 3)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -2, 2))) ORDER BY s.id DESC `;
     console.log("Admin: " + r_admin);
@@ -521,7 +528,17 @@ app.get("/winreport", (req, res) => {
     }
   });
 });
-
+app.post("/cancel", (req, res) => {
+  const billId = req.body.billId;
+  const sql=`UPDATE sale SET is_cancel=1 WHERE sale_bill_id="${billId}"`;
+  conn.db.query(sql, (er, result) => {
+    if (er) {
+      res.send("Error");
+    } else {
+      res.send("Completed");
+    }
+  });
+});
 app.listen(port, () => {
   console.log("Yey, your server is running on port: " + port);
 });
