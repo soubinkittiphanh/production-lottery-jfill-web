@@ -169,6 +169,7 @@ export default {
           },
         })
         .then((res) => {
+          console.log('DATA==============='+res.data); 
           this.report_data = res.data;
           this.isloading = false;
         })
