@@ -508,7 +508,7 @@ app.get("/winreport", (req, res) => {
   RIGHT JOIN sale s ON s.ism_id=i.ism_ref AND s.is_cancel=0
   WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" AND (s.sale_num = SUBSTRING(i.ism_result, -6, 6) OR s.sale_num = SUBSTRING(i.ism_result, -5, 5) OR s.sale_num = SUBSTRING(i.ism_result, -4, 4) OR s.sale_num = SUBSTRING(i.ism_result, -3, 3) OR = SUBSTRING(i.ism_result, -2, 2)) ORDER BY s.id DESC `;
   // WHERE i.ism_date ="${r_date}" and s.mem_id="${r_mem_id}" AND (s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -6, 6)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -5, 5)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -4, 4)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -3, 3)) OR s.sale_num LIKE CONCAT('%',SUBSTRING(i.ism_result, -2, 2))) ORDER BY s.id DESC `;
-
+  //ABCD
   if (r_admin === "true") {
     sql = `SELECT s.*,i.ism_result FROM installment i 
     RIGHT JOIN sale s ON s.ism_id=i.ism_ref AND s.is_cancel=0
