@@ -68,7 +68,6 @@ export default {
       r_date: "",
       isloading: false,
       error: null,
-
     };
   },
   computed: {
@@ -83,9 +82,9 @@ export default {
       console.log(this.$store.getters.isAdmin);
       return this.$store.getters.isAdmin;
     },
-    mem_id(){
-        return this.$store.getters.user_id;
-    }
+    mem_id() {
+      return this.$store.getters.user_id;
+    },
   },
   methods: {
     getData() {
@@ -94,16 +93,19 @@ export default {
       this.isloading = true;
 
       axios
-        .get(apiDomain.url+"salereport",{
-            params:{
-                p_date:this.r_date,
-                p_admin:this.isAdmin,
-                p_mem_id:this.mem_id,
-            }
+        .get(apiDomain.url + "salereport", {
+          params: {
+            p_date: this.r_date,
+            p_admin: this.isAdmin,
+            p_mem_id: this.mem_id,
+          },
         })
         .then((res) => {
           console.log(res.data);
-          this.report_data = res.data;
+          this.report_data = res.data.filter((a) => {
+            return a.is_cancel == 0;
+          });
+          console.log(this.report_data);
           console.log(this.report_data);
           this.isloading = false;
         })

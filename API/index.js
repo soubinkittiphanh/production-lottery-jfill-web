@@ -501,7 +501,7 @@ app.get("/salereport", (req, res) => {
 });
 // ############ Win Report #######################
 app.get("/winreport", (req, res) => {
-  const r_date = req.query.r_date;
+  const r_date = req.query.p_date;
   const r_admin = req.query.p_admin;
   const r_mem_id = req.query.p_mem_id;
   let sql = `SELECT s.*,i.ism_result FROM installment i 

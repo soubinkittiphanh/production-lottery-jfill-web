@@ -15,8 +15,8 @@
     <router-link to="/lotterymgr" class="navbar__link"  v-if="isAdmin">
       <span class="material-icons">home</span>ເປີດງວດ</router-link
     >
-    <!-- <router-link to="/esc" class="navbar__link"  v-if="isAdmin">
-      <span class="material-icons">home</span>ກວດສອບປຣິນເຕີ</router-link
+    <!-- <router-link to="/category" class="navbar__link"  v-if="isAdmin">
+      <span class="material-icons">language</span>ຈັດການປະເພດເລກ</router-link
     > -->
 
     <router-link to="/salelimit" class="navbar__link" v-if="isAdmin">

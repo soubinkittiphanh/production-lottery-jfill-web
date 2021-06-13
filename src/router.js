@@ -1,17 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "./views/Login.vue";
 import Home from "./views/HelloUser.vue";
-// import Sale from "./components/SalePad.vue";
-// import SaleReport from "./views/SaleReport.vue";
-// import WinReport from "./views/WinReport.vue";
-// import LotteryMgr from "./views/LotteryMgr.vue";
+import Cate from "./views/CategoryMgr.vue";
 import Member from "./views/Member.vue";
-// import MemberList from "./views/MemberList.vue";
-// import SaleLimit from "./views/SaleLimit.vue";
-// import PayRate from "./views/PayRateMgr.vue";
-// import Esc from "./views/EscPos.vue";
 import Logout from "./views/Logout.vue";
-// import PaginationControll from "./components/PaginationControl.vue";
 import store from "./store/index";
 const router = createRouter({
   history: createWebHistory(),
@@ -20,6 +12,13 @@ const router = createRouter({
     {
       path: "/home",
       component: Home,
+      meta: {
+        requireAuth: true,
+      },
+    },
+    {
+      path: "/category",
+      component: Cate,
       meta: {
         requireAuth: true,
       },
