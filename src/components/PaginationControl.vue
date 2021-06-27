@@ -124,7 +124,7 @@ export default {
           this.originData = this.data;
           this.total = this.originData.length;
           // console.log("page:" + results.length);
-          this.perPage = 5;
+          this.perPage = 20;
           this.getData(this.currentPage);
           this.isloading = false;
         })

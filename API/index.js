@@ -104,7 +104,7 @@ app.get("/ismref", (req, res) => {
 // ############ ເພີ່ມສະມາຊິກ #######################
 app.get("/fetchuser", (req, res) => {
   conn.db.query(
-    "SELECT member.*, SUM(s.sale_price) AS total FROM member LEFT  JOIN sale s ON member.mem_id=s.mem_id AND s.ism_id=(SELECT MAX(i.ism_ref) FROM installment i) GROUP BY member.mem_id",
+    "SELECT member.*, SUM(s.sale_price) AS total FROM (SELECT distinct member.* FROM member) member LEFT  JOIN sale s ON member.mem_id=s.mem_id AND s.ism_id=(SELECT MAX(i.ism_ref) FROM installment i) GROUP BY member.mem_id",
     (err, result) => {
       if (err) {
         console.log(err);
