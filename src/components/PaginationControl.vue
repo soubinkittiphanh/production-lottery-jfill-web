@@ -9,23 +9,31 @@
       <thead>
         <tr>
           <th scope="col">ຊື່</th>
-          <th scope="col">ນາມສະກຸນ</th>
+          <th scope="col">ID</th>
           <th scope="col">ບ້ານ</th>
           <th scope="col">ເມືອງ</th>
           <th scope="col">ແຂວງ</th>
           <th scope="col">ຍອດຂາຍ</th>
-          <th scope="col">ສະຖານະ</th>
+          <th scope="col">%ຂາຍ</th>
+          <th scope="col">ຍອດຖືກ</th>
+          <th scope="col">%ລາງວັນ</th>
+          <th scope="col">ສົ່ງAdmin</th>
+          <th scope="col">Status</th>
           <th scope="col">ແກ້ໄຂ</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="d in data" v-bind:key="d.id">
           <td>{{ d.name }}</td>
-          <td>{{ d.lname }}</td>
+          <td>{{ d.logid }}</td>
           <td>{{ d.vill }}</td>
           <td>{{ d.dist }}</td>
           <td>{{ d.pro }}</td>
           <td>{{ String(formatNum(d.total)) }}</td>
+          <td>{{ String(formatNum(d.total*d.comsale/100)) }}</td>
+          <td>0</td>
+          <td>0</td>
+          <td>{{ String(formatNum(d.total-(d.total*d.comsale/100))) }}</td>
           <td>{{ d.active === 1 ? "ໃຊ້ງານຢູ່" : "Block" }}</td>
           <td>
             <button class="btn btn-warning" @click="viewUser(d.id)">
@@ -93,6 +101,8 @@ export default {
           active: this.originData[id].active,
           admin: this.originData[id].admin,
           total: this.originData[id].total,
+          comsale: this.originData[id].comsale,
+          comwin: this.originData[id].comwin,
         });
       }
       this.data = responseData;
@@ -117,13 +127,14 @@ export default {
               active: res.data[id].active,
               admin: res.data[id].admin,
               total: res.data[id].total,
+              comsale: res.data[id].com_sale,
+              comwin: res.data[id].com_win,
             });
           }
           this.users = results;
           this.data = results;
           this.originData = this.data;
           this.total = this.originData.length;
-          // console.log("page:" + results.length);
           this.perPage = 20;
           this.getData(this.currentPage);
           this.isloading = false;

@@ -104,7 +104,7 @@ app.get("/ismref", (req, res) => {
 // ############ ເພີ່ມສະມາຊິກ #######################
 app.get("/fetchuser", (req, res) => {
   conn.db.query(
-    "SELECT member.*, SUM(s.sale_price) AS total FROM (SELECT distinct member.* FROM member) member LEFT  JOIN sale s ON member.mem_id=s.mem_id AND s.ism_id=(SELECT MAX(i.ism_ref) FROM installment i) GROUP BY member.mem_id",
+    "SELECT m.*, SUM(s.sale_price) AS total FROM member m LEFT  JOIN sale s ON m.mem_id=s.mem_id AND  s.ism_id=(SELECT MAX(i.ism_ref) FROM installment i) WHERE s.is_cancel=0 GROUP BY m.mem_id",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -157,11 +157,13 @@ app.post("/createuser", (req, res) => {
   const admin = req.body.admin;
   const rec = req.body.mem_rec;
   const tel = req.body.mem_tel;
+  const com_sale = req.body.com_sale;
+  const com_win = req.body.com_win;
   console.log(rec);
   console.log(tel);
   conn.db.query(
-    "INSERT INTO `member`( `mem_id`, `mem_pass`, `mem_name`, `mem_lname`, `mem_village`, `mem_dist`, `mem_pro`, `active`, `admin`,`mem_rec`,`mem_tel`) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-    [logid, logpass, name, lname, vill, dist, pro, active, admin, rec, tel],
+    "INSERT INTO `member`( `mem_id`, `mem_pass`, `mem_name`, `mem_lname`, `mem_village`, `mem_dist`, `mem_pro`, `active`, `admin`,`mem_rec`,`mem_tel`,`com_sale`,`com_win`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    [logid, logpass, name, lname, vill, dist, pro, active, admin, rec, tel,com_sale,com_win],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -185,11 +187,13 @@ app.put("/updateuser", (req, res) => {
   const admin = req.body.admin;
   const rec = req.body.mem_rec;
   const tel = req.body.mem_tel;
+  const com_sale = req.body.com_sale;
+  const com_win = req.body.com_win;
   console.log("up id" + id);
   console.log("up id" + name);
   conn.db.query(
-    "UPDATE `member` SET `mem_id`=?,`mem_pass`=?,`mem_name`=?,`mem_lname`=?,`mem_village`=?,`mem_dist`=?,`mem_pro`=?,`active`=?,`admin`=?,`mem_rec`=?,`mem_tel`=? WHERE `id`=?",
-    [logid, logpass, name, lname, vill, dist, pro, active, admin, rec, tel, id],
+    "UPDATE `member` SET `mem_id`=?,`mem_pass`=?,`mem_name`=?,`mem_lname`=?,`mem_village`=?,`mem_dist`=?,`mem_pro`=?,`active`=?,`admin`=?,`mem_rec`=?,`mem_tel`=?,`com_sale`=?,`com_win`=? WHERE `id`=?",
+    [logid, logpass, name, lname, vill, dist, pro, active, admin, rec, tel,com_sale,com_win, id],
     (err, result) => {
       if (err) {
         console.log(err);

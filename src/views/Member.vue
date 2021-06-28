@@ -55,6 +55,14 @@
         <div class="col-md-12">
           <input type="text" class="form-control" v-model="tel" />
         </div>
+        <label for="roll_id" class="col-md-2 col-form-label">%ຂາຍ:</label>
+        <div class="col-md-12">
+          <input type="text" class="form-control" v-model="comsale" />
+        </div>
+        <label for="roll_id" class="col-md-2 col-form-label">%ຖືກລາງວັນ:</label>
+        <div class="col-md-12">
+          <input type="text" class="form-control" v-model="comwin" />
+        </div>
         <label for="roll_id" class="col-md-2 col-form-label"></label>
         <div class="col-md-12">
           <button
@@ -115,6 +123,8 @@ export default {
       pro: "",
       recommendator: "",
       tel: "",
+      comsale:30,
+      comwin:5,
       active: true,
       admin: false,
       formvailid: {
@@ -191,6 +201,8 @@ export default {
             admin: this.admin,
             mem_rec: this.recommendator,
             mem_tel: this.tel,
+            com_sale:this.comsale,
+            com_win:this.comwin,
           })
           .then((res) => {
             alert(res.data);
@@ -220,6 +232,8 @@ export default {
           admin: this.admin,
           mem_rec: this.recommendator,
           mem_tel: this.tel,
+          com_sale:this.comsale,
+            com_win:this.comwin,
         })
         .then((res) => {
           this.isloading = false;
@@ -249,6 +263,9 @@ export default {
           this.admin = res.data[0].admin === 1 ? true : false;
           this.recommendator=res.data[0].mem_rec;
           this.tel=res.data[0].mem_tel;
+          this.comsale=res.data[0].com_sale;
+          this.comwin=res.data[0].com_win;
+
           this.isloading = false;
         })
         .catch((er) => {
