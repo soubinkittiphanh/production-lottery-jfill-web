@@ -31,9 +31,9 @@
           <td>{{ d.pro }}</td>
           <td>{{ String(formatNum(d.total)) }}</td>
           <td>{{ String(formatNum(d.total*d.comsale/100)) }}</td>
-          <td>0</td>
-          <td>0</td>
-          <td>{{ String(formatNum(d.total-(d.total*d.comsale/100))) }}</td>
+          <td>{{ String(formatNum(d.winamount)) }}</td>
+          <td>{{ String(formatNum(d.winamount*d.comwin/100)) }}</td>
+          <td>{{ String(formatNum((d.total-(d.total*d.comsale/100) - (d.winamount))-d.winamount*d.comwin/100  )) }}</td>
           <td>{{ d.active === 1 ? "ໃຊ້ງານຢູ່" : "Block" }}</td>
           <td>
             <button class="btn btn-warning" @click="viewUser(d.id)">
@@ -103,6 +103,7 @@ export default {
           total: this.originData[id].total,
           comsale: this.originData[id].comsale,
           comwin: this.originData[id].comwin,
+          winamount: this.originData[id].winamount,
         });
       }
       this.data = responseData;
@@ -129,6 +130,7 @@ export default {
               total: res.data[id].total,
               comsale: res.data[id].com_sale,
               comwin: res.data[id].com_win,
+              winamount: res.data[id].win_amount,
             });
           }
           this.users = results;
