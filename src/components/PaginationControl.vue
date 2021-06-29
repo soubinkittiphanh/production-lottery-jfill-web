@@ -4,7 +4,7 @@
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
       <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
     </div>
-    <div class="alert alert-success">ສະມາຊິກທັງຫມົດ</div>
+    <div class="alert alert-success">ສະມາຊິກທັງຫມົດ </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -23,6 +23,20 @@
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td>ລວມຍອດທັງໝົດ:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>[{{ String(formatNum( totalsale))}}]</td>
+          <td>[{{ String(formatNum( totalcom3))}}]</td>
+          <td>[{{ String(formatNum( totalwin))}}]</td>
+          <td>[{{ String(formatNum( totalcom5))}}]</td>
+          <td>[{{ String(formatNum( totalreturn))}}]</td>
+          <td></td>
+          <td></td>
+        </tr>
         <tr v-for="d in data" v-bind:key="d.id">
           <td>{{ d.name }}</td>
           <td>{{ d.logid }}</td>
@@ -63,6 +77,11 @@ export default {
   props: ["datas"],
   data() {
     return {
+      totalsale:0,
+      totalcom3:0,
+      totalwin:0,
+      totalcom5:0,
+      totalreturn:0,
       currentPage: 1,
       perPage: 2,
       total: 0,
@@ -132,6 +151,13 @@ export default {
               comwin: res.data[id].com_win,
               winamount: res.data[id].win_amount,
             });
+            //Cal total amount of sale, com30, com5, return admin
+            this.totalsale+=res.data[id].total;
+            this.totalcom3+=res.data[id].total*res.data[id].com_sale/100;
+            this.totalwin+=res.data[id].win_amount;
+            this.totalcom5+=res.data[id].win_amount*res.data[id].com_win/100;
+            this.totalreturn+=(res.data[id].total-(res.data[id].total*res.data[id].com_sale/100) - (res.data[id].win_amount))-res.data[id].win_amount*res.data[id].com_win/100;
+
           }
           this.users = results;
           this.data = results;
