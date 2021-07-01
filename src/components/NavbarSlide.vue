@@ -111,4 +111,7 @@ export default {
 .navbar__link:active {
   background: #007d65;
 }
+.container{
+  height: 100vh;
+}
 </style>

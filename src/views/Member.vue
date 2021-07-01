@@ -206,6 +206,7 @@ export default {
           })
           .then((res) => {
             alert(res.data);
+            this.get_auto_id();
             this.isloading = false;
           })
           .catch((err) => {
