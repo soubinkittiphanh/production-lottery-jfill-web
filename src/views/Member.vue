@@ -33,6 +33,11 @@
           <span class="error" v-if="!formvailid.logpass"
             >ກະລຸນາໃສ່ລະຫັດເຂົ້າລະບົບ</span
           >
+          <!-- <div v-if="id"> -->
+            <button v-if="id" class="btn btn-danger" @click.prevent="resetpass(id)">
+              RESET
+            </button>
+          <!-- </div> -->
         </div>
         <label for="roll_id" class="col-md-2 col-form-label">ບ້ານ:</label>
         <div class="col-md-12">
@@ -123,8 +128,8 @@ export default {
       pro: "",
       recommendator: "",
       tel: "",
-      comsale:30,
-      comwin:5,
+      comsale: 30,
+      comwin: 5,
       active: true,
       admin: false,
       formvailid: {
@@ -201,8 +206,8 @@ export default {
             admin: this.admin,
             mem_rec: this.recommendator,
             mem_tel: this.tel,
-            com_sale:this.comsale,
-            com_win:this.comwin,
+            com_sale: this.comsale,
+            com_win: this.comwin,
           })
           .then((res) => {
             alert(res.data);
@@ -233,8 +238,25 @@ export default {
           admin: this.admin,
           mem_rec: this.recommendator,
           mem_tel: this.tel,
-          com_sale:this.comsale,
-            com_win:this.comwin,
+          com_sale: this.comsale,
+          com_win: this.comwin,
+        })
+        .then((res) => {
+          this.isloading = false;
+          alert(res.data);
+        })
+        .catch((er) => {
+          this.isloading = false;
+          this.error = er;
+        });
+    },
+    resetpass(id) {
+      this.isloading = true;
+      this.error = null;
+      axios
+        .put(apiDomain.url + "resetpass", {
+          id: id,
+          logpass: this.logpass,
         })
         .then((res) => {
           this.isloading = false;
@@ -262,10 +284,10 @@ export default {
           this.pro = res.data[0].mem_pro;
           this.active = res.data[0].active === 1 ? true : false;
           this.admin = res.data[0].admin === 1 ? true : false;
-          this.recommendator=res.data[0].mem_rec;
-          this.tel=res.data[0].mem_tel;
-          this.comsale=res.data[0].com_sale;
-          this.comwin=res.data[0].com_win;
+          this.recommendator = res.data[0].mem_rec;
+          this.tel = res.data[0].mem_tel;
+          this.comsale = res.data[0].com_sale;
+          this.comwin = res.data[0].com_win;
 
           this.isloading = false;
         })
