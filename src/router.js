@@ -4,6 +4,7 @@ import Home from "./views/HelloUser.vue";
 import Cate from "./views/CategoryMgr.vue";
 import Member from "./views/Member.vue";
 import Logout from "./views/Logout.vue";
+import Branch from "./views/BranchMgr.vue";
 import store from "./store/index";
 const router = createRouter({
   history: createWebHistory(),
@@ -12,6 +13,13 @@ const router = createRouter({
     {
       path: "/home",
       component: Home,
+      meta: {
+        requireAuth: true,
+      },
+    },
+    {
+      path: "/brch",
+      component: Branch,
       meta: {
         requireAuth: true,
       },

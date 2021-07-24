@@ -18,6 +18,9 @@
     <router-link to="/category" class="navbar__link"  v-if="isAdmin">
       <span class="material-icons">language</span>ຈັດການປະເພດເລກ</router-link
     >
+    <router-link to="/brch" class="navbar__link"  v-if="isAdmin">
+      <span class="material-icons">language</span>ຈັດການສາຂາ</router-link
+    >
 
     <router-link to="/salelimit" class="navbar__link" v-if="isAdmin">
       <span class="material-icons">lock_open</span>ກຳນົດເລກເຕັມຮູ</router-link
