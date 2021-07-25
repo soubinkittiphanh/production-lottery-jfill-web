@@ -3,6 +3,13 @@
     <form>
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
       <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
+
+      <select class="form-select" aria-label="Default select example">
+        <option v-for="d in branch" v-bind:key="d.id" :value="d.id">{{d.code}} | {{d.name}}</option>
+        <option selected v-if="id">{{brc_code}} | SAVANH</option>
+    
+      </select>
+      <span>Selected: {{ selected }}</span>
       <div class="form-group row">
         <label for="roll_id" class="col-md-2 col-form-label">ຊື່ຜູ້ໃຊ້:</label>
         <div class="col-md-12">
@@ -34,9 +41,13 @@
             >ກະລຸນາໃສ່ລະຫັດເຂົ້າລະບົບ</span
           >
           <!-- <div v-if="id"> -->
-            <button v-if="id" class="btn btn-danger" @click.prevent="resetpass(id)">
-              RESET
-            </button>
+          <button
+            v-if="id"
+            class="btn btn-danger"
+            @click.prevent="resetpass(id)"
+          >
+            RESET
+          </button>
           <!-- </div> -->
         </div>
         <label for="roll_id" class="col-md-2 col-form-label">ບ້ານ:</label>
@@ -128,6 +139,9 @@ export default {
       pro: "",
       recommendator: "",
       tel: "",
+      selected :"",
+      brc_code:"",
+      branch:[],
       comsale: 30,
       comwin: 5,
       active: true,
@@ -208,6 +222,7 @@ export default {
             mem_tel: this.tel,
             com_sale: this.comsale,
             com_win: this.comwin,
+            brc_code:this.brc_code,
           })
           .then((res) => {
             alert(res.data);
@@ -240,6 +255,7 @@ export default {
           mem_tel: this.tel,
           com_sale: this.comsale,
           com_win: this.comwin,
+          brc_code:this.brc_code,
         })
         .then((res) => {
           this.isloading = false;
@@ -288,6 +304,7 @@ export default {
           this.tel = res.data[0].mem_tel;
           this.comsale = res.data[0].com_sale;
           this.comwin = res.data[0].com_win;
+          this.brc_code=res.data[0].brc_code;
 
           this.isloading = false;
         })
@@ -296,10 +313,35 @@ export default {
           this.error = er;
         });
     },
+      fetchbrc() {
+      this.isloading = true;
+      this.error = null;
+      axios
+        .get(apiDomain.url + "fetchbrc")
+        .then((res) => {
+          var results = [];
+          for (const id in res.data) {
+            results.push({
+              id: res.data[id].id,
+              code: res.data[id].co_code,
+              name: res.data[id].co_name,
+              lname: res.data[id].co_gname,
+            });
+          }
+          this.branch = results;
+          console.log(":::::::::::::::" + this.branch.length);
+        })
+        .catch((er) => {
+          this.isloading = false;
+          this.error = er;
+          alert("ເກີດຂໍ້ຜິດພາດການເຊື່ອມຕໍ່ເຊີເວີ: " + er);
+        });
+    },
   },
   mounted() {
     console.log("Mounted");
     this.get_auto_id();
+    this.fetchbrc();
   },
   created() {
     this.id = this.$route.params.userid;

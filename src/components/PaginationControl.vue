@@ -178,7 +178,6 @@ export default {
     console.log("mounted: " + this.data);
     this.currentPage = 1;
     this.fetchuser();
-    this.bus.$on('fetch', this.fetchuser)
   },
 };
 </script>
