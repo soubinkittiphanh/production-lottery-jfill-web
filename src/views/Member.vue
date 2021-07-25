@@ -4,13 +4,20 @@
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
       <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
 
-      <select class="form-select" aria-label="Default select example">
-        <option v-for="d in branch" v-bind:key="d.id" :value="d.id">{{d.code}} | {{d.name}}</option>
-        <option selected v-if="id">{{brc_code}} | SAVANH</option>
-    
-      </select>
-      <span>Selected: {{ selected }}</span>
       <div class="form-group row">
+        <label for="roll_id" class="col-md-2 col-form-label">ສາຂາ:</label>
+        <div class="col-md-12">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            :required="true"
+            v-model="brc_code"
+          >
+            <option v-for="d in branch" v-bind:key="d.id" :value="d.code">
+              {{ d.code }} | {{ d.name }}
+            </option>
+          </select>
+        </div>
         <label for="roll_id" class="col-md-2 col-form-label">ຊື່ຜູ້ໃຊ້:</label>
         <div class="col-md-12">
           <input type="text" class="form-control" v-model="name" />
@@ -139,9 +146,9 @@ export default {
       pro: "",
       recommendator: "",
       tel: "",
-      selected :"",
-      brc_code:"",
-      branch:[],
+      selected: "",
+      brc_code: "PXK",
+      branch: [],
       comsale: 30,
       comwin: 5,
       active: true,
@@ -222,7 +229,7 @@ export default {
             mem_tel: this.tel,
             com_sale: this.comsale,
             com_win: this.comwin,
-            brc_code:this.brc_code,
+            brc_code: this.brc_code,
           })
           .then((res) => {
             alert(res.data);
@@ -255,7 +262,7 @@ export default {
           mem_tel: this.tel,
           com_sale: this.comsale,
           com_win: this.comwin,
-          brc_code:this.brc_code,
+          brc_code: this.brc_code,
         })
         .then((res) => {
           this.isloading = false;
@@ -304,8 +311,8 @@ export default {
           this.tel = res.data[0].mem_tel;
           this.comsale = res.data[0].com_sale;
           this.comwin = res.data[0].com_win;
-          this.brc_code=res.data[0].brc_code;
-
+          this.brc_code = res.data[0].brc_code;
+          console.log(":::::::::::::::BRC::::::::::::::" + this.brc_code);
           this.isloading = false;
         })
         .catch((er) => {
@@ -313,7 +320,7 @@ export default {
           this.error = er;
         });
     },
-      fetchbrc() {
+    fetchbrc() {
       this.isloading = true;
       this.error = null;
       axios
@@ -341,10 +348,10 @@ export default {
   mounted() {
     console.log("Mounted");
     this.get_auto_id();
-    this.fetchbrc();
   },
   created() {
     this.id = this.$route.params.userid;
+    this.fetchbrc();
     console.log("Created");
     // this.id=this.$route.params.userid;
     // const userselected=this.users.find(user => user.id===userid);
