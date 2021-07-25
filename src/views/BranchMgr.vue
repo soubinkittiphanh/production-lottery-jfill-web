@@ -63,7 +63,11 @@
     <div>
       <ul></ul>
     </div>
-    <branch-page @update-branch="resdata" :datas="data"></branch-page>
+    <branch-page
+      @update-branch="resdata"
+      :datas="data"
+      ref="brcp"
+    ></branch-page>
   </div>
 </template>
 <script>
@@ -102,7 +106,7 @@ export default {
             this.isloading = false;
             alert(res.data);
             // res.status==200?this.fetchbrc:null
-            res.status==200?this.bus.$emit('fetch'):null
+            res.status == 200 ? this.$refs.brcp.fetchbrc() : null;
           })
           .catch((er) => {
             alert("ເກີດປັນຫາຂັດຂ້ອງ: " + er);
@@ -139,7 +143,8 @@ export default {
             this.isloading = false;
             alert(res.data);
             // res.status == 200 ? (this.id = this.resetText()) : null; // RESET TEXTFIELD IF UPDATE SUCCEED
-               res.status==200?this.bus.$emit('fetch'):null
+            res.status == 200 ? this.$refs.brcp.fetchbrc() : null;
+
             console.log("::::::::::" + res.status);
           })
           .catch((er) => {
