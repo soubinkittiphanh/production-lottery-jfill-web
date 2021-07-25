@@ -4,7 +4,7 @@
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
       <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
     </div>
-    <div class="alert alert-success">ສະມາຊິກທັງຫມົດ </div>
+    <div class="alert alert-success">ສາຂາທັງໝົດ </div>
     <table class="table table-striped">
       <thead>
         <tr>
