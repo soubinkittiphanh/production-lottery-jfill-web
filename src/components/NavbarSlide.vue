@@ -42,6 +42,9 @@
       <span class="material-icons">receipt</span>ລາຍງານຖືກລາງວັນ</router-link
     >
 
+    <router-link to="/memgroup" class="navbar__link"  v-if="isAdmin">
+      <span class="material-icons">group_off</span>ສິດກຸ່ມຜູ້ໃຊ້ງານ</router-link
+    >
     <router-link to="/memberlist" class="navbar__link"  v-if="isAdmin">
       <span class="material-icons">group</span>ສະມາຊິກ</router-link
     >

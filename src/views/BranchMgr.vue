@@ -18,7 +18,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="::: ສາຂາສະຫວັນນະເຂດ :::"
+            placeholder="::: ສາຂາປາເຊ :::"
             v-model="name"
           />
           <label for=""></label>

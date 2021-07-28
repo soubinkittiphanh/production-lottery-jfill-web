@@ -5,6 +5,7 @@ import Cate from "./views/CategoryMgr.vue";
 import Member from "./views/Member.vue";
 import Logout from "./views/Logout.vue";
 import Branch from "./views/BranchMgr.vue";
+// import MemGroup from "./views/GroupMgr.vue";
 import store from "./store/index";
 const router = createRouter({
   history: createWebHistory(),
@@ -77,6 +78,15 @@ const router = createRouter({
       path: "/lotterymgr",
       component: () =>
         import(/* webpackChuckName:"LotteryMgr" */ "./views/LotteryMgr.vue"),
+      meta: {
+        requireAuth: true,
+        requireAdmin: true,
+      },
+    },
+    {
+      path: "/memgroup",
+      component: () =>
+        import(/* webpackChuckName:"Member" */ "./views/GroupMgr.vue"),
       meta: {
         requireAuth: true,
         requireAdmin: true,

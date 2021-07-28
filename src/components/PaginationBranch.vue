@@ -20,7 +20,7 @@
           <td>ສາຂາທັງໝົດ:</td>
           <td></td>
           <td></td>
-          <td>{{data==null?0:data.length}}</td>
+          <td>{{originData==null?0:originData.length}}</td>
           <td>ສາຂາ</td>
         </tr>
         <tr v-for="d in data" v-bind:key="d.id">
