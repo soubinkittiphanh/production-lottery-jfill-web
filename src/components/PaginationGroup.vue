@@ -4,7 +4,7 @@
       <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
       <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
     </div>
-    <div class="alert alert-success">ສາຂາທັງໝົດ</div>
+    <div class="alert alert-success"><span>ກຸ່ມຜູ້ໃຊ້ງານທັງຫມົດ: {{ originData == null ? 0 : originData.length }} ກຸ່ມ</span></div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -26,25 +26,8 @@
           <th scope="col">ແກ້ໄຂ</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr>
-          <td>ກຸ່ມຜູ້ໃຊ້ງານທັງຫມົດ:</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{{ originData == null ? 0 : originData.length }}</td>
-          <td>ສາຂາ</td>
-        </tr>
         <tr v-for="d in data" v-bind:key="d.id">
           <td>{{ d.id }}</td>
           <td>{{ d.code }}</td>

@@ -10,7 +10,7 @@
             type="text"
             class="form-control"
             placeholder="::: PXK :::"
-            v-model="abbr"
+            v-model="sel_g_p.code"
             :disabled="id"
           />
         </div>
@@ -22,7 +22,7 @@
             type="text"
             class="form-control"
             placeholder="::: ສາຂາປາເຊ :::"
-            v-model="name"
+            v-model="sel_g_p.name"
           />
           <label for=""></label>
         </div>
@@ -32,20 +32,17 @@
             class="form-select"
             aria-label="Default select example"
             :required="true"
+            v-model="m_select"
+            @change="onChangeSelect($event)"
           >
-            <option>ການເຂົ້າເຖິງ ການເປີດງວດ</option>
-            <option>ການເຂົ້າເຖິງ ການຈັດການປະເພດເລກ</option>
-            <option>ການເຂົ້າເຖິງ ການຈັດການສາຂາ</option>
-            <option>ການເຂົ້າເຖິງ ການກຳນົດເລກເຕັມຮູ</option>
-            <option>ການເຂົ້າເຖິງ ການກຳນົດອັດຕາຈ່າຍລາງວັນ</option>
-            <option>ການເຂົ້າເຖິງ ການຂາຍ</option>
-            <option>ການເຂົ້າເຖິງ ການລາຍງານຍອດຂາຍ</option>
-            <option>ການເຂົ້າເຖິງ ການລາຍງານຍອດຖືກລາງວັນ</option>
-            <option>ການເຂົ້າເຖິງ ການກຳນົດສິດທິຜູ້ໃຊ້</option>
-            <option>ການເຂົ້າເຖິງ ການເບິ່ງສະມາຊິກທັງຫມົດ</option>
-            <option>ການເຂົ້າເຖິງ ການເພີ່ມຜູ້ໃຊ້ງານ</option>
+            <option v-for="(v, k) in sel_g_p.menu" v-bind:key="k" :value="k">
+              {{ keyDesc(k) }} | {{ v }}
+            </option>
           </select>
         </div>
+        <label for="roll_id" class="col-md-4 col-form-label"
+          >ອະນຸຍາດ?: {{ m_select }}</label
+        >
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-6">
@@ -74,11 +71,7 @@
     <div>
       <ul></ul>
     </div>
-    <group-page
-      @update-group="resdata"
-      :datas="data"
-      ref="brcp"
-    ></group-page>
+    <group-page @update-group="resdata" :datas="data" ref="brcp"></group-page>
   </div>
 </template>
 <script>
@@ -89,6 +82,11 @@ export default {
   components: {
     GroupPage,
   },
+  watch: {
+    m_select: function (val) {
+      console.log("WATCHER: " + val);
+    },
+  },
   data() {
     return {
       isloading: false,
@@ -97,11 +95,82 @@ export default {
       abbr: "",
       name: "",
       desc: "",
+      m_select: "",
+      sel_g_p: {
+        id: "",
+        code: "",
+        name: "",
+        desc: "",
+        menu: {
+          m_home: 0,
+          m_category: 0,
+          m_branch: 0,
+          m_limited_price: 0,
+          m_pay_rate: 0,
+          m_sale: 0,
+          m_re_sale: 0,
+          m_re_win: 0,
+          m_s_member: 0,
+          m_i_member: 0,
+          m_master: 0,
+        },
+      },
       data_user: [],
-      data:[],
+      data: [],
     };
   },
+  computed: {},
   methods: {
+    onChangeSelect(event) {
+      this.m_select = event.target.value;
+      console.log("====================================");
+      console.log("EVANT CHANGE M: " + this.m_select);
+      console.log("EVANT CHANGE E: " + event.target.value);
+      console.log("====================================");
+    },
+    keyDesc(objMem) {
+      this.m_select = objMem;
+      let desc = "";
+      switch (objMem) {
+        case "m_home":
+          desc = "ການເຂົ້າເຖິງ ການເປີດງວດ";
+          break;
+        case "m_category":
+          desc = "ການເຂົ້າເຖິງ ການຈັດການປະເພດເລກ";
+          break;
+        case "m_branch":
+          desc = "ການເຂົ້າເຖິງ ການຈັດການສາຂາ";
+          break;
+        case "m_limited_price":
+          desc = "ການເຂົ້າເຖິງ ການກຳນົດເລກເຕັມຮູ";
+          break;
+        case "m_pay_rate":
+          desc = "ການເຂົ້າເຖິງ ການກຳນົດອັດຕາຈ່າຍລາງວັນ";
+          break;
+        case "m_sale":
+          desc = "ການເຂົ້າເຖິງ ການຂາຍ";
+          break;
+        case "m_re_sale":
+          desc = "ການເຂົ້າເຖິງ ການລາຍງານຍອດຂາຍ";
+          break;
+        case "m_re_win":
+          desc = "ການເຂົ້າເຖິງ ການລາຍງານຍອດຖືກລາງວັນ";
+          break;
+        case "m_s_member":
+          desc = "ການເຂົ້າເຖິງ ການກຳນົດສິດທິຜູ້ໃຊ້";
+          break;
+        case "m_i_member":
+          desc = "ການເຂົ້າເຖິງ ການເບິ່ງສະມາຊິກທັງຫມົດ";
+          break;
+        case "m_master":
+          desc = "ເປັນ Master";
+          break;
+        default:
+          this.keyDesc = "";
+          break;
+      }
+      return desc;
+    },
     createBrch() {
       if (!this.abbr || !this.name) {
         // IF NO INFO PROVIDED
@@ -132,14 +201,17 @@ export default {
       this.desc = "";
     },
     resdata(id, sel_group) {
-      console.log("DATA FROM WALL:" + id );
-      console.log('====================================');
-      console.log(sel_group.name);
-      console.log('====================================');
-      // this.abbr = abbr;
-      // this.name = name;
-      // this.desc = desc;
-      // this.id = id;
+      this.id = id;
+      this.sel_g_p = sel_group;
+      console.log("DATA FROM WALL:" + id);
+      console.log("====================================");
+      console.log(this.sel_g_p.name);
+      console.log(this.sel_g_p.menu["m_home"]);
+      console.log("====================================");
+      for (const [key, value] of Object.entries(this.sel_g_p.menu)) {
+        console.log(`${key}: ${value}`);
+        console.log("<====================================>");
+      }
     },
     updateBrch(id) {
       console.log(id);
@@ -180,24 +252,24 @@ export default {
               code: res.data[id].group_code,
               name: res.data[id].group_name,
               desc: res.data[id].group_desc,
-              menu:{
-                m_home:res.data[id].m_home,
-                m_category:res.data[id].m_category,
-                m_branch:res.data[id].m_branch,
-                m_limited_price:res.data[id].m_limited_price,
-                m_pay_rate:res.data[id].m_pay_rate,
-                m_sale:res.data[id].m_sale,
-                m_re_sale:res.data[id].m_re_sale,
-                m_re_win:res.data[id].m_re_win,
-                m_s_member:res.data[id].m_list_member,
-                m_i_member:res.data[id].m_add_member,
-                m_master:res.data[id].m_master,
-              }
+              menu: {
+                m_home: res.data[id].m_home,
+                m_category: res.data[id].m_category,
+                m_branch: res.data[id].m_branch,
+                m_limited_price: res.data[id].m_limited_price,
+                m_pay_rate: res.data[id].m_pay_rate,
+                m_sale: res.data[id].m_sale,
+                m_re_sale: res.data[id].m_re_sale,
+                m_re_win: res.data[id].m_re_win,
+                m_s_member: res.data[id].m_list_member,
+                m_i_member: res.data[id].m_add_member,
+                m_master: res.data[id].m_master,
+              },
             });
           }
           this.data_user = results;
           this.data = results;
-          console.log(this.data[0].name+"==================DATA_USER");
+          console.log(this.data[0].name + "==================DATA_USER");
           console.log(":::::::::::::::" + this.data.length);
           console.log(":::::::::::::::" + this.data);
           console.log(":::::::::::::::" + res.data[0]);
@@ -209,17 +281,17 @@ export default {
         });
     },
   },
-  async created(){
-    console.log('=================FETCH GROUP===================');
+  async created() {
+    console.log("=================FETCH GROUP===================");
     // await this.fetchGroup();
-    
-    console.log('====================================');
+
+    console.log("====================================");
     // console.log(this.data_user[0].id);
-    console.log('====================================');
+    console.log("====================================");
   },
   mounted() {
-    this.data=this.data_user;
-    console.log('=================Mount Parent===================');
+    this.data = this.data_user;
+    console.log("=================Mount Parent===================");
   },
 };
 </script>
