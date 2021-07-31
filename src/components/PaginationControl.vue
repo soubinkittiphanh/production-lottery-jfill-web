@@ -9,6 +9,8 @@
       <thead>
         <tr>
           <th scope="col">ຊື່</th>
+          <th scope="col">ສາຂາ</th>
+          <th scope="col">ກຸ່ມ</th>
           <th scope="col">ID</th>
           <th scope="col">ບ້ານ</th>
           <th scope="col">ເມືອງ</th>
@@ -29,6 +31,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
+          <td></td>
           <td>[{{ String(formatNum( totalsale))}}]</td>
           <td>[{{ String(formatNum( totalcom3))}}]</td>
           <td>[{{ String(formatNum( totalwin))}}]</td>
@@ -39,6 +43,8 @@
         </tr>
         <tr v-for="d in data" v-bind:key="d.id">
           <td>{{ d.name }}</td>
+          <td>{{ d.branch }}</td>
+          <td>{{ d.group }}</td>
           <td>{{ d.logid }}</td>
           <td>{{ d.vill }}</td>
           <td>{{ d.dist }}</td>
@@ -111,6 +117,8 @@ export default {
         responseData.push({
           id: this.originData[id].id,
           name: this.originData[id].name,
+          branch: this.originData[id].branch,
+          group: this.originData[id].group,
           lname: this.originData[id].lname,
           logid: this.originData[id].logid,
           logpass: this.originData[id].logpass,
@@ -138,6 +146,8 @@ export default {
             results.push({
               id: res.data[id].id,
               name: res.data[id].mem_name,
+              branch: res.data[id].brc_code,
+              group: res.data[id].group_code,
               lname: res.data[id].mem_lname,
               logid: res.data[id].mem_id,
               logpass: res.data[id].mem_pass,

@@ -18,6 +18,19 @@
             </option>
           </select>
         </div>
+        <label for="roll_id" class="col-md-2 col-form-label">ກຸ່ມຜູ້ໃຊ້:</label>
+        <div class="col-md-12">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            :required="true"
+            v-model="sel_group"
+          >
+            <option v-for="d in group_data" v-bind:key="d.id" :value="d.code">
+              {{ d.code }}
+            </option>
+          </select>
+        </div>
         <label for="roll_id" class="col-md-2 col-form-label">ຊື່ຜູ້ໃຊ້:</label>
         <div class="col-md-12">
           <input type="text" class="form-control" v-model="name" />
@@ -140,6 +153,8 @@ export default {
       name: "",
       lname: "",
       logid: "",
+      sel_group: "",
+      group_data: [],
       logpass: "",
       vill: "",
       dist: "",
@@ -201,6 +216,24 @@ export default {
           });
       }
     },
+    async fetchGroup() {
+      const res = await axios.get(apiDomain.url + "fetchGroupCode");
+      if (res.status == 200) {
+        var results = [];
+        for (const g in res.data) {
+          results.push({
+            code: res.data[g].group_code,
+            id: res.data[g].id,
+          });
+        }
+        this.group_data = results;
+        if (!this.sel_group) {
+          this.sel_group = this.group_data[this.group_data.length-1]["code"];
+        }
+      } else {
+        alert("ເກີດຂໍ້ຜິດພາດ ERROR: " + res.error);
+      }
+    },
     crateuser() {
       if (
         !this.formvailid.name ||
@@ -218,6 +251,7 @@ export default {
           .post(apiDomain.url + "createuser", {
             name: this.name,
             lname: this.lname,
+            group_code: this.sel_group,
             logid: this.logid,
             logpass: this.logpass,
             vill: this.vill,
@@ -251,6 +285,7 @@ export default {
           id: id,
           name: this.name,
           lname: this.lname,
+          group_code: this.sel_group,
           logid: this.logid,
           logpass: this.logpass,
           vill: this.vill,
@@ -300,6 +335,7 @@ export default {
           console.log(res.data);
           this.name = res.data[0].mem_name;
           this.lname = res.data[0].mem_lname;
+          this.sel_group = res.data[0].group_code;
           this.logid = res.data[0].mem_id;
           this.logpass = res.data[0].mem_pass;
           this.vill = res.data[0].mem_village;
@@ -352,6 +388,8 @@ export default {
   created() {
     this.id = this.$route.params.userid;
     this.fetchbrc();
+    this.fetchGroup();
+
     console.log("Created");
     // this.id=this.$route.params.userid;
     // const userselected=this.users.find(user => user.id===userid);

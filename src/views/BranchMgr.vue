@@ -144,7 +144,7 @@ export default {
             alert(res.data);
             // res.status == 200 ? (this.id = this.resetText()) : null; // RESET TEXTFIELD IF UPDATE SUCCEED
             res.status == 200 ? this.$refs.brcp.fetchbrc() : null;
-
+            this.resetText();
             console.log("::::::::::" + res.status);
           })
           .catch((er) => {

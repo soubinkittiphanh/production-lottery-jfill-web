@@ -22,6 +22,7 @@
           <th scope="col">ລງ ຖືກລາງວັນ</th>
           <th scope="col">ສະມາຊິກ</th>
           <th scope="col">ເພີ່ມສມຊ</th>
+          <th scope="col">ຈັດການກຸ່ມ</th>
           <th scope="col">ເປັນ Master</th>
           <th scope="col">ແກ້ໄຂ</th>
         </tr>
@@ -62,6 +63,9 @@
           </td>
           <td :class="d.menu.m_i_member == 1 ? 'succ' : 'error'">
             {{ d.menu.m_i_member == 1 ? "ອ" : "ບ" }}
+          </td>
+          <td :class="d.menu.m_group == 1 ? 'succ' : 'error'">
+            {{ d.menu.m_group == 1 ? "ອ" : "ບ" }}
           </td>
           <td :class="d.menu.m_master == 1 ? 'succ' : 'error'">
             {{ d.menu.m_master == 1 ? "ອ" : "ບ" }}
@@ -149,6 +153,7 @@ export default {
             m_re_win: this.originData[id]["menu"].m_re_win,
             m_s_member: this.originData[id]["menu"].m_s_member,
             m_i_member: this.originData[id]["menu"].m_i_member,
+            m_group: this.originData[id]["menu"].m_group,
             m_master: this.originData[id]["menu"].m_master,
           },
         });
@@ -179,6 +184,7 @@ export default {
                 m_re_win: res.data[id].m_re_win,
                 m_s_member: res.data[id].m_list_member,
                 m_i_member: res.data[id].m_add_member,
+                m_group: res.data[id].m_group,
                 m_master: res.data[id].m_master,
               },
             });

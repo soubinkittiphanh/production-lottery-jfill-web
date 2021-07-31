@@ -9,7 +9,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="::: PXK :::"
+            placeholder="::: MASTER | ADMIN | USER | :::"
             v-model="sel_g_p.code"
             :disabled="id"
           />
@@ -21,34 +21,57 @@
           <input
             type="text"
             class="form-control"
-            placeholder="::: ສາຂາປາເຊ :::"
+            placeholder="::: ແອັດມິນມາສເຕີ | ຜູ້ຈັດການສາຂາ | ພງ ຂາຍ  :::"
             v-model="sel_g_p.name"
           />
           <label for=""></label>
         </div>
-        <label for="roll_id" class="col-md-4 col-form-label">ເມນູໃຊ້ງານ:</label>
+        <label for="roll_id" class="col-md-4 col-form-label"
+          >ຂໍ້ມູນອື່ນໆ:</label
+        >
+        <div class="col-md-12">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="::: ຜູ້ໃຊ້ທົ່ວໄປ ສາຂາ XXX :::"
+            v-model="sel_g_p.desc"
+          />
+          <label for=""></label>
+        </div>
         <div class="col-md-12">
           <select
             class="form-select"
             aria-label="Default select example"
             :required="true"
-            v-model="m_select"
+            v-model="m_select.menu"
             @change="onChangeSelect($event)"
           >
-            <option v-for="(v, k) in sel_g_p.menu" v-bind:key="k" :value="k">
-              {{ keyDesc(k) }} | {{ v }}
+            <option v-for="(v, k) in sel_g_p.menu" v-bind:key="k" :value="k" :class="v==0?'error':null">
+             {{ keyDesc(k) }} | {{ v }}  {{v==1?'ອະນຸຍາດ':'ບໍ່ອະນຸຍາດ'}}
             </option>
           </select>
         </div>
-        <label for="roll_id" class="col-md-4 col-form-label"
-          >ອະນຸຍາດ?: {{ m_select }}</label
-        >
+        <div class="col-md-12 custom-control custom-switch">
+          <input
+            v-model="m_select.isopen"
+            type="checkbox"
+            class="custom-control-input"
+            id="customSwitch1"
+            @click="toggleSwitch"
+          />
+          <label
+            class="custom-control-label"
+            for="customSwitch1"
+            style="float: right"
+            >ປິດ(ບ)-ເປິດ(ອ)</label
+          >
+        </div>
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-6">
               <button
                 class="btn btn-success"
-                @click.prevent="!id ? createBrch() : updateBrch(id)"
+                @click.prevent="!id ? createGroup() : updateGroup(id)"
               >
                 {{ !id ? "ເພີ່ມ" : "ບັນທຶກ" }}
               </button>
@@ -82,11 +105,6 @@ export default {
   components: {
     GroupPage,
   },
-  watch: {
-    m_select: function (val) {
-      console.log("WATCHER: " + val);
-    },
-  },
   data() {
     return {
       isloading: false,
@@ -95,7 +113,7 @@ export default {
       abbr: "",
       name: "",
       desc: "",
-      m_select: "",
+      m_select: { menu: "m_category", isopen: true },
       sel_g_p: {
         id: "",
         code: "",
@@ -119,17 +137,28 @@ export default {
       data: [],
     };
   },
-  computed: {},
+  computed: {
+    classRender(v){
+      let re_v=v==0?'error':'success';
+      return re_v;
+    }
+  },
   methods: {
+    toggleSwitch() {
+      this.m_select.isopen = !this.m_select.isopen;
+      this.sel_g_p.menu[this.m_select.menu]=this.m_select.isopen==true?1:0;
+      console.log('*****TOGGLE*****'+this.sel_g_p.menu[this.m_select.menu]);
+    },
     onChangeSelect(event) {
-      this.m_select = event.target.value;
-      console.log("====================================");
-      console.log("EVANT CHANGE M: " + this.m_select);
-      console.log("EVANT CHANGE E: " + event.target.value);
-      console.log("====================================");
+      this.m_select.menu = event.target.value;
+      this.m_select.isopen = this.sel_g_p.menu[event.target.value]==1?true:false;
+      this.sel_g_p.menu[this.m_select.menu]=this.m_select.isopen==true?1:0;
+      console.log("===================================="+this.sel_g_p.menu[event.target.value]);
+      console.log("EVANT CHANGE M: " + this.m_select.menu);
     },
     keyDesc(objMem) {
-      this.m_select = objMem;
+      console.log("**********Key Desc Converter");
+      console.log("**********" + objMem);
       let desc = "";
       switch (objMem) {
         case "m_home":
@@ -162,6 +191,9 @@ export default {
         case "m_i_member":
           desc = "ການເຂົ້າເຖິງ ການເບິ່ງສະມາຊິກທັງຫມົດ";
           break;
+        case "m_group":
+          desc = "ການເຂົ້າເຖິງ ການຈັດການກຸ່ມ";
+          break;
         case "m_master":
           desc = "ເປັນ Master";
           break;
@@ -171,17 +203,14 @@ export default {
       }
       return desc;
     },
-    createBrch() {
-      if (!this.abbr || !this.name) {
+    createGroup() {
+      if (!this.sel_g_p.code || !this.sel_g_p.name) {
         // IF NO INFO PROVIDED
         alert("ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບ");
       } else {
         axios
-          .post(apiDomain.url + "createbrc", {
-            id: this.id,
-            abbr: this.abbr,
-            name: this.name,
-            desc: this.desc,
+          .post(apiDomain.url + "creategroup", {
+            'g_data':this.sel_g_p,
           })
           .then((res) => {
             this.isloading = false;
@@ -196,13 +225,16 @@ export default {
     },
     resetText() {
       this.id = null;
-      this.name = "";
-      this.abbr = "";
-      this.desc = "";
+      this.sel_g_p.name = "";
+      this.sel_g_p.code = "";
+      this.sel_g_p.desc = "";
+      this.sel_g_p.id = "";
     },
     resdata(id, sel_group) {
       this.id = id;
       this.sel_g_p = sel_group;
+      this.m_select.isopen=this.sel_g_p.menu['m_category']==1?true:false
+      this.m_select.menu='m_category'
       console.log("DATA FROM WALL:" + id);
       console.log("====================================");
       console.log(this.sel_g_p.name);
@@ -213,25 +245,22 @@ export default {
         console.log("<====================================>");
       }
     },
-    updateBrch(id) {
+    updateGroup(id) {
       console.log(id);
-      if (!this.abbr || !this.name) {
+      if (!this.sel_g_p.code || !this.sel_g_p.name) {
         // IF NO INFO PROVIDED
         alert("ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບ");
       } else {
         axios
-          .put(apiDomain.url + "updatebrc", {
-            id: this.id,
-            abbr: this.abbr,
-            name: this.name,
-            desc: this.desc,
+          .put(apiDomain.url + "updategroup", {
+            'g_data':this.sel_g_p,
           })
           .then((res) => {
             this.isloading = false;
             alert(res.data);
             // res.status == 200 ? (this.id = this.resetText()) : null; // RESET TEXTFIELD IF UPDATE SUCCEED
             res.status == 200 ? this.$refs.brcp.fetchGroup() : null;
-
+            this.resetText();
             console.log("::::::::::" + res.status);
           })
           .catch((er) => {
@@ -263,16 +292,13 @@ export default {
                 m_re_win: res.data[id].m_re_win,
                 m_s_member: res.data[id].m_list_member,
                 m_i_member: res.data[id].m_add_member,
+                m_group: res.data[id].m_group,
                 m_master: res.data[id].m_master,
               },
             });
           }
           this.data_user = results;
           this.data = results;
-          console.log(this.data[0].name + "==================DATA_USER");
-          console.log(":::::::::::::::" + this.data.length);
-          console.log(":::::::::::::::" + this.data);
-          console.log(":::::::::::::::" + res.data[0]);
         })
         .catch((er) => {
           this.isloading = false;
@@ -295,3 +321,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.error{
+  color: red;
+}
+</style>
