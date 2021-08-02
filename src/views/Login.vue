@@ -21,6 +21,7 @@
         <div class="col-md-12">
           <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isLoading"></i>
           <p v-else-if="!isLoading && error" style="color: red">{{ error }}</p>
+          <p>API: {{api}}</p>
         </div>
       </form>
     </base-card>
@@ -29,6 +30,7 @@
 </template>
 <script>
 import BaseCard from "../components/ui/BaseCard";
+import apiDomain from "../config";
 export default {
   components: {
     BaseCard,
@@ -42,6 +44,7 @@ export default {
       invalidForm: false,
       isLoading: false,
       error: null,
+      api:apiDomain.url,
     };
   },
   computed: {
