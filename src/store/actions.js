@@ -69,6 +69,22 @@ export default {
         localStorage.setItem("ism_ref", response.data[0].ism_ref);
         localStorage.setItem("ism_date", response.data[0].ism_date);
 
+        const menu={
+          'm_home':response.data[0].m_home,
+          'm_category':response.data[0].m_category,
+          'm_branch':response.data[0].m_branch,
+          'm_limited_price':response.data[0].m_limited_price,
+          'm_pay_rate':response.data[0].m_pay_rate,
+          'm_sale':response.data[0].m_sale,
+          'm_re_sale':response.data[0].m_re_sale,
+          'm_re_win':response.data[0].m_re_win,
+          'm_list_member':response.data[0].m_list_member,
+          'm_add_member':response.data[0].m_add_member,
+          'm_group':response.data[0].m_group,
+          'm_master':response.data[0].m_master,
+        }
+
+        localStorage.setItem("right", JSON.stringify(menu));
         context.commit("setUser", {
           id: response.data[0].mem_id,
           name: response.data[0].mem_name,
@@ -94,6 +110,7 @@ export default {
     localStorage.removeItem("isAuth");
     localStorage.removeItem("ism_ref");
     localStorage.removeItem("ism_date");
+    localStorage.removeItem("right");
     context.commit("unauthUser");
     context.commit("setUser", {
       id: null,

@@ -12,43 +12,43 @@
   </div>
   <!-- :class="navClassObject" -->
   <div class="navbar_" :class="navClassObject">
-    <router-link to="/lotterymgr" class="navbar__link"  v-if="isAdmin">
+    <router-link to="/lotterymgr" class="navbar__link"  v-if="isAdmin&&menu['m_home']==1">
       <span class="material-icons">home</span>ເປີດງວດ</router-link
     >
-    <router-link to="/category" class="navbar__link"  v-if="isAdmin">
+    <router-link to="/category" class="navbar__link"  v-if="isAdmin&&menu['m_category']==1" >
       <span class="material-icons">language</span>ຈັດການປະເພດເລກ</router-link
     >
-    <router-link to="/brch" class="navbar__link"  v-if="isAdmin">
+    <router-link to="/brch" class="navbar__link"  v-if="isAdmin&&menu['m_branch']==1">
       <span class="material-icons">account_balance</span>ຈັດການສາຂາ</router-link
     >
 
-    <router-link to="/salelimit" class="navbar__link" v-if="isAdmin">
+    <router-link to="/salelimit" class="navbar__link" v-if="isAdmin&&menu['m_limited_price']==1">
       <span class="material-icons">lock_open</span>ກຳນົດເລກເຕັມຮູ</router-link
     >
 
-    <router-link to="/prizemgr" class="navbar__link"  v-if="isAdmin">
+    <router-link to="/prizemgr" class="navbar__link"  v-if="isAdmin&&menu['m_pay_rate']==1">
       <span class="material-icons">emoji_events</span
       >ອັດຕາຈ່າຍລາງວັນ</router-link
     >
 
-    <router-link to="/sale" class="navbar__link">
+    <router-link to="/sale" class="navbar__link" v-if="isAdmin&&menu['m_sale']==1">
       <span class="material-icons">point_of_sale</span>ຂາຍ</router-link
     >
 
-    <router-link to="/salereport" class="navbar__link">
+    <router-link to="/salereport" class="navbar__link" v-if="isAdmin&&menu['m_re_sale']==1">
       <span class="material-icons">receipt</span>ຍອດຂາຍ</router-link
     >
-    <router-link to="/winreport" class="navbar__link" >
+    <router-link to="/winreport" class="navbar__link" v-if="isAdmin&&menu['m_re_win']==1">
       <span class="material-icons">receipt</span>ລາຍງານຖືກລາງວັນ</router-link
     >
 
-    <router-link to="/memgroup" class="navbar__link"  v-if="isAdmin">
+    <router-link to="/memgroup" class="navbar__link"  v-if="isAdmin&&menu['m_group']==1">
       <span class="material-icons">group_off</span>ສິດກຸ່ມຜູ້ໃຊ້ງານ</router-link
     >
-    <router-link to="/memberlist" class="navbar__link"  v-if="isAdmin">
+    <router-link to="/memberlist" class="navbar__link"  v-if="isAdmin&&menu['m_list_member']==1">
       <span class="material-icons">group</span>ສະມາຊິກ</router-link
     >
-    <router-link to="/member" class="navbar__link"  v-if="isAdmin">
+    <router-link to="/member" class="navbar__link"  v-if="isAdmin&&menu['m_add_member']==1">
       <span class="material-icons">person_add</span>ເພີ່ມຜູ້ໃຊ້</router-link
     >
     <router-link to="/logout" class="navbar__link">
@@ -62,6 +62,7 @@ export default {
   data() {
     return {
       shownav: false,
+      menu:null,
     };
   },
   computed: {
@@ -74,10 +75,21 @@ export default {
       console.log("Admin:" + this.$store.getters.isAdmin);
       return this.$store.getters.isAdmin==='true'?true:false;
     },
+    
+  },
+  created() {
+    this.rightcheck();
   },
   methods: {
     togglenavbar() {
       this.shownav = !this.shownav;
+    },
+    rightcheck() {
+      console.log("Admin:" + this.$store.getters.isAdmin);
+      // console.log("Right:" + this.$store.getters.rights);
+      this.menu= this.$store.getters.rights;
+      // // this.menu=JSON.parse(menu)
+      // console.log("Right Split:"+this.menu['m_home'] );
     },
   },
 };

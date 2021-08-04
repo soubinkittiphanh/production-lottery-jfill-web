@@ -46,6 +46,13 @@ const store = createStore({
         // return state.credent.userAdmin;
         return localStorage.getItem('admin');
     },
+    rights(){
+        // return state.credent.userAdmin;
+        const m=JSON.parse(localStorage.getItem('right'));
+        // JSON.parse
+        console.log(m+":::::::::::=>::::::::::::");
+        return m;
+    },
     user_id(){
       return localStorage.getItem('id');
     },

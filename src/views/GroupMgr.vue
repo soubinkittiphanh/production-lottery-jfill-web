@@ -185,14 +185,14 @@ export default {
         case "m_re_win":
           desc = "ການເຂົ້າເຖິງ ການລາຍງານຍອດຖືກລາງວັນ";
           break;
-        case "m_s_member":
+        case "m_group":
           desc = "ການເຂົ້າເຖິງ ການກຳນົດສິດທິຜູ້ໃຊ້";
           break;
-        case "m_i_member":
+        case "m_s_member":
           desc = "ການເຂົ້າເຖິງ ການເບິ່ງສະມາຊິກທັງຫມົດ";
           break;
-        case "m_group":
-          desc = "ການເຂົ້າເຖິງ ການຈັດການກຸ່ມ";
+        case "m_i_member":
+          desc = "ການເຂົ້າເຖິງ ການເພີ່ມສະມາຊິກ";
           break;
         case "m_master":
           desc = "ເປັນ Master";
