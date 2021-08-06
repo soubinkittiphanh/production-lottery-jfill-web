@@ -139,7 +139,12 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "fetchuser")
+        .get(apiDomain.url + "fetchuser",{
+          params: {
+            p_mem_id: this.mem_id,
+            p_master: this.mem_master,
+          },
+        })
         .then((res) => {
           var results = [];
           for (const id in res.data) {
@@ -188,6 +193,14 @@ export default {
     console.log("mounted: " + this.data);
     this.currentPage = 1;
     this.fetchuser();
+  },
+  computed: {
+    mem_id() {
+      return this.$store.getters.user_id;
+    },
+    mem_master() {
+      return this.$store.getters.isMaster;
+    },
   },
 };
 </script>
