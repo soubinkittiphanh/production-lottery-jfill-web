@@ -85,6 +85,9 @@ export default {
     mem_id() {
       return this.$store.getters.user_id;
     },
+    mem_master() {
+      return this.$store.getters.isMaster;
+    },
   },
   methods: {
     getData() {
@@ -98,6 +101,7 @@ export default {
             p_date: this.r_date,
             p_admin: this.isAdmin,
             p_mem_id: this.mem_id,
+            p_master: this.mem_master,
           },
         })
         .then((res) => {

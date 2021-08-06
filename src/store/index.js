@@ -53,6 +53,13 @@ const store = createStore({
         console.log(m+":::::::::::=>::::::::::::");
         return m;
     },
+    isMaster(){
+        // return state.credent.userAdmin;
+        const m=JSON.parse(localStorage.getItem('right'));
+        // JSON.parse
+        console.log(m+":::::::::::=>::::::::::::");
+        return m['m_master'];
+    },
     user_id(){
       return localStorage.getItem('id');
     },
