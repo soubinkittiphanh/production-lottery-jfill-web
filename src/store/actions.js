@@ -1,5 +1,6 @@
 import axios from "axios";
 import apiDomain from "../config";
+import CryptoJS from "crypto-js";
 export default {
   authUser(context) {
     context.commit("authUser");
@@ -24,11 +25,44 @@ export default {
       });
     }
   },
+  encryptData() {
+    if (this.pvtData.length) {
+      // hash the name with any algorithm
+      const data = CryptoJS.AES.encrypt(
+        "this.pvtData",
+        "this.secret"
+      ).toString();
+
+      // store into localStorage
+      localStorage.setItem("secretData", data);
+
+      // display the encrypted data
+      this.getEncryptedData();
+    }
+  },
+  decryptData() {
+    // get data from localStorage
+    const secretData = localStorage.getItem("secretData");
+
+    // decrypt the data and convert to string
+    const decryptData = CryptoJS.AES.decrypt(secretData, this.secret).toString(
+      CryptoJS.enc.Utf8
+    );
+
+    alert("Decrypted private data: " + decryptData);
+  },
+  getEncryptedData() {
+    // get the data from localStorage or send placeholder text
+    // this.encData = localStorage.getItem("secretData") || "No value present";
+    console.log(
+      "Encrypt: " + localStorage.getItem("secretData") || "No value present"
+    );
+  },
   async loadISM(context) {
     localStorage.removeItem("ism_ref");
     localStorage.removeItem("ism_date");
     const _response = await axios
-      .get(apiDomain.url+"getism_ref")
+      .get(apiDomain.url + "getism_ref")
       .then((res) => {
         console.log("ISM: " + res.data[0].ism_ref + " " + res.data[0].ism_date);
         localStorage.setItem("ism_ref", res.data[0].ism_ref);
@@ -44,13 +78,18 @@ export default {
     console.log(_response);
   },
   async login(context, payload) {
-    console.log(apiDomain.url)
-    const _response = await axios.post(apiDomain.url+"auth", {
+    console.log(apiDomain.url);
+    const _response = await axios
+      .post(apiDomain.url + "auth", {
         id: payload.id,
         pass: payload.pass,
       })
       .then((response) => {
-        if (response.data[0].isAuth===false || response.data[0].mem_id === null || response.data[0].mem_name===null) {
+        if (
+          response.data[0].isAuth === false ||
+          response.data[0].mem_id === null ||
+          response.data[0].mem_name === null
+        ) {
           alert("ຂໍ້ມູນບໍ່ຖືກຕ້ອງ");
           return;
         }
@@ -69,21 +108,36 @@ export default {
         localStorage.setItem("ism_ref", response.data[0].ism_ref);
         localStorage.setItem("ism_date", response.data[0].ism_date);
 
-        const menu={
-          'm_home':response.data[0].m_home,
-          'm_category':response.data[0].m_category,
-          'm_branch':response.data[0].m_branch,
-          'm_limited_price':response.data[0].m_limited_price,
-          'm_pay_rate':response.data[0].m_pay_rate,
-          'm_sale':response.data[0].m_sale,
-          'm_re_sale':response.data[0].m_re_sale,
-          'm_re_win':response.data[0].m_re_win,
-          'm_list_member':response.data[0].m_list_member,
-          'm_add_member':response.data[0].m_add_member,
-          'm_group':response.data[0].m_group,
-          'm_master':response.data[0].m_master,
-        }
+        const menu = {
+          m_home: response.data[0].m_home,
+          m_category: response.data[0].m_category,
+          m_branch: response.data[0].m_branch,
+          m_limited_price: response.data[0].m_limited_price,
+          m_pay_rate: response.data[0].m_pay_rate,
+          m_sale: response.data[0].m_sale,
+          m_re_sale: response.data[0].m_re_sale,
+          m_re_win: response.data[0].m_re_win,
+          m_list_member: response.data[0].m_list_member,
+          m_add_member: response.data[0].m_add_member,
+          m_group: response.data[0].m_group,
+          m_master: response.data[0].m_master,
+        };
+        //:::::::::ENCRYPE::::::::::
+        // const data = CryptoJS.AES.encrypt("this.pvtData1", "123#$%").toString();
+        // localStorage.setItem("secretData", data);
+        // const secretData = localStorage.getItem("secretData");
 
+        // // decrypt the data and convert to string
+        // const decryptData = CryptoJS.AES.decrypt(
+        //   secretData,
+        //   "123#$%"
+        // ).toString(CryptoJS.enc.Utf8);
+
+        // alert("Decrypted private data: " + decryptData);
+
+        // store into localStorage
+        // localStorage.setItem("secretData", data);
+        //:::::::::END ENCRYPE::::::::::
         localStorage.setItem("right", JSON.stringify(menu));
         context.commit("setUser", {
           id: response.data[0].mem_id,
