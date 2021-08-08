@@ -1,6 +1,7 @@
 import axios from "axios";
 import apiDomain from "../config";
 import CryptoJS from "crypto-js";
+
 export default {
   authUser(context) {
     context.commit("authUser");
@@ -25,21 +26,21 @@ export default {
       });
     }
   },
-  encryptData() {
-    if (this.pvtData.length) {
-      // hash the name with any algorithm
-      const data = CryptoJS.AES.encrypt(
-        "this.pvtData",
-        "this.secret"
-      ).toString();
+  // encryptData() {
+  //   if (this.pvtData.length) {
+  //     // hash the name with any algorithm
+  //     const data = CryptoJS.AES.encrypt(
+  //       "this.pvtData",
+  //       "this.secret"
+  //     ).toString();
 
-      // store into localStorage
-      localStorage.setItem("secretData", data);
+  //     // store into localStorage
+  //     localStorage.setItem("secretData", data);
 
-      // display the encrypted data
-      this.getEncryptedData();
-    }
-  },
+  //     // display the encrypted data
+  //     this.getEncryptedData();
+  //   }
+  // },
   decryptData() {
     // get data from localStorage
     const secretData = localStorage.getItem("secretData");
@@ -108,7 +109,7 @@ export default {
         localStorage.setItem("ism_ref", response.data[0].ism_ref);
         localStorage.setItem("ism_date", response.data[0].ism_date);
 
-        const menu = {
+        const menuObj = {
           m_home: response.data[0].m_home,
           m_category: response.data[0].m_category,
           m_branch: response.data[0].m_branch,
@@ -122,23 +123,9 @@ export default {
           m_group: response.data[0].m_group,
           m_master: response.data[0].m_master,
         };
-        //:::::::::ENCRYPE::::::::::
-        // const data = CryptoJS.AES.encrypt("this.pvtData1", "123#$%").toString();
-        // localStorage.setItem("secretData", data);
-        // const secretData = localStorage.getItem("secretData");
-
-        // // decrypt the data and convert to string
-        // const decryptData = CryptoJS.AES.decrypt(
-        //   secretData,
-        //   "123#$%"
-        // ).toString(CryptoJS.enc.Utf8);
-
-        // alert("Decrypted private data: " + decryptData);
-
-        // store into localStorage
-        // localStorage.setItem("secretData", data);
-        //:::::::::END ENCRYPE::::::::::
-        localStorage.setItem("right", JSON.stringify(menu));
+        context.commit("encryptData", {
+          ...menuObj
+        });
         context.commit("setUser", {
           id: response.data[0].mem_id,
           name: response.data[0].mem_name,

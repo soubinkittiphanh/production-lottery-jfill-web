@@ -12,43 +12,87 @@
   </div>
   <!-- :class="navClassObject" -->
   <div class="navbar_" :class="navClassObject">
-    <router-link to="/lotterymgr" class="navbar__link"  v-if="isAdmin&&menu['m_home']==1">
+    <router-link
+      to="/lotterymgr"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_home'] == 1"
+    >
       <span class="material-icons">home</span>ເປີດງວດ</router-link
     >
-    <router-link to="/category" class="navbar__link"  v-if="isAdmin&&menu['m_category']==1" >
+    <router-link
+      to="/category"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_category'] == 1"
+    >
       <span class="material-icons">language</span>ຈັດການປະເພດເລກ</router-link
     >
-    <router-link to="/brch" class="navbar__link"  v-if="isAdmin&&menu['m_branch']==1">
+    <router-link
+      to="/brch"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_branch'] == 1"
+    >
       <span class="material-icons">account_balance</span>ຈັດການສາຂາ</router-link
     >
 
-    <router-link to="/salelimit" class="navbar__link" v-if="isAdmin&&menu['m_limited_price']==1">
+    <router-link
+      to="/salelimit"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_limited_price'] == 1"
+    >
       <span class="material-icons">lock_open</span>ກຳນົດເລກເຕັມຮູ</router-link
     >
 
-    <router-link to="/prizemgr" class="navbar__link"  v-if="isAdmin&&menu['m_pay_rate']==1">
+    <router-link
+      to="/prizemgr"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_pay_rate'] == 1"
+    >
       <span class="material-icons">emoji_events</span
       >ອັດຕາຈ່າຍລາງວັນ</router-link
     >
 
-    <router-link to="/sale" class="navbar__link" v-if="isAdmin&&menu['m_sale']==1">
+    <router-link
+      to="/sale"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_sale'] == 1"
+    >
       <span class="material-icons">point_of_sale</span>ຂາຍ</router-link
     >
 
-    <router-link to="/salereport" class="navbar__link" v-if="isAdmin&&menu['m_re_sale']==1">
+    <router-link
+      to="/salereport"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_re_sale'] == 1"
+    >
       <span class="material-icons">receipt</span>ຍອດຂາຍ</router-link
     >
-    <router-link to="/winreport" class="navbar__link" v-if="isAdmin&&menu['m_re_win']==1">
+    <router-link
+      to="/winreport"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_re_win'] == 1"
+    >
       <span class="material-icons">receipt</span>ລາຍງານຖືກລາງວັນ</router-link
     >
 
-    <router-link to="/memgroup" class="navbar__link"  v-if="isAdmin&&menu['m_group']==1">
+    <router-link
+      to="/memgroup"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_group'] == 1"
+    >
       <span class="material-icons">group_off</span>ສິດກຸ່ມຜູ້ໃຊ້ງານ</router-link
     >
-    <router-link to="/memberlist" class="navbar__link"  v-if="isAdmin&&menu['m_list_member']==1">
+    <router-link
+      to="/memberlist"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_list_member'] == 1"
+    >
       <span class="material-icons">group</span>ສະມາຊິກ</router-link
     >
-    <router-link to="/member" class="navbar__link"  v-if="isAdmin&&menu['m_add_member']==1">
+    <router-link
+      to="/member"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_add_member'] == 1"
+    >
       <span class="material-icons">person_add</span>ເພີ່ມຜູ້ໃຊ້</router-link
     >
     <router-link to="/logout" class="navbar__link">
@@ -58,11 +102,24 @@
 </template>
 
 <script>
+// import CryptoJS from "crypto-js";
 export default {
   data() {
     return {
       shownav: false,
-      menu:null,
+      menu: {
+        "m_home": 0,
+        "m_category": 0 ,
+        "m_branch": 0,
+        "m_limited_price": 0,
+        "m_pay_rate": 0,
+        "m_sale": 0,
+        "m_re_sale": 0,
+        "m_re_win":0,
+        "m_list_member":0,
+        "m_add_member":0,
+        "m_group":0,
+        "m_master": 0,},
     };
   },
   computed: {
@@ -73,9 +130,18 @@ export default {
     },
     isAdmin() {
       console.log("Admin:" + this.$store.getters.isAdmin);
-      return this.$store.getters.isAdmin==='true'?true:false;
+      console.log("MasterAdmin:" + this.$store.getters.isMaster);
+      // let deobj=JSON.parse(localStorage.getItem("OBJ"));
+      // localStorage.setItem("DeOBJ",CryptoJS.AES.decrypt(deobj.name,"obj").toString(CryptoJS.enc.Utf8));
+      // console.log("MasterAdmin=====>:"+CryptoJS.AES.decrypt(deobj.lname,"Obj").toString(CryptoJS.enc.Utf8));
+
+      // var m_home = CryptoJS.AES.decrypt(
+      //   this.$store.getters.isMaster,
+      //   "secr"
+      // ).toString(CryptoJS.enc.Utf8);
+      // alert(m_home);
+      return this.$store.getters.isAdmin === "true" ? true : false;
     },
-    
   },
   created() {
     this.rightcheck();
@@ -87,7 +153,7 @@ export default {
     rightcheck() {
       console.log("Admin:" + this.$store.getters.isAdmin);
       // console.log("Right:" + this.$store.getters.rights);
-      this.menu= this.$store.getters.rights;
+      this.menu = this.$store.getters.rights;
       // // this.menu=JSON.parse(menu)
       // console.log("Right Split:"+this.menu['m_home'] );
     },
@@ -129,7 +195,7 @@ export default {
 .navbar__link:active {
   background: #007d65;
 }
-.container{
+.container {
   height: 100vh;
 }
 </style>
