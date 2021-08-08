@@ -66,7 +66,6 @@ const store = createStore({
     },
     rights() {
       const mencrypt = JSON.parse(localStorage.getItem("right"));
-
       if (!mencrypt) {
         console.log("RETURN");
         return;
