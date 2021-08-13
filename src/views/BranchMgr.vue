@@ -23,6 +23,16 @@
           />
           <label for=""></label>
         </div>
+        <label for="roll_id" class="col-md-4 col-form-label">ເປີເຊັນສູງສຸດ:</label>
+        <div class="col-md-12">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="::: 30 :::"
+            v-model="commrate"
+          />
+          <label for=""></label>
+        </div>
         <label for="roll_id" class="col-md-4 col-form-label"
           >ຂໍ້ມູນອື່ນໆ:</label
         >
@@ -86,6 +96,7 @@ export default {
       abbr: "",
       name: "",
       desc: "",
+      commrate:30,
       data: [],
     };
   },
@@ -101,6 +112,7 @@ export default {
             abbr: this.abbr,
             name: this.name,
             desc: this.desc,
+            commrate: this.commrate,
           })
           .then((res) => {
             this.isloading = false;
@@ -118,13 +130,15 @@ export default {
       this.name = "";
       this.abbr = "";
       this.desc = "";
+      this.commrate = 30;
     },
-    resdata(id, abbr, name, desc) {
+    resdata(id, abbr, name, desc,commrate) {
       console.log("DATA FROM WALL:" + id + " " + abbr + name + desc);
       this.abbr = abbr;
       this.name = name;
       this.desc = desc;
       this.id = id;
+      this.commrate = commrate;
     },
     updateBrch(id) {
       console.log(id);
@@ -138,6 +152,7 @@ export default {
             abbr: this.abbr,
             name: this.name,
             desc: this.desc,
+            commrate: this.commrate,
           })
           .then((res) => {
             this.isloading = false;
@@ -165,6 +180,7 @@ export default {
               code: res.data[id].co_code,
               name: res.data[id].co_name,
               lname: res.data[id].co_gname,
+              commrate: res.data[id].co_comm,
             });
           }
           this.data = results;

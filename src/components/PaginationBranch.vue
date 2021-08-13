@@ -11,6 +11,7 @@
           <th scope="col">ID</th>
           <th scope="col">ໂຕຫຍໍ້</th>
           <th scope="col">ຊື່</th>
+          <th scope="col">%com</th>
           <th scope="col">ຂໍ້ມູນອື່ນໆ</th>
           <th scope="col">ແກ້ໄຂ</th>
         </tr>
@@ -27,6 +28,7 @@
           <td>{{ d.id }}</td>
           <td>{{ d.code }}</td>
           <td>{{ d.name }}</td>
+          <td>{{ d.commrate }}</td>
           <td>{{ d.lname }}</td>
           <td>
             <button class="btn btn-warning" @click="viewUser(d.id)">
@@ -77,7 +79,7 @@ export default {
     viewUser(id) {
         const sel_brc= this.data.find(data=>data.id===id);
         console.log(":::::::::::::"+sel_brc.lname);
-      this.$emit("update-branch", id,sel_brc.code,sel_brc.name,sel_brc.lname);
+      this.$emit("update-branch", id,sel_brc.code,sel_brc.name,sel_brc.lname,sel_brc.commrate);
     },
     onPageClick(event) {
       this.currentPage = event;
@@ -93,6 +95,7 @@ export default {
           id: this.originData[id].id,
           code: this.originData[id].code,
           name: this.originData[id].name,
+          commrate: this.originData[id].commrate,
           lname: this.originData[id].lname,
         });
       }
@@ -111,6 +114,7 @@ export default {
               code: res.data[id].co_code,
               name: res.data[id].co_name,
               lname: res.data[id].co_gname,
+              commrate: res.data[id].co_comm,
             });
 
           }
