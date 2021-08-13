@@ -26,7 +26,7 @@
         <label for="roll_id" class="col-md-4 col-form-label">ເປີເຊັນສູງສຸດ:</label>
         <div class="col-md-12">
           <input
-            type="text"
+            type="number"
             class="form-control"
             placeholder="::: 30 :::"
             v-model="commrate"
