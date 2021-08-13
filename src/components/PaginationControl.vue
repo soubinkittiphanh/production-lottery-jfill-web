@@ -12,9 +12,9 @@
           <th scope="col">ສາຂາ</th>
           <th scope="col">ກຸ່ມ</th>
           <th scope="col">ID</th>
-          <th scope="col">ບ້ານ</th>
+          <!-- <th scope="col">ບ້ານ</th>
           <th scope="col">ເມືອງ</th>
-          <th scope="col">ແຂວງ</th>
+          <th scope="col">ແຂວງ</th> -->
           <th scope="col">ຍອດຂາຍ</th>
           <th scope="col">%ຂາຍ</th>
           <th scope="col">ຍອດຖືກ</th>
@@ -30,9 +30,9 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- <td></td>
           <td></td>
-          <td></td>
-          <td></td>
+          <td></td> -->
           <td>[{{ String(formatNum( totalsale))}}]</td>
           <td>[{{ String(formatNum( totalcom3))}}]</td>
           <td>[{{ String(formatNum( totalwin))}}]</td>
@@ -46,9 +46,9 @@
           <td>{{ d.branch }}</td>
           <td>{{ d.group }}</td>
           <td>{{ d.logid }}</td>
-          <td>{{ d.vill }}</td>
+          <!-- <td>{{ d.vill }}</td>
           <td>{{ d.dist }}</td>
-          <td>{{ d.pro }}</td>
+          <td>{{ d.pro }}</td> -->
           <td>{{ String(formatNum(d.total)) }}</td>
           <td>{{ String(formatNum(d.total*d.comsale/100)) }}</td>
           <td>{{ String(formatNum(d.winamount)) }}</td>

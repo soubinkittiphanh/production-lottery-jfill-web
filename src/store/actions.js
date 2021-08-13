@@ -108,6 +108,7 @@ export default {
         localStorage.setItem("isAuth", true);
         localStorage.setItem("ism_ref", response.data[0].ism_ref);
         localStorage.setItem("ism_date", response.data[0].ism_date);
+        localStorage.setItem("cocom", response.data[0].co_comm);
 
         const menuObj = {
           m_home: response.data[0].m_home,
