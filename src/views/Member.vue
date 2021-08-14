@@ -93,11 +93,11 @@
         </div>
         <label for="roll_id" class="col-md-2 col-form-label">%ຂາຍ:</label>
         <div class="col-md-12">
-          <input type="text" class="form-control" v-model="comsale" />
+          <input type="number" class="form-control" v-model="comsale" />
         </div>
         <label for="roll_id" class="col-md-2 col-form-label">%ຖືກລາງວັນ:</label>
         <div class="col-md-12">
-          <input type="text" class="form-control" v-model="comwin" />
+          <input type="number" class="form-control" v-model="comwin" />
         </div>
         <label for="roll_id" class="col-md-2 col-form-label"></label>
         <div class="col-md-12">
@@ -164,8 +164,8 @@ export default {
       selected: "",
       brc_code: "PXK",
       branch: [],
-      comsale: 30,
-      comwin: 5,
+      comsale: 0,
+      comwin: 0,
       active: true,
       admin: false,
       formvailid: {
@@ -198,6 +198,12 @@ export default {
     vill(val) {
       this.formvailid.vill = !val ? false : true;
     },
+    comsale(val){
+      if(val>parseInt(localStorage.getItem('cocom'))){
+        this.comsale=parseInt(localStorage.getItem('cocom'));
+        return alert('ເປິເຊັນຂາຍສູງສຸດ: '+localStorage.getItem('cocom'));
+      }
+    }
   },
   methods: {
     get_auto_id() {
@@ -235,7 +241,10 @@ export default {
       }
     },
     crateuser() {
-      if (
+      if(this.comsale>parseInt(localStorage.getItem('cocom'))){
+        this.comsale=parseInt(localStorage.getItem('cocom'));
+        return alert('ເປິເຊັນຂາຍສູງສຸດ: '+localStorage.getItem('cocom'));
+      }else if (
         !this.formvailid.name ||
         !this.formvailid.lname ||
         !this.formvailid.logid ||
@@ -280,6 +289,10 @@ export default {
     updateuser(id) {
       this.isloading = true;
       this.error = null;
+      if(this.comsale>parseInt(localStorage.getItem('cocom'))){
+        this.comsale=parseInt(localStorage.getItem('cocom'));
+        return alert('ເປິເຊັນຂາຍສູງສຸດ: '+localStorage.getItem('cocom'));
+      }
       axios
         .put(apiDomain.url + "updateuser", {
           id: id,
