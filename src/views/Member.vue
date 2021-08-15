@@ -96,7 +96,7 @@
           <input type="number" class="form-control" v-model="comsale" />
         </div>
         <label for="roll_id" class="col-md-2 col-form-label">%ຖືກລາງວັນ:</label>
-        <div class="col-md-12">
+        <div class="col-md-12" v-if="mem_master==1" >
           <input type="number" class="form-control" v-model="comwin" />
         </div>
         <label for="roll_id" class="col-md-2 col-form-label"></label>
@@ -136,6 +136,8 @@
             >[ Admin]</label
           >
         </div>
+
+        {{comwin}}
       </div>
     </form>
   </div>
@@ -176,6 +178,11 @@ export default {
         vill: false,
       },
     };
+  },
+ computed: {
+    mem_master() {
+      return this.$store.getters.isMaster;
+    },
   },
   watch: {
     id(val) {
@@ -233,6 +240,12 @@ export default {
           });
         }
         this.group_data = results;
+        //====================START remove MASTER group from user that not under Master group=================
+        if(!this.id || this.mem_master!=1){
+          this.group_data.splice(0,1);
+          this.group_data.splice(5,1);
+        }
+        //====================END REMOVE MASTER GROUP FROM NOT MASTER USER-GROUP====================
         if (!this.sel_group) {
           this.sel_group = this.group_data[this.group_data.length-1]["code"];
         }
@@ -403,11 +416,11 @@ export default {
     this.fetchbrc();
     this.fetchGroup();
 
+    //======BLOCK COMWIN IF YOU ARE NOT MASTER GROUP============
+    if(this.mem_master!=1){
+      this.comwin=0;
+    }
     console.log("Created");
-    // this.id=this.$route.params.userid;
-    // const userselected=this.users.find(user => user.id===userid);
-    // this.name=userselected.name;
-    // this.lname=userselected.lname;
   },
 };
 </script>
