@@ -136,8 +136,6 @@
             >[ Admin]</label
           >
         </div>
-
-        {{comwin}}
       </div>
     </form>
   </div>
