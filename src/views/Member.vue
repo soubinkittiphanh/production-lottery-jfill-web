@@ -12,6 +12,7 @@
             aria-label="Default select example"
             :required="true"
             v-model="brc_code"
+            :disabled="mem_master!=1"
           >
             <option v-for="d in branch" v-bind:key="d.id" :value="d.code">
               {{ d.code }} | {{ d.name }}
@@ -162,7 +163,7 @@ export default {
       recommendator: "",
       tel: "",
       selected: "",
-      brc_code: "PXK",
+      brc_code:"PXK",
       branch: [],
       comsale: 0,
       comwin: 0,
@@ -179,8 +180,12 @@ export default {
   },
  computed: {
     mem_master() {
+      console.log("COMPUTER: "+this.$store.getters.co_code);
       return this.$store.getters.isMaster;
     },
+    state_cocode(){
+      return this.$store.getters.co_code;
+    }
   },
   watch: {
     id(val) {
@@ -388,6 +393,7 @@ export default {
         .then((res) => {
           var results = [];
           for (const id in res.data) {
+
             results.push({
               id: res.data[id].id,
               code: res.data[id].co_code,
@@ -396,6 +402,12 @@ export default {
             });
           }
           this.branch = results;
+        //   //====================START remove MASTER group from user that not under Master group=================
+        // if(!this.id || this.mem_master!=1){
+        //   this.group_data.splice(0,1);
+        //   this.group_data.splice(5,1);
+        // }
+        // //====================END REMOVE MASTER GROUP FROM NOT MASTER USER-GROUP====================
           console.log(":::::::::::::::" + this.branch.length);
         })
         .catch((er) => {
@@ -410,6 +422,7 @@ export default {
     this.get_auto_id();
   },
   created() {
+    this.brc_code=this.$store.getters.co_code;
     this.id = this.$route.params.userid;
     this.fetchbrc();
     this.fetchGroup();

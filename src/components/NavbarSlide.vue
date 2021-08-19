@@ -131,15 +131,6 @@ export default {
     isAdmin() {
       console.log("Admin:" + this.$store.getters.isAdmin);
       console.log("MasterAdmin:" + this.$store.getters.isMaster);
-      // let deobj=JSON.parse(localStorage.getItem("OBJ"));
-      // localStorage.setItem("DeOBJ",CryptoJS.AES.decrypt(deobj.name,"obj").toString(CryptoJS.enc.Utf8));
-      // console.log("MasterAdmin=====>:"+CryptoJS.AES.decrypt(deobj.lname,"Obj").toString(CryptoJS.enc.Utf8));
-
-      // var m_home = CryptoJS.AES.decrypt(
-      //   this.$store.getters.isMaster,
-      //   "secr"
-      // ).toString(CryptoJS.enc.Utf8);
-      // alert(m_home);
       return this.$store.getters.isAdmin === "true" ? true : false;
     },
   },

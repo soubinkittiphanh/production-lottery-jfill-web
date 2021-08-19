@@ -51,7 +51,8 @@ const store = createStore({
         "m_list_member": CryptoJS.AES.encrypt(payload.m_list_member.toString(),"secret@2o2I").toString(),
         "m_add_member": CryptoJS.AES.encrypt(payload.m_add_member.toString(),"secret@2o2I").toString(),
         "m_group": CryptoJS.AES.encrypt(payload.m_group.toString(),"secret@2o2I").toString(),
-        "m_master": CryptoJS.AES.encrypt(payload.m_master.toString(),"secret@2o2I").toString()
+        "m_master": CryptoJS.AES.encrypt(payload.m_master.toString(),"secret@2o2I").toString(),
+        "m_co_code": CryptoJS.AES.encrypt(payload.m_co_code.toString(),"secret@2o2I").toString()
       };
       localStorage.setItem("right", JSON.stringify(menu));
     },
@@ -71,18 +72,19 @@ const store = createStore({
         return;
       }
       const m = {
-        m_home: CryptoJS.AES.decrypt(mencrypt.m_home,"secret@2o2I").toString(CryptoJS.enc.Utf8),
-        m_category: CryptoJS.AES.decrypt(mencrypt.m_category,"secret@2o2I").toString(CryptoJS.enc.Utf8),
-        m_branch: CryptoJS.AES.decrypt(mencrypt.m_branch,"secret@2o2I").toString(CryptoJS.enc.Utf8),
-        m_limited_price: CryptoJS.AES.decrypt(mencrypt.m_limited_price,"secret@2o2I").toString(CryptoJS.enc.Utf8),
-        m_pay_rate: CryptoJS.AES.decrypt(mencrypt.m_pay_rate,"secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_home: CryptoJS.AES.decrypt(mencrypt.m_home, "secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_category: CryptoJS.AES.decrypt(mencrypt.m_category, "secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_branch: CryptoJS.AES.decrypt(mencrypt.m_branch, "secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_limited_price: CryptoJS.AES.decrypt(mencrypt.m_limited_price, "secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_pay_rate: CryptoJS.AES.decrypt(mencrypt.m_pay_rate, "secret@2o2I").toString(CryptoJS.enc.Utf8),
         m_sale: CryptoJS.AES.decrypt(mencrypt.m_sale, "secret@2o2I").toString(CryptoJS.enc.Utf8),
-        m_re_sale: CryptoJS.AES.decrypt(mencrypt.m_re_sale,"secret@2o2I").toString(CryptoJS.enc.Utf8),
-        m_re_win: CryptoJS.AES.decrypt(mencrypt.m_re_win, "secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_re_sale: CryptoJS.AES.decrypt(mencrypt.m_re_sale, "secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_re_win: CryptoJS.AES.decrypt(mencrypt.m_re_win,  "secret@2o2I").toString(CryptoJS.enc.Utf8),
         m_list_member: CryptoJS.AES.decrypt(mencrypt.m_list_member,"secret@2o2I").toString(CryptoJS.enc.Utf8),
         m_add_member: CryptoJS.AES.decrypt(mencrypt.m_add_member,"secret@2o2I").toString(CryptoJS.enc.Utf8),
         m_group: CryptoJS.AES.decrypt(mencrypt.m_group, "secret@2o2I").toString(CryptoJS.enc.Utf8),
         m_master: CryptoJS.AES.decrypt(mencrypt.m_master, "secret@2o2I").toString(CryptoJS.enc.Utf8),
+        m_co_code: CryptoJS.AES.decrypt(mencrypt.m_co_code,"secret@2o2I").toString(CryptoJS.enc.Utf8)
       };
       return m;
     },
@@ -108,6 +110,11 @@ const store = createStore({
       console.log("ISM: ism_ifo: " + state.ism.ref);
       return state.ism;
     },
+    co_code(){
+      const mencrypt = JSON.parse(localStorage.getItem("right"));
+      const m = CryptoJS.AES.decrypt(mencrypt.m_co_code,"secret@2o2I").toString(CryptoJS.enc.Utf8);
+      return m;
+    }
   },
 });
 export default store;

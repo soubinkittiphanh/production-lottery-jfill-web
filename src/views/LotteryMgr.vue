@@ -1,6 +1,5 @@
 <template>
   <div class="container card">
-    <!-- <button class="btn btn-primary" @click="gen_ism_ref">ໃສ່ເລກງວດ</button> -->
     <form>
       <div class="form-group row">
         <label for="roll_id" class="col-md-4 col-form-label">ງວດທີ:</label>
@@ -45,6 +44,16 @@
             v-model="ism_res"
           />
         </div>
+        <label class="col-md-4 col-form-label">ສະຖານະງວດ</label>
+        <div class="col-md-12">
+          <button
+            class="btn btn-danger btn-block"
+            @click.prevent="triggleSwitch"
+          >
+            {{ isopen ? "ເປີດ" : "ປິດ" }}
+          </button>
+        </div>
+        <div class="col-md-12"></div>
         <div class="col-md-12 custom-control custom-switch">
           <input
             v-model="isopen"
@@ -72,10 +81,10 @@
     </form>
     <hr />
     <button @click="fetchdata" class="btn btn-warning">ດຶງຂໍ້ມູນ</button>
-    <hr>
+    <hr />
     <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isLoading"></i>
     <p v-else-if="!isLoading && error" style="color: red">{{ error }}</p>
-    <p v-else-if="ismdata.length<1" >ຍັງບໍ່ມີງວດ</p>
+    <p v-else-if="ismdata.length < 1">ຍັງບໍ່ມີງວດ</p>
     <base-card v-for="(itm, idx) in ismdata" :key="idx">
       <span style="color: green"> [ ຜົນອອກ:{{ itm.ism_res }} ]</span>
       [ ເລກທີ: {{ itm.ism_ref }} ] [ ອອກວັນທີ: {{ formatdate(itm.ism_date) }} ]
@@ -163,13 +172,10 @@ export default {
       axios
         .get(apiDomain.url + "ismref")
         .then((res) => {
-          // console.log("Receiving")
-          // console.log(res.data);
           this.ism_ref = res.data;
           this.isLoading = false;
         })
         .catch((er) => {
-          // alert(er);
           this.error = er;
         });
     },
@@ -231,6 +237,9 @@ export default {
       this.isopen = !this.isopen;
     },
     saveism(val) {
+      if (this.isopen && this.ism_res) {
+        return alert("ເລກອອກແລ້ວກະລຸນາປິດງວດ");
+      }
       if (val === true) {
         console.log("update");
         !this.formvalidate.ref || !this.formvalidate.date
@@ -361,15 +370,9 @@ export default {
         .catch((err) => {
           alert(err);
           this.error = err;
-      this.isLoading = false;
+          this.isLoading = false;
         });
     },
-    // moment: function (date) {
-    //   return moment(date);
-    // },
-    // date: function (date) {
-    //   return moment(date).format('MMMM Do YYYY');
-    // }
   },
   filters: {
     moment: function (date) {

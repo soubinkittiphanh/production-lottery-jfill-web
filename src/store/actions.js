@@ -109,6 +109,7 @@ export default {
         localStorage.setItem("ism_ref", response.data[0].ism_ref);
         localStorage.setItem("ism_date", response.data[0].ism_date);
         localStorage.setItem("cocom", response.data[0].co_comm);
+        // localStorage.setItem("co_code", response.data[0].brc_code);
 
         const menuObj = {
           m_home: response.data[0].m_home,
@@ -123,6 +124,7 @@ export default {
           m_add_member: response.data[0].m_add_member,
           m_group: response.data[0].m_group,
           m_master: response.data[0].m_master,
+          m_co_code: response.data[0].brc_code
         };
         context.commit("encryptData", {
           ...menuObj

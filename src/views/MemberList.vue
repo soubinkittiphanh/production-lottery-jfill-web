@@ -21,15 +21,9 @@ export default {
     formatNum(val) {
       return new Intl.NumberFormat().format(val);
     },
-    async fetchuser() {
-
-    },
     edituser(id) {
       this.$router.push("/member/" + id);
     },
-  },
-  created() {
-    this.fetchuser();
   },
 };
 </script>
