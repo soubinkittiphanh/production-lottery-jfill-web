@@ -1,7 +1,9 @@
 <template>
   <div class="container card">
     <form>
-      <div class="alert alert-success">ກຳນົດເລກເຕັມຮູ {{$store.getters.co_code}}</div>
+      <div class="alert alert-success">
+        ກຳນົດເລກເຕັມຮູ {{ $store.getters.co_code }}
+      </div>
       <div class="form-group row">
         <label for="roll_id" class="col-md-4 col-form-label"
           >ເລກ 2 ໂຕ: <span style="color: red">[ {{ expres.two }} ]</span></label
@@ -46,6 +48,31 @@
         <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
       </div>
     </form>
+    <!-- {{$store.getters.isMaster}} -->
+    <table class="table table-striped table-sm" id="branchreport" v-if="$store.getters.isMaster==1">
+      <thead>
+        <tr>
+          <th scope="col">ສາຂາ</th>
+          <th scope="col">2 ໂຕ</th>
+          <th scope="col">3 ໂຕ</th>
+          <th scope="col">4 ໂຕ</th>
+          <th scope="col">5 ໂຕ</th>
+          <th scope="col">6 ໂຕ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="d in allBrachNeck" v-bind:key="d.brc">
+          <td>{{ d.brc||'Master ' }}</td>
+          <td>{{ String(formatNum(d.two)) }}</td>
+          <td>{{ String(formatNum(d.three)) }}</td>
+          <td>{{ String(formatNum(d.four)) }}</td>
+          <td>{{ String(formatNum(d.five)) }}</td>
+          <td>
+            {{ String(formatNum(d.six)) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 <script>
@@ -68,6 +95,7 @@ export default {
         five: 0,
         six: 0,
       },
+      allBrachNeck: [],
     };
   },
   watch: {
@@ -92,13 +120,39 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "getsalelimit/?brc_id="+this.$store.getters.co_code)
+        .get(
+          apiDomain.url + "getsalelimit/?brc_id=" + this.$store.getters.co_code
+        )
         .then((res) => {
           this.two = res.data[0].two_digits;
           this.three = res.data[0].three_digits;
           this.four = res.data[0].four_digits;
           this.five = res.data[0].five_digits;
           this.six = res.data[0].six_digits;
+          this.isloading = false;
+        })
+        .catch((err) => {
+          this.error = err;
+          this.isloading = false;
+        });
+    },
+    fetchAllBranch() {
+      this.isloading = true;
+      this.error = null;
+      axios
+        .get(apiDomain.url + "getsalelimit/")
+        .then((res) => {
+          this.allBrachNeck = res.data.map((el) => {
+            return {
+              brc: el.brc_code,
+              two: el.two_digits,
+              three: el.three_digits,
+              four: el.four_digits,
+              five: el.five_digits,
+              six: el.six_digits,
+            };
+          });
+
           this.isloading = false;
         })
         .catch((err) => {
@@ -119,7 +173,7 @@ export default {
             four: this.four,
             five: this.five,
             six: this.six,
-            brc_id:this.$store.getters.co_code,
+            brc_id: this.$store.getters.co_code,
           })
           .then((res) => {
             alert(res.data);
@@ -138,6 +192,7 @@ export default {
   },
   created() {
     this.fetchsalelim();
+    this.fetchAllBranch();
   },
 };
 </script>
