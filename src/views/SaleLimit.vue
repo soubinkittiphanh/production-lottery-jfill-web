@@ -1,7 +1,7 @@
 <template>
   <div class="container card">
     <form>
-      <div class="alert alert-success">ກຳນົດເລກເຕັມຮູ</div>
+      <div class="alert alert-success">ກຳນົດເລກເຕັມຮູ {{$store.getters.co_code}}</div>
       <div class="form-group row">
         <label for="roll_id" class="col-md-4 col-form-label"
           >ເລກ 2 ໂຕ: <span style="color: red">[ {{ expres.two }} ]</span></label
@@ -92,7 +92,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "getsalelimit")
+        .get(apiDomain.url + "getsalelimit/?brc_id="+this.$store.getters.co_code)
         .then((res) => {
           this.two = res.data[0].two_digits;
           this.three = res.data[0].three_digits;
@@ -119,6 +119,7 @@ export default {
             four: this.four,
             five: this.five,
             six: this.six,
+            brc_id:this.$store.getters.co_code,
           })
           .then((res) => {
             alert(res.data);
