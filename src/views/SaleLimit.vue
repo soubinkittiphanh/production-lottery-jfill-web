@@ -49,7 +49,11 @@
       </div>
     </form>
     <!-- {{$store.getters.isMaster}} -->
-    <table class="table table-striped table-sm" id="branchreport" v-if="$store.getters.isMaster==1">
+    <table
+      class="table table-striped table-sm"
+      id="branchreport"
+      v-if="$store.getters.isMaster == 1"
+    >
       <thead>
         <tr>
           <th scope="col">ສາຂາ</th>
@@ -58,11 +62,12 @@
           <th scope="col">4 ໂຕ</th>
           <th scope="col">5 ໂຕ</th>
           <th scope="col">6 ໂຕ</th>
+          <th scope="col">ຍົກເລີກ</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="d in allBrachNeck" v-bind:key="d.brc">
-          <td>{{ d.brc||'Master ' }}</td>
+          <td>{{ d.brc || "Master " }}</td>
           <td>{{ String(formatNum(d.two)) }}</td>
           <td>{{ String(formatNum(d.three)) }}</td>
           <td>{{ String(formatNum(d.four)) }}</td>
@@ -70,9 +75,38 @@
           <td>
             {{ String(formatNum(d.six)) }}
           </td>
+          <td>
+            <button class="btn btn-warning" @click="cancel(d.brc)">
+              ຍົກເລີກ
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
+    <div class="card">
+
+    <table
+      class="table table-striped table-sm"
+      id="branchreport"
+      v-if="$store.getters.isMaster == 1"
+    >
+      <thead>
+        <tr>
+          ຍອດຂາຍ Topsale
+        </tr>
+        <tr>
+          <th scope="col">ເລກສ່ຽງ</th>
+          <th scope="col">ຍອດຂາຍ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="d in topsale" v-bind:key="d.num">
+          <td>{{ String(formatNum(d.num)) }}</td>
+          <td>{{ String(formatNum(d.saletotal)) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
   </div>
 </template>
 <script>
@@ -96,6 +130,7 @@ export default {
         six: 0,
       },
       allBrachNeck: [],
+      topsale: [],
     };
   },
   watch: {
@@ -177,6 +212,8 @@ export default {
           })
           .then((res) => {
             alert(res.data);
+            this.fetchsalelim();
+            this.fetchAllBranch();
             this.isloading = false;
           })
           .catch((er) => {
@@ -186,6 +223,47 @@ export default {
           });
       }
     },
+    cancel(brc_code) {
+      const conf = confirm(
+        "ຕ້ອງການຍົກເລີກ ແລະ ສາຂານີ້ ຈະມີການດຶງ ຍອດເຕັມຮູບຈາກສາຂາ POPPY ?"
+      );
+      if (!conf) return;
+      this.isloading = true;
+      this.error = null;
+      axios
+        .put(apiDomain.url + "cancelsalelim/", { brc_code: brc_code })
+        .then((res) => {
+          alert(res.data);
+          this.fetchsalelim();
+          this.fetchAllBranch();
+          this.isloading = false;
+        })
+        .catch((err) => {
+          this.error = err;
+          this.isloading = false;
+          // alert(err);
+        });
+    },
+    fetchTopSale() {
+      this.isloading = true;
+      this.error = null;
+      axios
+        .get(apiDomain.url + "topsale/")
+        .then((res) => {
+          this.topsale = res.data.map((el) => {
+            return {
+              num: el.luck_num,
+              saletotal: el.total_sale,
+            };
+          });
+          this.isloading = false;
+        })
+        .catch((err) => {
+          this.error = err;
+          this.isloading = false;
+          // alert(err);
+        });
+    },
     formatNum(val) {
       return new Intl.NumberFormat().format(val);
     },
@@ -193,6 +271,7 @@ export default {
   created() {
     this.fetchsalelim();
     this.fetchAllBranch();
+    this.fetchTopSale();
   },
 };
 </script>
@@ -202,6 +281,6 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   padding: 1rem;
   margin: 0.5rem auto;
-  max-width: 40rem;
+  max-width: 60rem;;
 }
 </style>
