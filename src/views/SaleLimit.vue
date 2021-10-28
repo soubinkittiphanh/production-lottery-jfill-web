@@ -1,6 +1,8 @@
 <template>
   <div class="container card">
-    <form>
+    <div class="row"> 
+      <div class="col-md-8">
+        <form>
       <div class="alert alert-success">
         ກຳນົດເລກເຕັມຮູ {{ $store.getters.co_code }}
       </div>
@@ -48,6 +50,35 @@
         <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
       </div>
     </form>
+      </div>
+      <div class="col-md-4">
+         <div class="card">
+
+    <table
+      class="table table-striped table-sm"
+      id="branchreport"
+      v-if="$store.getters.isMaster == 1"
+    >
+      <thead>
+        <tr>
+          ຍອດຂາຍ Topsale
+        </tr>
+        <tr>
+          <th scope="col">ເລກສ່ຽງ</th>
+          <th scope="col">ຍອດຂາຍ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="d in topsale" v-bind:key="d.num">
+          <td>{{ String(formatNum(d.num)) }}</td>
+          <td>{{ String(formatNum(d.saletotal)) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+      </div>
+    </div>
+    
     <!-- {{$store.getters.isMaster}} -->
     <table
       class="table table-striped table-sm"
@@ -83,30 +114,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="card">
-
-    <table
-      class="table table-striped table-sm"
-      id="branchreport"
-      v-if="$store.getters.isMaster == 1"
-    >
-      <thead>
-        <tr>
-          ຍອດຂາຍ Topsale
-        </tr>
-        <tr>
-          <th scope="col">ເລກສ່ຽງ</th>
-          <th scope="col">ຍອດຂາຍ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="d in topsale" v-bind:key="d.num">
-          <td>{{ String(formatNum(d.num)) }}</td>
-          <td>{{ String(formatNum(d.saletotal)) }}</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
+   
   </div>
 </template>
 <script>
