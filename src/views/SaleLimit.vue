@@ -1,84 +1,87 @@
 <template>
   <div class="container card">
-    <div class="row"> 
+    <div class="row">
       <div class="col-md-8">
         <form>
-      <div class="alert alert-success">
-        ກຳນົດເລກເຕັມຮູ {{ $store.getters.co_code }}
-      </div>
-      <div class="form-group row">
-        <label for="roll_id" class="col-md-4 col-form-label"
-          >ເລກ 2 ໂຕ: <span style="color: red">[ {{ expres.two }} ]</span></label
-        >
-        <div class="col-md-12">
-          <input type="number" class="form-control" v-model="two" />
-        </div>
-        <label for="roll_id" class="col-md-4 col-form-label"
-          >ເລກ 3 ໂຕ:
-          <span style="color: red">[ {{ expres.three }} ]</span></label
-        >
-        <div class="col-md-12">
-          <input type="number" class="form-control" v-model="three" />
-        </div>
-        <label for="roll_id" class="col-md-4 col-form-label"
-          >ເລກ 4 ໂຕ:
-          <span style="color: red">[ {{ expres.four }} ]</span></label
-        >
-        <div class="col-md-12">
-          <input type="number" class="form-control" v-model="four" />
-        </div>
-        <label for="roll_id" class="col-md-4 col-form-label"
-          >ເລກ 5 ໂຕ:
-          <span style="color: red">[ {{ expres.five }} ]</span></label
-        >
-        <div class="col-md-12">
-          <input type="number" class="form-control" v-model="five" />
-        </div>
-        <label for="roll_id" class="col-md-4 col-form-label"
-          >ເລກ 6 ໂຕ: <span style="color: red">[ {{ expres.six }} ]</span></label
-        >
-        <div class="col-md-12">
-          <input type="number" class="form-control" v-model="six" />
-        </div>
-        <label for="roll_id" class="col-md-4 col-form-label"></label>
-        <div class="col-md-12">
-          <button class="btn btn-success" @click.prevent="updatedata">
-            ບັນທຶກ
-          </button>
-        </div>
-        <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
-        <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
-      </div>
-    </form>
+          <div class="alert alert-success">
+            ກຳນົດເລກເຕັມຮູ {{ $store.getters.co_code }}
+          </div>
+          <div class="form-group row">
+            <label for="roll_id" class="col-md-4 col-form-label"
+              >ເລກ 2 ໂຕ:
+              <span style="color: red">[ {{ expres.two }} ]</span></label
+            >
+            <div class="col-md-12">
+              <input type="number" class="form-control" v-model="two" />
+            </div>
+            <label for="roll_id" class="col-md-4 col-form-label"
+              >ເລກ 3 ໂຕ:
+              <span style="color: red">[ {{ expres.three }} ]</span></label
+            >
+            <div class="col-md-12">
+              <input type="number" class="form-control" v-model="three" />
+            </div>
+            <label for="roll_id" class="col-md-4 col-form-label"
+              >ເລກ 4 ໂຕ:
+              <span style="color: red">[ {{ expres.four }} ]</span></label
+            >
+            <div class="col-md-12">
+              <input type="number" class="form-control" v-model="four" />
+            </div>
+            <label for="roll_id" class="col-md-4 col-form-label"
+              >ເລກ 5 ໂຕ:
+              <span style="color: red">[ {{ expres.five }} ]</span></label
+            >
+            <div class="col-md-12">
+              <input type="number" class="form-control" v-model="five" />
+            </div>
+            <label for="roll_id" class="col-md-4 col-form-label"
+              >ເລກ 6 ໂຕ:
+              <span style="color: red">[ {{ expres.six }} ]</span></label
+            >
+            <div class="col-md-12">
+              <input type="number" class="form-control" v-model="six" />
+            </div>
+            <label for="roll_id" class="col-md-4 col-form-label"></label>
+            <div class="col-md-12">
+              <button class="btn btn-success" @click.prevent="updatedata">
+                ບັນທຶກ
+              </button>
+            </div>
+            <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
+            <p v-else-if="!isloading && error" style="color: red">
+              {{ error }}
+            </p>
+          </div>
+        </form>
       </div>
       <div class="col-md-4">
-         <div class="card">
-
-    <table
-      class="table table-striped table-sm"
-      id="branchreport"
-      v-if="$store.getters.isMaster == 1"
-    >
-      <thead>
-        <tr>
-          ຍອດຂາຍ Topsale
-        </tr>
-        <tr>
-          <th scope="col">ເລກສ່ຽງ</th>
-          <th scope="col">ຍອດຂາຍ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="d in topsale" v-bind:key="d.num">
-          <td>{{ String(formatNum(d.num)) }}</td>
-          <td>{{ String(formatNum(d.saletotal)) }}</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
+        <div class="card">
+          <table
+            class="table table-striped table-sm"
+            id="branchreport"
+            v-if="$store.getters.isMaster == 1"
+          >
+            <thead>
+              <tr>
+                ຍອດຂາຍ Topsale
+              </tr>
+              <tr>
+                <th scope="col">ເລກສ່ຽງ</th>
+                <th scope="col">ຍອດຂາຍ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="d in topsale" v-bind:key="d.num">
+                <td>{{ String(formatNum(d.num)) }}</td>
+                <td>{{ String(formatNum(d.saletotal)) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    
+
     <!-- {{$store.getters.isMaster}} -->
     <table
       class="table table-striped table-sm"
@@ -114,7 +117,6 @@
         </tr>
       </tbody>
     </table>
-   
   </div>
 </template>
 <script>
@@ -216,7 +218,7 @@ export default {
             four: this.four,
             five: this.five,
             six: this.six,
-            brc_id: this.$store.getters.co_code,
+            brc_id: this.$store.getters.co_code=='POPPY'?'DEFAULT':this.$store.getters.co_code,
           })
           .then((res) => {
             alert(res.data);
@@ -289,6 +291,6 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   padding: 1rem;
   margin: 0.5rem auto;
-  max-width: 60rem;;
+  max-width: 60rem;
 }
 </style>
