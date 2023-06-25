@@ -17,15 +17,16 @@
 
         <tr v-for="d in payrateList" v-bind:key="d.id">
           <td>{{ d.id }}</td>
-          <td>{{ d.branch_id }}</td>
+          <td>{{ d.co_code }}</td>
           <td>{{ d.pay_two }}</td>
           <td>{{ d.pay_three }}</td>
           <td>{{ d.pay_four }}</td>
           <td>{{ d.pay_five }}</td>
           <td>{{ d.pay_six }}</td>
           <td>
-            <button class="btn btn-warning" @click="viewUser(d.id)">
-              <span class="material-icons">edit</span>
+            <!-- {{ d.id }} -->
+            <button class="btn btn-warning" @click.prevent="deletePayrate(d.id)">
+              <span class="material-icons">delete</span>
             </button>
           </td>
         </tr>
@@ -47,7 +48,7 @@ export default {
   },
   data() {
     return {
-      tableHeader: ['Id','ສາຂາ', '2 ໂຕ', '3 ໂຕ', '4 ໂຕ', '5 ໂຕ', '6 ໂຕ'],
+      tableHeader: ['Id', 'ສາຂາ', '2 ໂຕ', '3 ໂຕ', '4 ໂຕ', '5 ໂຕ', '6 ໂຕ'],
       isloading: false,
       error: null,
       payrateList: [],
@@ -68,6 +69,22 @@ export default {
       const sel_brc = this.payrateList.find(data => data.id === id);
       console.log(":::::::::::::" + sel_brc.lname);
       this.$emit("update-branch", id, sel_brc.code, sel_brc.name, sel_brc.lname, sel_brc.commrate);
+    },
+    async deletePayrate(id) {
+      this.isloading=true
+      console.log('===> ID ',id);
+      await axios
+        .delete(`deletepayrate/${id}`)
+        .then(async(res) => {
+          console.log("Response",res);
+          await this.allPayrate();
+        })
+        .catch((er) => {
+          this.isloading = false;
+          this.error = er;
+          alert("ເກີດຂໍ້ຜິດພາດການເຊື່ອມຕໍ່ເຊີເວີ derrrr: " + er);
+        });
+        this.isloading =false
     },
     onPageClick(event) {
       this.currentPage = event;
