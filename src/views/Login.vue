@@ -9,11 +9,7 @@
           </div>
           <label for="roll_id" class="col-md-4 col-form-label">ລະຫັດຜ່ານ</label>
           <div class="col-md-12">
-            <input
-              type="password"
-              class="form-control"
-              v-model.trim="user.pass"
-            />
+            <input type="password" class="form-control" v-model.trim="user.pass" />
           </div>
           <p v-if="invalidForm">ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບ</p>
         </div>
@@ -21,7 +17,7 @@
         <div class="col-md-12">
           <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isLoading"></i>
           <p v-else-if="!isLoading && error" style="color: red">{{ error }}</p>
-          <p>API: {{api}}</p>
+          <p>API: {{ api }}</p>
         </div>
       </form>
     </base-card>
@@ -44,7 +40,7 @@ export default {
       invalidForm: false,
       isLoading: false,
       error: null,
-      api:apiDomain.url,
+      api: apiDomain.url,
     };
   },
   computed: {
@@ -65,9 +61,12 @@ export default {
           this.invalidForm = true;
           // return;
         } else {
+          console.log("USER=> ", this.user
+            .id
+            , this.user.pass);
           await this.$store.dispatch("login", {
-            id: this.user.id,
-            pass: this.user.pass,
+            uid: this.user.id,
+            upas: this.user.pass,
           });
           if (this.isAuthenticated) {
             this.$router.replace("/home");

@@ -1,5 +1,4 @@
-import axios from "axios";
-import apiDomain from "../config";
+import axios from "../axiosConfig";
 import CryptoJS from "crypto-js";
 
 export default {
@@ -63,7 +62,7 @@ export default {
     localStorage.removeItem("ism_ref");
     localStorage.removeItem("ism_date");
     const _response = await axios
-      .get(apiDomain.url + "getism_ref")
+      .get("getism_ref")
       .then((res) => {
         console.log("ISM: " + res.data[0].ism_ref + " " + res.data[0].ism_date);
         localStorage.setItem("ism_ref", res.data[0].ism_ref);
@@ -79,12 +78,10 @@ export default {
     console.log(_response);
   },
   async login(context, payload) {
-    console.log(apiDomain.url);
+    console.log("Payload===> ",payload);
+
     const _response = await axios
-      .post(apiDomain.url + "auth", {
-        id: payload.id,
-        pass: payload.pass,
-      })
+      .post("auth_web", payload)
       .then((response) => {
         if (
           response.data[0].isAuth === false ||
@@ -109,6 +106,7 @@ export default {
         localStorage.setItem("ism_ref", response.data[0].ism_ref);
         localStorage.setItem("ism_date", response.data[0].ism_date);
         localStorage.setItem("cocom", response.data[0].co_comm);
+        localStorage.setItem("token", response.data[0].token);
         // localStorage.setItem("co_code", response.data[0].brc_code);
 
         const menuObj = {

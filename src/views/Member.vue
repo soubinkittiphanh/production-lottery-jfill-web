@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../axiosConfig";
 import apiDomain from "../config";
 export default {
   data() {
@@ -233,7 +233,7 @@ export default {
       }
     },
     async fetchGroup() {
-      const res = await axios.get(apiDomain.url + "fetchGroupCode");
+      const res = await axios.get("fetchGroupCode");
       if (res.status == 200) {
         var results = [];
         for (const g in res.data) {

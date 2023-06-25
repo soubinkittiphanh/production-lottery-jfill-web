@@ -233,10 +233,8 @@
   </base-dialog>
 </template>
 <script>
-import axios from "axios";
-import apiDomain from "../config";
+import axios from "../axiosConfig";
 import SaleCard from "./SaleCard.vue";
-// import SimModal from "./ui/SimpleModal";
 import BaseDialog from "./ui/BaseDialog";
 import QrcodeVue from 'qrcode.vue'
 export default {
@@ -424,7 +422,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .post(apiDomain.url + "sale", {
+        .post("sale", {
           item: this.saleLek,
           ism: this.get_ism_ref,
           user: this.get_user,
@@ -446,7 +444,7 @@ export default {
     },
     submitLekTest() {
       console.log("get in....");
-      axios.post(apiDomain.url + "create", {
+      axios.post("create", {
         name: "Soubin Kittiphanh",
         age: 28,
         country: "Laos",
@@ -457,7 +455,7 @@ export default {
     fetchdata() {
       this.isloading = true;
       this.error = null;
-      fetch(apiDomain.url + "employees")
+      fetch("employees")
         .then((response) => {
           if (response.ok) {
             return response.json();

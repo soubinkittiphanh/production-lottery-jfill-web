@@ -73,6 +73,13 @@
     >
       <span class="material-icons">receipt</span>ລາຍງານຖືກລາງວັນ</router-link
     >
+    <router-link
+      to="/winreportbranch"
+      class="navbar__link"
+      v-if="isAdmin && menu['m_re_win'] == 1"
+    >
+      <span class="material-icons">receipt</span>ລາຍງານຖືກລາງວັນ ຕາມເລດສາຂາ</router-link
+    >
 
     <router-link
       to="/memgroup"

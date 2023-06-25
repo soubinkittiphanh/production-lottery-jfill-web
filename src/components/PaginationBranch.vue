@@ -43,8 +43,7 @@
 <script>
 import "@ocrv/vue-tailwind-pagination/dist/style.css";
 import VueTailwindPagination from "@ocrv/vue-tailwind-pagination";
-import apiDomain from "../config";
-import axios from "axios";
+import axios from "../axiosConfig";
 export default {
   props: ["datas"],
   components: {
@@ -99,7 +98,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "fetchbrc")
+        .get("fetchbrc")
         .then((res) => {
           var results = [];
           for (const id in res.data) {

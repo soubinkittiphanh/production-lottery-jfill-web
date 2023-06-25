@@ -83,6 +83,15 @@ const router = createRouter({
       },
     },
     {
+      path: "/winreportbranch",
+      component: () =>
+        import(/* webpackChuckName:"WinReportBranch" */ "./views/WinReportBranch.vue"),
+      meta: {
+        requireAuth: true,
+        requireWinRe:true,
+      },
+    },
+    {
       path: "/lotterymgr",
       component: () =>
         import(/* webpackChuckName:"LotteryMgr" */ "./views/LotteryMgr.vue"),

@@ -7,7 +7,7 @@
     <div class="alert alert-success">
       ສະມາຊິກທັງຫມົດ:
       {{ total }}
-      <button v-if="mem_master==1" class="btn btn-warning" @click="toggleDetail">ປີດ-ເປີດ ລາຍງານສາຂາ</button>
+      <button v-if="mem_master == 1" class="btn btn-warning" @click="toggleDetail">ປີດ-ເປີດ ລາຍງານສາຂາ</button>
       <table v-if="showBrcRe" class="table table-striped table-sm" id="branchreport">
         <thead>
           <tr>
@@ -19,33 +19,31 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr v-for="d in brcreport" v-bind:key="d.brc_code>
-        
-        </tr> -->
           <tr v-for="d in brcreport" v-bind:key="d.brc_code">
             <td>{{ d.brc_code }}</td>
             <td>{{ String(formatNum(d.total)) }}</td>
             <td>{{ String(formatNum(d.total_com1)) }}</td>
             <td>{{ String(formatNum(d.win_amount)) }}</td>
-            <td>{{ String(formatNum(d.total-(d.total_com1+d.win_amount))) }}</td>
+            <td>{{ String(formatNum(d.total - (d.total_com1 + d.win_amount))) }}</td>
           </tr>
           <tr style="color: red">
-          <th scope="col">ລວມ:</th>
-          <th scope="col">
-            [{{ String(formatNum(branchExtract[0]["total"])) }}]
-          </th>
-          <th scope="col">
-            [{{ String(formatNum(branchExtract[0]["total_com1"])) }}]
-          </th>
-          <th scope="col">
-            [{{ String(formatNum(branchExtract[0]["win_amount"])) }}]
-          </th>
-          <th scope="col">
-            [{{ String(formatNum(branchExtract[0]["total"] -(branchExtract[0]["total_com1"]+branchExtract[0]["win_amount"]    )    )) }}]
-          </th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
+            <th scope="col">ລວມ:</th>
+            <th scope="col">
+              [{{ String(formatNum(branchExtract[0]["total"])) }}]
+            </th>
+            <th scope="col">
+              [{{ String(formatNum(branchExtract[0]["total_com1"])) }}]
+            </th>
+            <th scope="col">
+              [{{ String(formatNum(branchExtract[0]["win_amount"])) }}]
+            </th>
+            <th scope="col">
+              [{{ String(formatNum(branchExtract[0]["total"]
+                - (branchExtract[0]["total_com1"] + branchExtract[0]["win_amount"]))) }}]
+            </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -57,9 +55,6 @@
           <th scope="col">ສາຂາ</th>
           <th scope="col">ກຸ່ມ</th>
           <th scope="col">ID</th>
-          <!-- <th scope="col">ບ້ານ</th>
-          <th scope="col">ເມືອງ</th>
-          <th scope="col">ແຂວງ</th> -->
           <th scope="col">ຍອດຂາຍ</th>
           <th scope="col">%ຂາຍ</th>
           <th scope="col">ຍອດຖືກ</th>
@@ -82,7 +77,9 @@
           <th scope="col"></th>
           <th scope="col"></th>
           <th scope="col">
-            [{{ String(formatNum(branchExtract[0]["total"] -(branchExtract[0]["total_com1"]+branchExtract[0]["win_amount"]    )    )) }}]
+            [{{ String(formatNum(branchExtract[0]["total"] - (branchExtract[0]["total_com1"] +
+              branchExtract[0]["win_amount"]
+            ))) }}]
           </th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -94,9 +91,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- <td></td>
-          <td></td>
-          <td></td> -->
           <td>[{{ String(formatNum(totalsale)) }}]</td>
           <td>[{{ String(formatNum(totalcom3)) }}]</td>
           <td>[{{ String(formatNum(totalwin)) }}]</td>
@@ -110,9 +104,6 @@
           <td>{{ d.branch }}</td>
           <td>{{ d.group }}</td>
           <td>{{ d.logid }}</td>
-          <!-- <td>{{ d.vill }}</td>
-          <td>{{ d.dist }}</td>
-          <td>{{ d.pro }}</td> -->
           <td>{{ String(formatNum(d.total)) }}</td>
           <td>{{ String(formatNum((d.total * d.comsale) / 100)) }}</td>
           <td>{{ String(formatNum(d.winamount)) }}</td>
@@ -122,9 +113,9 @@
               String(
                 formatNum(
                   d.total -
-                    (d.total * d.comsale) / 100 -
-                    d.winamount -
-                    (d.winamount * d.comwin) / 100
+                  (d.total * d.comsale) / 100 -
+                  d.winamount -
+                  (d.winamount * d.comwin) / 100
                 )
               )
             }}
@@ -138,19 +129,14 @@
         </tr>
       </tbody>
     </table>
-    <VueTailwindPagination
-      :current="currentPage"
-      :total="total"
-      :per-page="perPage"
-      @page-changed="onPageClick($event)"
-    />
+    <VueTailwindPagination :current="currentPage" :total="total" :per-page="perPage"
+      @page-changed="onPageClick($event)" />
   </div>
 </template>
 <script>
 import "@ocrv/vue-tailwind-pagination/dist/style.css";
 import VueTailwindPagination from "@ocrv/vue-tailwind-pagination";
-import apiDomain from "../config";
-import axios from "axios";
+import axios from "../axiosConfig";
 export default {
   components: {
     VueTailwindPagination,
@@ -187,9 +173,9 @@ export default {
     };
   },
   methods: {
-    toggleDetail(){
-      if (this.mem_master==0) return;
-      this.showBrcRe=!this.showBrcRe;
+    toggleDetail() {
+      if (this.mem_master == 0) return;
+      this.showBrcRe = !this.showBrcRe;
     },
     formatNum(val) {
       return new Intl.NumberFormat().format(val);
@@ -232,7 +218,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "brcreport", { data: null })
+        .get("brcreport", { data: null })
         .then((res) => {
           console.log(res);
           var results = [];
@@ -264,7 +250,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "fetchuser", {
+        .get("fetchuser", {
           params: {
             p_mem_id: this.mem_id,
             p_master: this.mem_master,
@@ -329,12 +315,6 @@ export default {
     this.currentPage = 1;
   },
   computed: {
-    // brc_total(){
-    //   var total_sale=0;
-    //   var total_com=0;
-    //   var total_win=0;
-
-    // },
     mem_id() {
       return this.$store.getters.user_id;
     },

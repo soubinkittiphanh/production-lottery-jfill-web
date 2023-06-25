@@ -62,10 +62,9 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import apiDomain from "../config";
 
-// import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
+
+import axios from "../axiosConfig";
 export default {
   // components: {
   //   QrcodeStream,
@@ -148,7 +147,7 @@ export default {
       this.error = null;
       this.isloading = true;
       axios
-        .get(apiDomain.url + "getpayrate")
+        .get("getpayrate")
         .then((res) => {
           this.payR = res.data;
           this.isloading = false;
@@ -164,7 +163,7 @@ export default {
       this.isloading = true;
 
       axios
-        .get(apiDomain.url + "winreport", {
+        .get("winreport", {
           params: {
             p_date: this.r_date,
             p_admin: this.isAdmin,

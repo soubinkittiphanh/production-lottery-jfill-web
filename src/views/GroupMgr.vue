@@ -98,8 +98,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import apiDomain from "../config";
+import axios from "../axiosConfig";
 import GroupPage from "../components/PaginationGroup.vue";
 export default {
   components: {
@@ -209,7 +208,7 @@ export default {
         alert("ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບ");
       } else {
         axios
-          .post(apiDomain.url + "creategroup", {
+          .post( "creategroup", {
             'g_data':this.sel_g_p,
           })
           .then((res) => {
@@ -252,7 +251,7 @@ export default {
         alert("ກະລຸນາໃສ່ຂໍ້ມູນໃຫ້ຄົບ");
       } else {
         axios
-          .put(apiDomain.url + "updategroup", {
+          .put("updategroup", {
             'g_data':this.sel_g_p,
           })
           .then((res) => {
@@ -272,7 +271,7 @@ export default {
       this.isloading = true;
       this.error = null;
       await axios
-        .get(apiDomain.url + "fetchGroup")
+        .get("fetchGroup")
         .then((res) => {
           var results = [];
           for (const id in res.data) {

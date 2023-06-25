@@ -1,127 +1,116 @@
 <template>
-  <div class="container card">
-    <div class="row">
-      <div class="col-md-8">
-        <form>
-          <div class="alert alert-success">
-            ກຳນົດເລກເຕັມຮູ {{ $store.getters.co_code }}
+  <div class="container">
+    <div class="card">
+
+
+      <div class="row">
+        <div class="col-md-8">
+          <form>
+            <div class="alert alert-success">
+              ກຳນົດເລກເຕັມຮູ {{ $store.getters.co_code }}
+            </div>
+            <div class="form-group row">
+              <label for="roll_id" class="col-md-4 col-form-label">ເລກ 2 ໂຕ:
+                <span style="color: red">[ {{ expres.two }} ]</span></label>
+              <div class="col-md-12">
+                <input type="number" class="form-control" v-model="two" />
+              </div>
+              <label for="roll_id" class="col-md-4 col-form-label">ເລກ 3 ໂຕ:
+                <span style="color: red">[ {{ expres.three }} ]</span></label>
+              <div class="col-md-12">
+                <input type="number" class="form-control" v-model="three" />
+              </div>
+              <label for="roll_id" class="col-md-4 col-form-label">ເລກ 4 ໂຕ:
+                <span style="color: red">[ {{ expres.four }} ]</span></label>
+              <div class="col-md-12">
+                <input type="number" class="form-control" v-model="four" />
+              </div>
+              <label for="roll_id" class="col-md-4 col-form-label">ເລກ 5 ໂຕ:
+                <span style="color: red">[ {{ expres.five }} ]</span></label>
+              <div class="col-md-12">
+                <input type="number" class="form-control" v-model="five" />
+              </div>
+              <label for="roll_id" class="col-md-4 col-form-label">ເລກ 6 ໂຕ:
+                <span style="color: red">[ {{ expres.six }} ]</span></label>
+              <div class="col-md-12">
+                <input type="number" class="form-control" v-model="six" />
+              </div>
+              <label for="roll_id" class="col-md-4 col-form-label"></label>
+              <div class="col-md-12">
+                <button class="btn btn-success" @click.prevent="updatedata">
+                  ບັນທຶກ
+                </button>
+              </div>
+              <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
+              <p v-else-if="!isloading && error" style="color: red">
+                {{ error }}
+              </p>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <table class="table table-striped table-sm" id="branchreport" v-if="$store.getters.isMaster == 1">
+              <thead>
+                <tr>
+                  ຍອດຂາຍ Topsale
+                </tr>
+                <tr>
+                  <th scope="col">ເລກສ່ຽງ</th>
+                  <th scope="col">ຍອດຂາຍ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="d in topsale" v-bind:key="d.num">
+                  <td>{{ String(formatNum(d.num)) }}</td>
+                  <td>{{ String(formatNum(d.saletotal)) }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="form-group row">
-            <label for="roll_id" class="col-md-4 col-form-label"
-              >ເລກ 2 ໂຕ:
-              <span style="color: red">[ {{ expres.two }} ]</span></label
-            >
-            <div class="col-md-12">
-              <input type="number" class="form-control" v-model="two" />
-            </div>
-            <label for="roll_id" class="col-md-4 col-form-label"
-              >ເລກ 3 ໂຕ:
-              <span style="color: red">[ {{ expres.three }} ]</span></label
-            >
-            <div class="col-md-12">
-              <input type="number" class="form-control" v-model="three" />
-            </div>
-            <label for="roll_id" class="col-md-4 col-form-label"
-              >ເລກ 4 ໂຕ:
-              <span style="color: red">[ {{ expres.four }} ]</span></label
-            >
-            <div class="col-md-12">
-              <input type="number" class="form-control" v-model="four" />
-            </div>
-            <label for="roll_id" class="col-md-4 col-form-label"
-              >ເລກ 5 ໂຕ:
-              <span style="color: red">[ {{ expres.five }} ]</span></label
-            >
-            <div class="col-md-12">
-              <input type="number" class="form-control" v-model="five" />
-            </div>
-            <label for="roll_id" class="col-md-4 col-form-label"
-              >ເລກ 6 ໂຕ:
-              <span style="color: red">[ {{ expres.six }} ]</span></label
-            >
-            <div class="col-md-12">
-              <input type="number" class="form-control" v-model="six" />
-            </div>
-            <label for="roll_id" class="col-md-4 col-form-label"></label>
-            <div class="col-md-12">
-              <button class="btn btn-success" @click.prevent="updatedata">
-                ບັນທຶກ
-              </button>
-            </div>
-            <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
-            <p v-else-if="!isloading && error" style="color: red">
-              {{ error }}
-            </p>
-          </div>
-        </form>
+        </div>
       </div>
-      <div class="col-md-4">
-        <div class="card">
-          <table
-            class="table table-striped table-sm"
-            id="branchreport"
-            v-if="$store.getters.isMaster == 1"
-          >
+      <div class="row">
+        <div class="col-md-12">
+          <!-- {{$store.getters.isMaster}} -->
+          <table class="table table-striped table-sm" id="branchreport" v-if="$store.getters.isMaster == 1">
             <thead>
               <tr>
-                ຍອດຂາຍ Topsale
-              </tr>
-              <tr>
-                <th scope="col">ເລກສ່ຽງ</th>
-                <th scope="col">ຍອດຂາຍ</th>
+                <th scope="col">ສາຂາ</th>
+                <th scope="col">2 ໂຕ</th>
+                <th scope="col">3 ໂຕ</th>
+                <th scope="col">4 ໂຕ</th>
+                <th scope="col">5 ໂຕ</th>
+                <th scope="col">6 ໂຕ</th>
+                <th scope="col">ຍົກເລີກ</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="d in topsale" v-bind:key="d.num">
-                <td>{{ String(formatNum(d.num)) }}</td>
-                <td>{{ String(formatNum(d.saletotal)) }}</td>
+              <tr v-for="d in allBrachNeck" v-bind:key="d.brc">
+                <td>{{ d.brc || "Master " }}</td>
+                <td>{{ String(formatNum(d.two)) }}</td>
+                <td>{{ String(formatNum(d.three)) }}</td>
+                <td>{{ String(formatNum(d.four)) }}</td>
+                <td>{{ String(formatNum(d.five)) }}</td>
+                <td>
+                  {{ String(formatNum(d.six)) }}
+                </td>
+                <td>
+                  <button class="btn btn-warning" @click="cancel(d.brc)">
+                    ຍົກເລີກ
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
 
-    <!-- {{$store.getters.isMaster}} -->
-    <table
-      class="table table-striped table-sm"
-      id="branchreport"
-      v-if="$store.getters.isMaster == 1"
-    >
-      <thead>
-        <tr>
-          <th scope="col">ສາຂາ</th>
-          <th scope="col">2 ໂຕ</th>
-          <th scope="col">3 ໂຕ</th>
-          <th scope="col">4 ໂຕ</th>
-          <th scope="col">5 ໂຕ</th>
-          <th scope="col">6 ໂຕ</th>
-          <th scope="col">ຍົກເລີກ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="d in allBrachNeck" v-bind:key="d.brc">
-          <td>{{ d.brc || "Master " }}</td>
-          <td>{{ String(formatNum(d.two)) }}</td>
-          <td>{{ String(formatNum(d.three)) }}</td>
-          <td>{{ String(formatNum(d.four)) }}</td>
-          <td>{{ String(formatNum(d.five)) }}</td>
-          <td>
-            {{ String(formatNum(d.six)) }}
-          </td>
-          <td>
-            <button class="btn btn-warning" @click="cancel(d.brc)">
-              ຍົກເລີກ
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    </div>
   </div>
 </template>
 <script>
-import axios from "axios";
-import apiDomain from "../config";
+import axios from "../axiosConfig";
 export default {
   data() {
     return {
@@ -165,8 +154,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(
-          apiDomain.url + "getsalelimit/?brc_id=" + this.$store.getters.co_code
+        .get("getsalelimit/?brc_id=" + this.$store.getters.co_code
         )
         .then((res) => {
           this.two = res.data[0].two_digits;
@@ -185,7 +173,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "getsalelimit/")
+        .get("getsalelimit")
         .then((res) => {
           this.allBrachNeck = res.data.map((el) => {
             return {
@@ -212,13 +200,13 @@ export default {
         this.isloading = true;
         this.error = null;
         axios
-          .put(apiDomain.url + "updatesalelim/?id=" + 1, {
+          .put("updatesalelim/?id=" + 1, {
             two: this.two,
             three: this.three,
             four: this.four,
             five: this.five,
             six: this.six,
-            brc_id: this.$store.getters.co_code=='POPPY'?'DEFAULT':this.$store.getters.co_code,
+            brc_id: this.$store.getters.co_code == 'POPPY' ? 'DEFAULT' : this.$store.getters.co_code,
           })
           .then((res) => {
             alert(res.data);
@@ -241,7 +229,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .put(apiDomain.url + "cancelsalelim/", { brc_code: brc_code })
+        .put("cancelsalelim", { brc_code: brc_code })
         .then((res) => {
           alert(res.data);
           this.fetchsalelim();
@@ -258,7 +246,7 @@ export default {
       this.isloading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "topsale/")
+        .get("topsale")
         .then((res) => {
           this.topsale = res.data.map((el) => {
             return {

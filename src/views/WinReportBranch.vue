@@ -2,8 +2,7 @@
   <div class="container">
     <form @submit.prevent="getData">
       <div class="form-group row">
-        <label for="roll_id" class="col-md-12 col-form-label"
-          >ລາຍງານຍອດຂາຍວັນທີ:
+        <label for="roll_id" class="col-md-12 col-form-label">ລາຍງາຍຜູ້ໂຊກດີ:
         </label>
         <div class="col-md-12">
           <input type="date" class="form-control" v-model="r_date" />
@@ -13,72 +12,48 @@
           <button class="btn btn-success">ດຶງຂໍ້ມູນ</button> |
           {{ formatdate(r_date) }}
         </div>
+
       </div>
     </form>
+    <PaginationBranchWinOnPayrate></PaginationBranchWinOnPayrate>
 
-    <table class="table sm">
-      <thead>
-        <tr>
-          <th scope="col">ເລກງວດ</th>
-          <th scope="col">ເລກບິນ</th>
-          <th scope="col">ຜູ້ຂາຍ</th>
-          <th scope="col">ວັນທີ</th>
-          <th scope="col" class="text-right">ເລກສ່ຽງ</th>
-          <th scope="col" class="text-right">ຈຳນວນເງິນ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(itm, idx) in report_data" :key="idx">
-          <td>{{ itm.ism_id }}</td>
-          <td>{{ itm.sale_bill_id }}</td>
-          <td>{{ itm.mem_id }}</td>
-          <td>{{ formatdate(itm.date) }}</td>
-          <td class="text-right">{{ itm.sale_num }}</td>
-          <td class="text-right">{{ formatNum(itm.sale_price) }}</td>
-        </tr>
-        <tr>
-          <td>
-            <span class="error" v-if="!isloading && report_data.length < 1"
-              >ບໍ່ມີຂໍ້ມູນ</span
-            >
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td class="text-right">ລວມຍອດຂາຍ</td>
-          <!-- <td>{{ this.report_data.sale_price.reduce((a, b) => a + b, 0) }}</td> -->
-          <td class="text-right">{{ getSumSale }}</td>
-        </tr>
-      </tbody>
-    </table>
     <i class="fa fa-spinner fa-spin fa-3x fa-fw" v-if="isloading"></i>
     <p v-else-if="!isloading && error" style="color: red">{{ error }}</p>
   </div>
 </template>
 <script>
+import PaginationBranchWinOnPayrate from '../components/PaginationBranchWinOnPayrate.vue'
+
+
 import axios from "../axiosConfig";
 export default {
+  components: {
+    PaginationBranchWinOnPayrate
+  },
   created() {
     this.setCurDate();
+    this.getPayRate();
   },
   data() {
     return {
+      // qr_result: "",
+      // qr_error: "",
       report_data: [],
       r_date: "",
       isloading: false,
       error: null,
+      payR: [],
     };
   },
   computed: {
     getSumSale() {
       let totalsale = 0;
       for (var itm of this.report_data) {
-        totalsale += itm.sale_price;
+        totalsale += (this.getPaid(itm.sale_num) * itm.sale_price) / 1000;
       }
       return this.formatNum(totalsale);
     },
     isAdmin() {
-      console.log(this.$store.getters.isAdmin);
       return this.$store.getters.isAdmin;
     },
     mem_id() {
@@ -89,13 +64,65 @@ export default {
     },
   },
   methods: {
+    // onDecode(result) {
+    //   this.qr_result = result;
+    // },
+    // async onInit(promise) {
+    //   try {
+    //     await promise;
+    //   } catch (error) {
+    //     if (error.name === "NotAllowedError") {
+    //       this.qr_error = "ERROR: you need to grant camera access permisson";
+    //     } else if (error.name === "NotFoundError") {
+    //       this.qr_error = "ERROR: no camera on this device";
+    //     } else if (error.name === "NotSupportedError") {
+    //       this.qr_error = "ERROR: secure context required (HTTPS, localhost)";
+    //     } else if (error.name === "NotReadableError") {
+    //       this.qr_error = "ERROR: is the camera already in use?";
+    //     } else if (error.name === "OverconstrainedError") {
+    //       this.qr_error = "ERROR: installed cameras are not suitable";
+    //     } else if (error.name === "StreamApiNotSupportedError") {
+    //       this.qr_error = "ERROR: Stream API is not supported in this browser";
+    //     }
+    //   }
+    // },
+    getPaid(val) {
+      let result = 0;
+      if (val.length === 2) {
+        result = this.payR[0].pay_two;
+      } else if (val.length === 3) {
+        result = this.payR[0].pay_three;
+      } else if (val.length === 4) {
+        result = this.payR[0].pay_four;
+      } else if (val.length === 5) {
+        result = this.payR[0].pay_five;
+      } else if (val.length === 6) {
+        result = this.payR[0].pay_six;
+      }
+
+      return result;
+    },
+    getPayRate() {
+      this.error = null;
+      this.isloading = true;
+      axios
+        .get("getpayrate")
+        .then((res) => {
+          this.payR = res.data;
+          this.isloading = false;
+        })
+        .catch((er) => {
+          this.error = er;
+          this.isloading = false;
+        });
+    },
     getData() {
       //   const r_date = "10002";
       this.error = null;
       this.isloading = true;
 
       axios
-        .get( "salereport", {
+        .get("winreport", {
           params: {
             p_date: this.r_date,
             p_admin: this.isAdmin,
@@ -104,12 +131,8 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
-          this.report_data = res.data.filter((a) => {
-            return a.is_cancel == 0;
-          });
-          console.log(this.report_data);
-          console.log(this.report_data);
+          console.log('DATA===============' + res.data);
+          this.report_data = res.data;
           this.isloading = false;
         })
         .catch((er) => {
@@ -132,7 +155,6 @@ export default {
         d = "0" + d;
       }
       dateVisible = d + "-" + m + "-" + dateVisible.getFullYear();
-      console.log(dateVisible);
       return dateVisible; //"this.dateVisible";
     },
     setCurDate() {
@@ -152,13 +174,6 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  padding: 1rem;
-  margin: 0.5rem auto;
-  max-width: 40rem;
-}
 .error {
   color: red;
 }

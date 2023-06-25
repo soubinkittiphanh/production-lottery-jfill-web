@@ -114,8 +114,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import apiDomain from "../config";
+import axios from "../axiosConfig";
 import BaseCard from "../components/ui/BaseCard";
 import SwitchToggle from "../components/ui/SwitchToggle";
 var moment = require("moment");
@@ -170,7 +169,7 @@ export default {
       this.isLoading = true;
       this.error = null;
       axios
-        .get(apiDomain.url + "ismref")
+        .get( "ismref")
         .then((res) => {
           this.ism_ref = res.data;
           this.isLoading = false;
@@ -255,7 +254,7 @@ export default {
       this.isLoading = true;
       this.error = null;
       axios
-        .post(apiDomain.url + "createism", {
+        .post( "createism", {
           ism_ref: this.ism_ref,
           ism_date: this.date,
           ism_res: this.ism_res,
@@ -285,7 +284,7 @@ export default {
       this.isLoading = true;
       this.error = null;
       axios
-        .put(apiDomain.url + "updateism", {
+        .put("updateism", {
           ism_ref: this.ism_ref,
           ism_date: this.date,
           ism_result: this.ism_res,
@@ -308,7 +307,7 @@ export default {
       console.log(this.date);
       this.isLoading = true;
       this.error = null;
-      const url = apiDomain.url + "fetchism/?date=" + this.date;
+      const url ="fetchism/?date=" + this.date;
       axios
         .get(url)
         .then((res) => {
@@ -349,7 +348,7 @@ export default {
       this.error = null;
       this.ismdata = "";
       console.log(this.date);
-      const url = apiDomain.url + "fetchism/?date=" + this.date;
+      const url = "fetchism/?date=" + this.date;
       axios
         .get(url)
         .then((res) => {
